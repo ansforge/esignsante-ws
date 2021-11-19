@@ -1,0 +1,12 @@
+[Unit]
+Description=ANS signature service
+After=syslog.target network.target
+
+[Service]
+User=esignsante
+Group=esignsante
+ExecStart=/opt/esignsante/esignsante-webservices.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

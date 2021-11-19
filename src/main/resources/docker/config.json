@@ -1,0 +1,51 @@
+{
+  "signature": [
+    {
+      "idSignConf": "",
+      "secret": "",
+      "idProofConf": "",
+      "description": "",
+      "certificate": "",
+      "privateKey": "",
+      "canonicalisationAlgorithm": "",
+      "digestAlgorithm": "",
+      "signaturePackaging": "",
+      "signId":"",
+      "signValueId":"",
+      "objectId":""
+    }
+  ],
+  "proof": [
+    {
+      "idProofConf": "",
+      "description": "",
+      "certificate": "",
+      "privateKey": "",
+      "canonicalisationAlgorithm": "",
+      "digestAlgorithm": "",
+      "signaturePackaging": ""
+    }
+  ],
+  "signatureVerification": [
+    {
+      "idVerifSign": "",
+      "description": "",
+      "metadata": "",
+      "rules": ""
+    }
+  ],
+  "certificateVerification": [
+    {
+      "idVerifCert": "",
+      "description": "",
+      "metadata": "",
+      "rules": ""
+    }
+  ],
+  "ca": [
+    {
+      "certificate": "",
+      "crl": ""
+    }
+  ]
+}
