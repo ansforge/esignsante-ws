@@ -26,7 +26,7 @@ job "esignsante" {
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
                         auto_revert       = true
-                        auto_promote      = false
+                        auto_promote      = ${promotion_auto}
                 }
 
                 scaling {
@@ -34,11 +34,11 @@ job "esignsante" {
                         min     = 1
                         max     = 5
 
-						policy {
-								# On sélectionne l'instance la moins chargée de toutes les instances en cours,
-								# on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
-								# par seconde sont franchis. On pondère le résultat par la consommation de CPU 
-								# pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
+			policy {
+				# On sélectionne l'instance la moins chargée de toutes les instances en cours,
+				# on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
+				# par seconde sont franchis. On pondère le résultat par la consommation de CPU 
+				# pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
                                 cooldown = "180s"
                                 check "few_requests" {
                                         source = "prometheus"
@@ -62,7 +62,7 @@ job "esignsante" {
 
                 task "run" {
                         env {
-                                JAVA_TOOL_OPTIONS="-Xms512m -Xmx2g -XX:+UseG1GC -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=swagger -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort=${proxy_port}"
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort=${proxy_port}"
                         }
                         driver = "docker"
                         config {
@@ -70,7 +70,7 @@ job "esignsante" {
                                 volumes = ["secrets:/var/esignsante"]
                                 args = [
                                         "--ws.conf=/var/esignsante/config.json",
-                                        "--ws.hashAlgo=BCRYPT",
+                                        "--ws.hashAlgo=${hashing_algorithm}",
                                 ]
                                 ports = ["http"]
                         }
@@ -100,19 +100,19 @@ EOH
                         }
                         template {
 data = <<EOF
-spring.servlet.multipart.max-file-size=200MB
-spring.servlet.multipart.max-request-size=200MB
-config.secret=enable
-
+spring.servlet.multipart.max-file-size=${spring_http_multipart_max_file_size}
+spring.servlet.multipart.max-request-size=${spring_http_multipart_max_request_size}
+config.secret=${config_secret}
+config.crl.scheduling=${config_crl_scheduling}
 server.servlet.context-path=/esignsante/v1
-com.sun.org.apache.xml.internal.security.ignoreLineBreaks=false
+com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
 management.endpoints.web.exposure.include=prometheus,metrics
 EOF
                         destination = "secrets/application.properties"
                         }
                         resources {
                                 cpu = 1000
-                                memory = 2252
+                                memory = ${appserver_mem_size}
                         }
                         service {
                                 name = "$\u007BNOMAD_JOB_NAME\u007D"
@@ -135,5 +135,33 @@ EOF
                                                                 "_app=esignsante",]
                         }
                 }
+		
+# begin log-shipper
+# Ce bloc doit être décommenté pour définir le log-shipper.
+# Penser à remplir la variable logstash_host.
+#        task "log-shipper" {
+#			driver = "docker"
+#			restart {
+#				interval = "30m"
+#				attempts = 5
+#				delay    = "15s"
+#				mode     = "delay"
+#			}
+#			meta {
+#				INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+#			}
+#			template {
+#				data = <<EOH
+#LOGSTASH_HOST = "${logstash_host}"
+#ENVIRONMENT = "${datacenter}"
+#EOH
+#				destination = "local/file.env"
+#				env = true
+#			}
+#			config {
+#				image = "ans/nomad-filebeat:latest"
+#			}
+#	    }
+# end log-shipper
         }
 }
