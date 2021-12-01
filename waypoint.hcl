@@ -67,7 +67,7 @@ variable dockerfile_path {
 
 variable "registry_path" {
     type = string
-    default = "registry.repo.proxy-dev-forge.asip.hst.fluxus.net/COMPONENT_NAME"
+    default = "registry.repo.proxy-dev-forge.asip.hst.fluxus.net/esignsante"
 }
 
 variable "proxy_host" {
