@@ -122,10 +122,13 @@ EOF
                                 check {
                                         type = "http"
                                         port = "http"
-                                        path = "/esignsante/v1"
+                                        path = "/esignsante/v1/ca"
+					header {
+						Accept = ["application/json"]
+					}
                                         name = "alive"
                                         interval = "30s"
-                                        timeout = "10s"
+                                        timeout = "2s"
                                 }
                         }
                         service {
