@@ -6,7 +6,6 @@ labels = { "domaine" = "esignsante" }
 runner {
   enabled = true
   data_source "git" {
-    url = "https://github.com/ansforge/esignsante-ws.git"
     ref = var.datacenter
   }
   poll {
@@ -49,6 +48,11 @@ app "cybersante/esignsante" {
 	config_secret = var.config_secret
 	config_crl_scheduling = var.config_crl_scheduling
 	ignore_line_breaks = var.ignore_line_breaks
+	min_count = var.min_count
+	max_count = var.max_count
+	cooldown = var.cooldown
+	seuil_scale_in = var.seuil_scale_in
+	seuil_scale_out = var.seuil_scale_out
 	logstash_host = var.logstash_host
       })
     }
@@ -128,6 +132,31 @@ variable "config_crl_scheduling" {
 variable "ignore_line_breaks" {
   type = bool
   default = false
+}
+
+variable "min_count" {
+  type = number
+  default = 1
+}
+
+variable "max_count" {
+  type = number
+  default = 5
+}
+
+variable "cooldown" {
+  type = string
+  default = "180s"
+}
+
+variable "seuil_scale_in" {
+  type = number
+  default = 1
+}
+
+variable "seuil_scale_out" {
+  type = number
+  default = 5
 }
 
 variable "logstash_host" {

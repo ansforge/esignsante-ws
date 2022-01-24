@@ -31,20 +31,20 @@ job "esignsante" {
 
                 scaling {
                         enabled = true
-                        min     = 1
-                        max     = 5
+                        min     = ${min_count}
+                        max     = ${max_count}
 
 			policy {
 				# On sélectionne l'instance la moins chargée de toutes les instances en cours,
 				# on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
 				# par seconde sont franchis. On pondère le résultat par la consommation de CPU 
 				# pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
-                                cooldown = "180s"
+                                cooldown = "${cooldown}"
                                 check "few_requests" {
                                         source = "prometheus"
                                         query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
                                         strategy "threshold" {
-                                                upper_bound = 1
+                                                upper_bound = ${seuil_scale_in}
                                                 delta = -1
                                         }
                                 }
@@ -53,7 +53,7 @@ job "esignsante" {
                                         source = "prometheus"
                                         query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
                                         strategy "threshold" {
-                                                lower_bound = 5
+                                                lower_bound = ${seuil_scale_out}
                                                 delta = 1
                                         }
                                 }
