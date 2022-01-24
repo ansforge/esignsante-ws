@@ -105,9 +105,11 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals("Toutes les données attendus en réponse ne sont pas retrouvées", 4, body.names().length());
-		assertEquals("La Liste des erreurs devrait contenir 1 erreur", 1, body.getJSONArray("erreurs").length());
-		assertTrue("Le code erreur attendu n'est pas le bon",
-				body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"));
+		assertEquals("La Liste des erreurs devrait contenir 2 erreurs", 2, body.getJSONArray("erreurs").length());
+		assertTrue("Le 1er code erreur attendu n'est pas le bon",
+				body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN05\"}"));
+		assertTrue("Le 2d code erreur attendu n'est pas le bon",
+				body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"));
 	}
 
 	/**
@@ -126,9 +128,11 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals("Toutes les données attendus en réponse ne sont pas retrouvées", 4, body.names().length());
-		assertEquals("La Liste des erreurs devrait contenir 1 erreur", 1, body.getJSONArray("erreurs").length());
-		assertTrue("Le code erreur attendu n'est pas le bon",
-				body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"));
+		assertEquals("La Liste des erreurs devrait contenir 2 erreurs", 2, body.getJSONArray("erreurs").length());
+		assertTrue("Le 1er  code erreur attendu n'est pas le bon",
+				body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN05\"}"));
+		assertTrue("Le 2d code erreur attendu n'est pas le bon",
+				body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"));
 	}
 
 	/**
