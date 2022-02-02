@@ -106,7 +106,7 @@ config.secret=${config_secret}
 #config.crl.scheduling=${config_crl_scheduling}
 server.servlet.context-path=/esignsante/v1
 com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
-management.endpoints.web.exposure.include=prometheus,metrics
+management.endpoints.web.exposure.include=prometheus,metrics,health
 EOF
                         destination = "secrets/application.properties"
                         }
