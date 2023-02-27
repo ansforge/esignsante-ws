@@ -61,7 +61,7 @@ app "cybersante/esignsante" {
 
 variable datacenter {
     type = string
-    default = "asip_asip_ccz_new_ans_conteneur"
+    default = "test"
 }
 
 variable dockerfile_path {
