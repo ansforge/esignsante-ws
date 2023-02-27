@@ -6,10 +6,11 @@ labels = { "domaine" = "esignsante" }
 runner {
   enabled = true
   data_source "git" {
-    ref = var.datacenter
+    url  = "https://github.com/ansforge/esignsante-ws"
+    ref = "var.datacenter"
   }
   poll {
-    enabled = true
+    enabled = false
   }
 }
 
