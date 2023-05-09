@@ -1,13 +1,13 @@
-job "esignsante" {
-#test
+job "esignsante-yet" {
+        namespace = "$\u007BNOMAD_JOB_NAME\u007D"
         datacenters = ["${datacenter}"]
         type = "service"
         vault {
-                policies = ["esignsante"]
+                policies = ["$\u007BNOMAD_JOB_NAME\u007D"]
                 change_mode = "noop"
         }
 
-        group "esignsante-servers" {
+        group "$\u007BNOMAD_JOB_NAME\u007D-servers" {
                 count = "1"
                 restart {
                         attempts = 3
@@ -39,11 +39,11 @@ job "esignsante" {
 				# On sélectionne l'instance la moins chargée de toutes les instances en cours,
 				# on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
 				# par seconde sont franchis. On pondère le résultat par la consommation de CPU 
-				# pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
+				# pour éviter de créer une instance lors du traitement de gros fichiers par $\u007BNOMAD_JOB_NAME\u007D.
                                 cooldown = "${cooldown}"
                                 check "few_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='$\u007BNOMAD_JOB_NAME\u007D'}!= 0)by(instance))*max(process_cpu_usage{_app='$\u007BNOMAD_JOB_NAME\u007D'})"
                                         strategy "threshold" {
                                                 upper_bound = ${seuil_scale_in}
                                                 delta = -1
@@ -52,7 +52,7 @@ job "esignsante" {
 
                                 check "many_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='$\u007BNOMAD_JOB_NAME\u007D'}!= 0)by(instance))*max(process_cpu_usage{_app='$\u007BNOMAD_JOB_NAME\u007D'})"
                                         strategy "threshold" {
                                                 lower_bound = ${seuil_scale_out}
                                                 delta = 1
@@ -63,14 +63,14 @@ job "esignsante" {
 
                 task "run" {
                         env {
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort=${proxy_port}"
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/$\u007BNOMAD_JOB_NAME\u007D/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort=${proxy_port}"
                         }
                         driver = "docker"
                         config {
                                 image = "${artifact.image}:${artifact.tag}"
-                                volumes = ["secrets:/var/esignsante"]
+                                volumes = ["secrets:/var/$\u007BNOMAD_JOB_NAME\u007D"]
                                 args = [
-                                        "--ws.conf=/var/esignsante/config.json",
+                                        "--ws.conf=/var/$\u007BNOMAD_JOB_NAME\u007D/config.json",
                                         "--ws.hashAlgo=${hashing_algorithm}",
                                 ]
                                 ports = ["http"]
@@ -78,20 +78,20 @@ job "esignsante" {
                         template {
 data = <<EOH
 {
-   "signature": [ {{ $length := secrets "esignsante/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/signature" }}
-{{ with secret (printf "esignsante/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signature": [ {{ $length := secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/signature" }}
+{{ with secret (printf "$\u007BNOMAD_JOB_NAME\u007D/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "proof": [ {{ $length := secrets "esignsante/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/proof" }}
-{{ with secret (printf "esignsante/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "proof": [ {{ $length := secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/proof" }}
+{{ with secret (printf "$\u007BNOMAD_JOB_NAME\u007D/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "signatureVerification": [ {{ $length := secrets "esignsante/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/signatureVerification" }}
-{{ with secret (printf "esignsante/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signatureVerification": [ {{ $length := secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/signatureVerification" }}
+{{ with secret (printf "$\u007BNOMAD_JOB_NAME\u007D/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "certificateVerification": [ {{ $length := secrets "esignsante/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/certificateVerification" }}
-{{ with secret (printf "esignsante/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "certificateVerification": [ {{ $length := secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/certificateVerification" }}
+{{ with secret (printf "$\u007BNOMAD_JOB_NAME\u007D/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "ca": [ {{ $length := secrets "esignsante/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/ca" }}
-{{ with secret (printf "esignsante/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "ca": [ {{ $length := secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "$\u007BNOMAD_JOB_NAME\u007D/metadata/ca" }}
+{{ with secret (printf "$\u007BNOMAD_JOB_NAME\u007D/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ]
 }
 EOH
@@ -105,7 +105,7 @@ spring.servlet.multipart.max-file-size=${spring_http_multipart_max_file_size}
 spring.servlet.multipart.max-request-size=${spring_http_multipart_max_request_size}
 config.secret=${config_secret}
 #config.crl.scheduling=${config_crl_scheduling}
-server.servlet.context-path=/esignsante/v1
+server.servlet.context-path=/$\u007BNOMAD_JOB_NAME\u007D/v1
 com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
 management.endpoints.web.exposure.include=prometheus,metrics,health
 EOF
@@ -117,13 +117,13 @@ EOF
                         }
                         service {
                                 name = "$\u007BNOMAD_JOB_NAME\u007D"
-                                tags = ["urlprefix-/esignsante/v1/"]
+                                tags = ["urlprefix-/$\u007BNOMAD_JOB_NAME\u007D/v1/"]
                                 canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
                                         port = "http"
-                                        path = "/esignsante/v1/ca"
+                                        path = "/$\u007BNOMAD_JOB_NAME\u007D/v1/ca"
 					header {
 						Accept = ["application/json"]
 					}
@@ -135,8 +135,8 @@ EOF
                         service {
                                 name = "metrics-exporter"
                                 port = "http"
-                                tags = ["_endpoint=/esignsante/v1/actuator/prometheus",
-                                                                "_app=esignsante",]
+                                tags = ["_endpoint=/$\u007BNOMAD_JOB_NAME\u007D/v1/actuator/prometheus",
+                                                                "_app=$\u007BNOMAD_JOB_NAME\u007D",]
                         }
                 }
 		
