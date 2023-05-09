@@ -1,5 +1,7 @@
 job "esignsante-yet" {
-        namespace = "$\u007BNOMAD_JOB_NAME\u007D"
+
+        namespace = "web-qa"
+
         datacenters = ["${datacenter}"]
         type = "service"
         vault {
