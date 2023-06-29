@@ -6,7 +6,7 @@ labels = { "domaine" = "esignsante" }
 runner {
   enabled = true
   data_source "git" {
-    url  = "https://github.com/ansforge/esignsante-ws"
+    url = "https://github.com/ansforge/esignsante-ws"
     ref = "var.datacenter"
   }
   poll {
@@ -15,7 +15,7 @@ runner {
 }
 
 # An application to deploy.
-app "cybersante/esignsante" {
+app "cybersante-esignsante" {
 
   # Build specifies how an application should be deployed.
   build {
@@ -27,7 +27,7 @@ app "cybersante/esignsante" {
       use "docker" {
         image = "${var.registry_path}/esignsante"
         tag   = gitrefpretty()
-		encoded_auth = filebase64("/secrets/dockerAuth.json")
+		    encoded_auth = filebase64("/secrets/dockerAuth.json")
 	  }
     }
   }
