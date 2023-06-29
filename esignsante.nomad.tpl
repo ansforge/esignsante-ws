@@ -110,10 +110,12 @@ management.endpoints.web.exposure.include=prometheus,metrics,health
 EOF
                         destination = "secrets/application.properties"
                         }
+                        
                         resources {
                                 cpu = 1000
                                 memory = ${appserver_mem_size}
                         }
+                        
                         service {
                                 name = "$\u007BNOMAD_JOB_NAME\u007D"
                                 tags = ["urlprefix-/esignsante/v1/"]
@@ -131,6 +133,7 @@ EOF
                                         timeout = "2s"
                                 }
                         }
+                        
                         service {
                                 name = "metrics-exporter"
                                 port = "http"
@@ -139,33 +142,6 @@ EOF
                         }
                 }
 		
-# begin log-shipper
-# Ce bloc doit être décommenté pour définir le log-shipper.
-# Penser à remplir la variable logstash_host.
-        task "log-shipper" {
-			driver = "docker"
-			restart {
-				interval = "30m"
-				attempts = 5
-				delay    = "15s"
-				mode     = "delay"
-			}
-			meta {
-				INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
-			}
-			template {
-				data = <<EOH
-#LOGSTASH_HOST = "${logstash_host}"
-LOGSTASH_HOST = "{{ range service "PileELK-logstash"}}{{.Address}}{{end}}:{{ range service "PileELK-logstash"}}{{.Port}}{{end}}"
-ENVIRONMENT = "${datacenter}"
-EOH
-				destination = "local/file.env"
-				env = true
-			}
-			config {
-				image = "ans/nomad-filebeat:latest"
-			}
-	    }
-# end log-shipper
+
         }
 }
