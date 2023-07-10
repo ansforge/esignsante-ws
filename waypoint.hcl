@@ -1,22 +1,21 @@
-project = "cybersante/esignsante"
+project = "${workspace.name}_cybersante/esignsante"
 
-# Labels can be specified for organizational purposes.
 labels = { "domaine" = "esignsante" }
 
 runner {
   enabled = true
   data_source "git" {
-    url = "https://github.com/ansforge/esignsante-ws"
-    ref = "var.datacenter"
+    url = "https://github.com/ansforge/esignsante-ws.git"
+    ref = "var.gitreference"
+    ignore_changes_outside_path = true
   }
   poll {
     enabled = false
   }
-}
+} 
 
 # An application to deploy.
 app "cybersante/esignsante" {
-
   # Build specifies how an application should be deployed.
   build {
     use "docker" {
@@ -27,8 +26,8 @@ app "cybersante/esignsante" {
       use "docker" {
         image = "${var.registry_path}/esignsante"
         tag   = gitrefpretty()
-		    encoded_auth = filebase64("/secrets/dockerAuth.json")
-	  }
+        encoded_auth = filebase64("/secrets/dockerAuth.json")
+	    }
     }
   }
 
@@ -36,68 +35,79 @@ app "cybersante/esignsante" {
   deploy {
     use "nomad-jobspec" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
-	datacenter = var.datacenter
-	proxy_host = var.proxy_host
-	proxy_port = var.proxy_port
-	user_java_opts = var.user_java_opts
-	swagger_ui = var.swagger_ui
-	promotion_auto = var.promotion_auto
-	spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
-	spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
-	hashing_algorithm = var.hashing_algorithm
-	appserver_mem_size = var.appserver_mem_size
-	config_secret = var.config_secret
-	config_crl_scheduling = var.config_crl_scheduling
-	ignore_line_breaks = var.ignore_line_breaks
-	min_count = var.min_count
-	max_count = var.max_count
-	cooldown = var.cooldown
-	seuil_scale_in = var.seuil_scale_in
-	seuil_scale_out = var.seuil_scale_out
-	logstash_host = var.logstash_host
+        datacenter = var.datacenter
+        proxy_host = var.proxy_host
+        proxy_port = var.proxy_port
+        user_java_opts = var.user_java_opts
+        swagger_ui = var.swagger_ui
+        promotion_auto = var.promotion_auto
+        spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
+        spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
+        hashing_algorithm = var.hashing_algorithm
+        appserver_mem_size = var.appserver_mem_size
+        config_secret = var.config_secret
+        config_crl_scheduling = var.config_crl_scheduling
+        ignore_line_breaks = var.ignore_line_breaks
+        min_count = var.min_count
+        max_count = var.max_count
+        cooldown = var.cooldown
+        seuil_scale_in = var.seuil_scale_in
+        seuil_scale_out = var.seuil_scale_out
+        logstash_host = var.logstash_host
+        #
+        nomad_namespace = "${workspace.name}"
+        nomad_namejob = var.nomad_namejob
       })
     }
   }
 }
 
+# 
+variable "nomad_namejob" {
+  type = string
+  default = "esignsante"
+}
+
 variable datacenter {
     type = string
-    default = "test"
+    default = "henix_docker_platform_pfcpx"
+    env = ["NOMAD_DATACENTER"]
 }
 
 variable dockerfile_path {
     type = string
     default = "Dockerfile"
 }
-
+#
 variable "registry_path" {
     type = string
-    default = "registry.repo.proxy-dev-forge.asip.hst.fluxus.net/esignsante"
+    default = "registry.repo.proxy.dev.forge.esante.gouv.fr/esignsante"
 }
-
+#
 variable "proxy_host" {
   type = string
-  default = ""
+  default = "10.0.49.163"
 }
-
+#
 variable "proxy_port" {
   type = string
-  default = ""
+  default = "3128"
 }
-
+#
 variable "user_java_opts" {
   type = string
-  default = ""
+  default = "-Ddebug=true"
 }
-
+#
 variable "swagger_ui" {
   type = string
-  default = ""
+  default = "swagger"
 }
-
+#
 variable "promotion_auto" {
   type = bool
-  default = false
+  default = "true"
+  # default = false
 }
 
 variable "spring_http_multipart_max_file_size" {
@@ -124,7 +134,7 @@ variable "config_secret" {
   type = string
   default = "enable"
 }
-
+#
 variable "config_crl_scheduling" {
   type = string
   default = ""

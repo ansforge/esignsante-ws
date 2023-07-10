@@ -1,9 +1,11 @@
-job "esignsante-test" {
+job "${nomad_namejob}" {
         datacenters = ["${datacenter}"]
         type = "service"
 
+        namespace = "${nomad_namespace}"
+
         vault {
-                policies = ["esignsante"]
+                policies = ["${nomad_namespace}-${nomad_namejob}"]
                 change_mode = "noop"
         }
 
@@ -43,7 +45,7 @@ job "esignsante-test" {
                                 cooldown = "${cooldown}"
                                 check "few_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}-${nomad_namejob}}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}-${nomad_namejob}'})"
                                         strategy "threshold" {
                                                 upper_bound = ${seuil_scale_in}
                                                 delta = -1
@@ -52,7 +54,7 @@ job "esignsante-test" {
 
                                 check "many_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='esignsante'}!= 0)by(instance))*max(process_cpu_usage{_app='esignsante'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}-${nomad_namejob}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}-${nomad_namejob}'})"
                                         strategy "threshold" {
                                                 lower_bound = ${seuil_scale_out}
                                                 delta = 1
@@ -77,27 +79,29 @@ job "esignsante-test" {
                                 ports = ["http"]
                         }
                         template {
+
 data = <<EOH
 {
-   "signature": [ {{ $length := secrets "esignsante/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/signature" }}
-{{ with secret (printf "esignsante/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signature": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/signature" }}
+{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "proof": [ {{ $length := secrets "esignsante/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/proof" }}
-{{ with secret (printf "esignsante/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "proof": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/proof" }}
+{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "signatureVerification": [ {{ $length := secrets "esignsante/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/signatureVerification" }}
-{{ with secret (printf "esignsante/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signatureVerification": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/signatureVerification" }}
+{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "certificateVerification": [ {{ $length := secrets "esignsante/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/certificateVerification" }}
-{{ with secret (printf "esignsante/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "certificateVerification": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/certificateVerification" }}
+{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "ca": [ {{ $length := secrets "esignsante/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "esignsante/metadata/ca" }}
-{{ with secret (printf "esignsante/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "ca": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/ca" }}
+{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ]
 }
 EOH
 
                         destination = "secrets/config.json"
+                        # destination = "local/config.json"
                         change_mode = "noop" # noop
                         }
                         template {
@@ -106,7 +110,7 @@ spring.servlet.multipart.max-file-size=${spring_http_multipart_max_file_size}
 spring.servlet.multipart.max-request-size=${spring_http_multipart_max_request_size}
 config.secret=${config_secret}
 #config.crl.scheduling=${config_crl_scheduling}
-server.servlet.context-path=/esignsante/v1
+server.servlet.context-path=/${nomad_namespace}-${nomad_namejob}/v1
 com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
 management.endpoints.web.exposure.include=prometheus,metrics,health
 EOF
@@ -117,14 +121,14 @@ EOF
                                 memory = ${appserver_mem_size}
                         }
                         service {
-                                name = "$${NOMAD_JOB_NAME}"
-                                tags = ["urlprefix-/esignsante/v1/"]
+                                name = "${nomad_namespace}-${nomad_namejob}"
+                                tags = ["urlprefix-/${nomad_namespace}-${nomad_namejob}/v1/"]
                                 canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
                                         port = "http"
-                                        path = "/esignsante/v1/ca"
+                                        path = "/${nomad_namespace}-${nomad_namejob}/v1/ca"
 					header {
 						Accept = ["application/json"]
 					}
@@ -136,14 +140,15 @@ EOF
                         service {
                                 name = "metrics-exporter"
                                 port = "http"
-                                tags = ["_endpoint=/esignsante/v1/actuator/prometheus",
-                                                                "_app=esignsante",]
+                                tags = ["_endpoint=/${nomad_namespace}-${nomad_namejob}/v1/actuator/prometheus",
+                                                                "_app=${nomad_namespace}-${nomad_namejob}",]
                         }
                 }
+		
 # begin log-shipper
 # Ce bloc doit être décommenté pour définir le log-shipper.
 # Penser à remplir la variable logstash_host.
-                task "log-shipper" {
+        task "log-shipper" {
 			driver = "docker"
 			restart {
 				interval = "30m"
@@ -156,7 +161,7 @@ EOF
 			}
 			template {
 				data = <<EOH
-# LOGSTASH_HOST = "${logstash_host}"
+#LOGSTASH_HOST = "${logstash_host}"
 LOGSTASH_HOST = "{{ range service "PileELK-logstash"}}{{.Address}}{{end}}:{{ range service "PileELK-logstash"}}{{.Port}}{{end}}"
 ENVIRONMENT = "${datacenter}"
 EOH
@@ -166,6 +171,7 @@ EOH
 			config {
 				image = "ans/nomad-filebeat:latest"
 			}
-	        } # end log-shipper
+	    }
+#end log-shipper
         }
 }
