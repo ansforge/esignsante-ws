@@ -151,7 +151,8 @@ EOF
         task "log-shipper" {
 			driver = "docker"
 			restart {
-				interval = "30m"
+				# interval = "30m"
+                                interval = "3m"
 				attempts = 5
 				delay    = "15s"
 				mode     = "delay"
@@ -162,15 +163,23 @@ EOF
 			template {
 				data = <<EOH
 #LOGSTASH_HOST = "${logstash_host}"
-LOGSTASH_HOST = "{{ range service "PileELK-logstash"}}{{.Address}}{{end}}:{{ range service "PileELK-logstash"}}{{.Port}}{{end}}"
-ENVIRONMENT = "${datacenter}"
+# LOGSTASH_HOST = "{{ range service "PileELK-logstash"}}{{.Address}}{{end}}:{{ range service "PileELK-logstash"}}{{.Port}}{{end}}"
+REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
+PILE_ELK_APPLICATION = ${nomad_namespace}-${nomad_namejob}
+# ENVIRONMENT = "${datacenter}"
 EOH
 				destination = "local/file.env"
+                                change_mode = "restart"
 				env = true
 			}
 			config {
-				image = "ans/nomad-filebeat:latest"
+				# image = "ans/nomad-filebeat:latest"
+                                image = "ans/nomad-filebeat:8.2.3-2.0"
 			}
+                        resources {
+                                cpu    = 100
+                                memory = 150
+                        }
 	    }
 #end log-shipper
         }

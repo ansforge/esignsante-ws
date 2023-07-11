@@ -67,13 +67,10 @@ variable "nomad_namejob" {
   type = string
   default = "esignsante"
 }
-
 variable datacenter {
     type = string
-    default = "test"
-
+    default = "henix_docker_platform_pfcpx"
 }
-
 variable dockerfile_path {
     type = string
     default = "Dockerfile"
@@ -86,49 +83,45 @@ variable "registry_path" {
 #
 variable "proxy_host" {
   type = string
-  default = ""
+  default = "10.0.49.163"
 }
 #
 variable "proxy_port" {
   type = string
-  default = ""
+  default = "3128"
 }
 #
 variable "user_java_opts" {
   type = string
-  default = ""
+  default = "-Ddebug=true"
 }
 #
 variable "swagger_ui" {
   type = string
-  default = ""
+  default = "swagger"
 }
 #
 variable "promotion_auto" {
   type = bool
-  default = false
+  default = "true"
+  # default = false
 }
-
 variable "spring_http_multipart_max_file_size" {
   type = string
   default = "200MB"
 }
-
 variable "spring_http_multipart_max_request_size" {
   type = string
   default = "200MB"
 }
-
 variable "hashing_algorithm" {
   type = string
   default = "BCRYPT"
 }
-
 variable "appserver_mem_size" {
   type = string
   default = "9216"
 }
-
 variable "config_secret" {
   type = string
   default = "enable"
@@ -138,37 +131,30 @@ variable "config_crl_scheduling" {
   type = string
   default = ""
 }
-
 variable "ignore_line_breaks" {
   type = bool
   default = false
 }
-
 variable "min_count" {
   type = number
   default = 1
 }
-
 variable "max_count" {
   type = number
   default = 5
 }
-
 variable "cooldown" {
   type = string
   default = "180s"
 }
-
 variable "seuil_scale_in" {
   type = number
   default = 1
 }
-
 variable "seuil_scale_out" {
   type = number
   default = 5
 }
-
 variable "logstash_host" {
   type = string
   default = ""
