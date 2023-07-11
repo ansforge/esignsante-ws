@@ -70,8 +70,8 @@ variable "nomad_namejob" {
 
 variable datacenter {
     type = string
-    default = "henix_docker_platform_pfcpx"
-    env = ["NOMAD_DATACENTER"]
+    default = "test"
+
 }
 
 variable dockerfile_path {
@@ -86,28 +86,27 @@ variable "registry_path" {
 #
 variable "proxy_host" {
   type = string
-  default = "10.0.49.163"
+  default = ""
 }
 #
 variable "proxy_port" {
   type = string
-  default = "3128"
+  default = ""
 }
 #
 variable "user_java_opts" {
   type = string
-  default = "-Ddebug=true"
+  default = ""
 }
 #
 variable "swagger_ui" {
   type = string
-  default = "swagger"
+  default = ""
 }
 #
 variable "promotion_auto" {
   type = bool
-  default = "true"
-  # default = false
+  default = false
 }
 
 variable "spring_http_multipart_max_file_size" {
