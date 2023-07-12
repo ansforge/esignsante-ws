@@ -1,12 +1,13 @@
-project = "${workspace.name}_cybersante/esignsante"
+project = "${workspace.name}"
 
 labels = { "domaine" = "esignsante" }
 
 runner {
   enabled = true
+  profile = "common-odr"
   data_source "git" {
     url = "https://github.com/ansforge/esignsante-ws.git"
-    ref = "var.gitreference"
+    ref = "gitref"
     ignore_changes_outside_path = true
   }
   poll {
@@ -26,7 +27,7 @@ app "cybersante/esignsante" {
       use "docker" {
         image = "${var.registry_path}/esignsante"
         tag   = gitrefpretty()
-        encoded_auth = filebase64("/secrets/dockerAuth.json")
+        # encoded_auth = filebase64("/secrets/dockerAuth.json")
 	    }
     }
   }
@@ -62,15 +63,20 @@ app "cybersante/esignsante" {
   }
 }
 
-# 
+####
 variable "nomad_namejob" {
   type = string
   default = "esignsante"
 }
+
 variable datacenter {
-    type = string
-    default = "henix_docker_platform_pfcpx"
+  type = string
+  default = ""
+  env     = ["NOMAD_DC"]
 }
+####
+
+
 variable dockerfile_path {
     type = string
     default = "Dockerfile"
