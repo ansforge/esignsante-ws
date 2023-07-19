@@ -1,3 +1,18 @@
+variable "proxy_host" {
+  type      = string
+  default = dynamic("vault", {
+    path = "secret/data/services-infrastructure/proxy"
+    key  = "/data/proxy"
+  })
+}
+variable "proxy_port" {
+  type      = string
+  default = dynamic("vault", {
+    path = "secret/data/services-infrastructure/proxy"
+    key  = "/data/port"
+  })
+}
+
 job "${nomad_namejob}" {
         datacenters = ["${datacenter}"]
         type = "service"
@@ -65,7 +80,7 @@ job "${nomad_namejob}" {
 
                 task "run" {
                         env {   
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort={$proxy_port}"
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=var.proxy_host -Dhttps.proxyHost=var.proxy_host -Dhttp.proxyPort=var.proxy_port -Dhttps.proxyPort=var.proxy_port"
                         } 
                         driver = "docker"
                         config {
@@ -86,6 +101,7 @@ proxy_port = {{ .Data.data.port }}
 
 {{end}}
 EOF
+                                destination = "local/file.env"
                                 env = true
                         }
 
