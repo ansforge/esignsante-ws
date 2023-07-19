@@ -65,7 +65,7 @@ job "${nomad_namejob}" {
 
                 task "run" {
                         env {   
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}{{end}} -Dhttps.proxyHost={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}{{end}} -Dhttp.proxyPort={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.port }}{{end}} -Dhttps.proxyPort={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.port }}{{end}}"
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort={$proxy_port}"
                         } 
                         driver = "docker"
                         config {
@@ -77,6 +77,18 @@ job "${nomad_namejob}" {
                                 ]
                                 ports = ["http"]
                         }
+
+                        template {
+data = <<EOF
+{{ with secret "services-infrastructure/proxy" }}
+proxy_host = {{ .Data.data.proxy }}
+proxy_port = {{ .Data.data.port }}
+
+{{end}}
+EOF
+                                env = true
+                        }
+
                         template {
 
 data = <<EOH
@@ -103,6 +115,7 @@ EOH
                         # destination = "local/config.json"
                         change_mode = "noop" # noop
                         }
+
                         template {
 data = <<EOF
 spring.servlet.multipart.max-file-size=${spring_http_multipart_max_file_size}
