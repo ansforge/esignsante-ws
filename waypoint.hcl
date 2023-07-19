@@ -27,6 +27,8 @@ app "cybersante/esignsante" {
       use "docker" {
         image = "${var.registry_path}/esignsante"
         tag   = gitrefpretty()
+        username = var.username
+        password = var.password
         # encoded_auth = filebase64("/secrets/dockerAuth.json")
 	    }
     }
@@ -73,6 +75,19 @@ variable datacenter {
   type = string
   default = ""
   env     = ["NOMAD_DC"]
+}
+
+variable "username" {
+  type      = string
+  default   = ""
+  env       = ["REGISTRY_USER"]
+  sensitive = true
+}
+variable "password" {
+  type      = string
+  default   = ""
+  env       = ["REGISTRY_PASS"]
+  sensitive = true
 }
 ####
 

@@ -5,7 +5,7 @@ job "${nomad_namejob}" {
         namespace = "${nomad_namespace}"
 
         vault {
-                policies = ["${nomad_namespace}-${nomad_namejob}"]
+                policies = ["${nomad_namespace}"]
                 change_mode = "noop"
         }
 
@@ -45,7 +45,7 @@ job "${nomad_namejob}" {
                                 cooldown = "${cooldown}"
                                 check "few_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}-${nomad_namejob}}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}-${nomad_namejob}'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}'})"
                                         strategy "threshold" {
                                                 upper_bound = ${seuil_scale_in}
                                                 delta = -1
@@ -54,7 +54,7 @@ job "${nomad_namejob}" {
 
                                 check "many_requests" {
                                         source = "prometheus"
-                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}-${nomad_namejob}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}-${nomad_namejob}'})"
+                                        query = "min(max(http_server_requests_seconds_max{_app='${nomad_namespace}'}!= 0)by(instance))*max(process_cpu_usage{_app='${nomad_namespace}'})"
                                         strategy "threshold" {
                                                 lower_bound = ${seuil_scale_out}
                                                 delta = 1
@@ -82,20 +82,20 @@ job "${nomad_namejob}" {
 
 data = <<EOH
 {
-   "signature": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/signature" }}
-{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signature": [ {{ $length := secrets "${nomad_namespace}/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/signature" }}
+{{ with secret (printf "${nomad_namespace}/data/signature/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }} {{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "proof": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/proof" }}
-{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "proof": [ {{ $length := secrets "${nomad_namespace}/metadata/proof" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/proof" }}
+{{ with secret (printf "${nomad_namespace}/data/proof/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "signatureVerification": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/signatureVerification" }}
-{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "signatureVerification": [ {{ $length := secrets "${nomad_namespace}/metadata/signatureVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/signatureVerification" }}
+{{ with secret (printf "${nomad_namespace}/data/signatureVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "certificateVerification": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/certificateVerification" }}
-{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "certificateVerification": [ {{ $length := secrets "${nomad_namespace}/metadata/certificateVerification" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/certificateVerification" }}
+{{ with secret (printf "${nomad_namespace}/data/certificateVerification/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ],
-   "ca": [ {{ $length := secrets "${nomad_namespace}-${nomad_namejob}/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}-${nomad_namejob}/metadata/ca" }}
-{{ with secret (printf "${nomad_namespace}-${nomad_namejob}/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
+   "ca": [ {{ $length := secrets "${nomad_namespace}/metadata/ca" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/ca" }}
+{{ with secret (printf "${nomad_namespace}/data/ca/%s" .) }}{{ .Data.data | explodeMap | toJSONPretty | indent 4 }}{{ if lt $i $length }}, {{ end }} {{ end }} {{ $i = add 1 $i }} {{ end }}
   ]
 }
 EOH
@@ -110,7 +110,7 @@ spring.servlet.multipart.max-file-size=${spring_http_multipart_max_file_size}
 spring.servlet.multipart.max-request-size=${spring_http_multipart_max_request_size}
 config.secret=${config_secret}
 #config.crl.scheduling=${config_crl_scheduling}
-server.servlet.context-path=/${nomad_namespace}-${nomad_namejob}/v1
+server.servlet.context-path=/${nomad_namespace}/v1
 com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
 management.endpoints.web.exposure.include=prometheus,metrics,health
 EOF
@@ -121,14 +121,14 @@ EOF
                                 memory = ${appserver_mem_size}
                         }
                         service {
-                                name = "${nomad_namespace}-${nomad_namejob}"
-                                tags = ["urlprefix-/${nomad_namespace}-${nomad_namejob}/v1/"]
+                                name = "${nomad_namespace}"
+                                tags = ["urlprefix-/${nomad_namespace}/v1/"]
                                 canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
                                         port = "http"
-                                        path = "/${nomad_namespace}-${nomad_namejob}/v1/ca"
+                                        path = "/${nomad_namespace}/v1/ca"
 					header {
 						Accept = ["application/json"]
 					}
@@ -140,8 +140,8 @@ EOF
                         service {
                                 name = "metrics-exporter"
                                 port = "http"
-                                tags = ["_endpoint=/${nomad_namespace}-${nomad_namejob}/v1/actuator/prometheus",
-                                                                "_app=${nomad_namespace}-${nomad_namejob}",]
+                                tags = ["_endpoint=/${nomad_namespace}/v1/actuator/prometheus",
+                                                                "_app=${nomad_namespace}",]
                         }
                 }
 		
