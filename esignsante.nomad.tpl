@@ -64,12 +64,9 @@ job "${nomad_namejob}" {
                 }
 
                 task "run" {
-                        # 
                         env {   
-                                {{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ .Data.data.proxy }} -Dhttps.proxyHost={{ .Data.data.proxy }} -Dhttp.proxyPort={{ .Data.data.proxy }} -Dhttps.proxyPort={{ .Data.data.proxy }}"
-                                {{end}}
-                        }
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}{{end}} -Dhttps.proxyHost={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}{{end}} -Dhttp.proxyPort={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.port }}{{end}} -Dhttps.proxyPort={{ with secret "services-infrastructure/proxy" }}{{ .Data.data.port }}{{end}}"
+                        } 
                         driver = "docker"
                         config {
                                 image = "${artifact.image}:${artifact.tag}"
@@ -149,11 +146,10 @@ EOF
 		
 # begin log-shipper
 # Ce bloc doit être décommenté pour définir le log-shipper.
-# Penser à remplir la variable logstash_host.
         task "log-shipper" {
 			driver = "docker"
 			restart {
-				interval = "30m"
+                                interval = "3m"
 				attempts = 5
 				delay    = "15s"
 				mode     = "delay"
@@ -163,16 +159,21 @@ EOF
 			}
 			template {
 				data = <<EOH
-#LOGSTASH_HOST = "${logstash_host}"
-LOGSTASH_HOST = "{{ range service "PileELK-logstash"}}{{.Address}}{{end}}:{{ range service "PileELK-logstash"}}{{.Port}}{{end}}"
-ENVIRONMENT = "${datacenter}"
+
+REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
+
 EOH
 				destination = "local/file.env"
+                                change_mode = "restart"
 				env = true
 			}
 			config {
-				image = "ans/nomad-filebeat:latest"
+                                image = "ans/nomad-filebeat:8.2.3-2.0"
 			}
+                        resources {
+                                cpu    = 100
+                                memory = 150
+                        }
 	    }
 #end log-shipper
         }

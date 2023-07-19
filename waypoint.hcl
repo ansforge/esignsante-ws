@@ -29,7 +29,6 @@ app "cybersante/esignsante" {
         tag   = gitrefpretty()
         username = var.username
         password = var.password
-        # encoded_auth = filebase64("/secrets/dockerAuth.json")
 	    }
     }
   }
@@ -39,8 +38,6 @@ app "cybersante/esignsante" {
     use "nomad-jobspec" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
         datacenter = var.datacenter
-        // proxy_host = var.proxy_host
-        // proxy_port = var.proxy_port
         user_java_opts = var.user_java_opts
         swagger_ui = var.swagger_ui
         promotion_auto = var.promotion_auto
@@ -56,8 +53,6 @@ app "cybersante/esignsante" {
         cooldown = var.cooldown
         seuil_scale_in = var.seuil_scale_in
         seuil_scale_out = var.seuil_scale_out
-        // logstash_host = var.logstash_host
-        #
         nomad_namespace = "${workspace.name}"
         nomad_namejob = var.nomad_namejob
       })
@@ -70,7 +65,6 @@ variable "nomad_namejob" {
   type = string
   default = "esignsante"
 }
-
 variable datacenter {
   type = string
   default = ""
@@ -97,31 +91,17 @@ variable "registry_path" {
     type = string
     default = "registry.repo.proxy.dev.forge.esante.gouv.fr/esignsante"
 }
-#
-// variable "proxy_host" {
-//   type = string
-//   default = "10.0.49.163"
-// }
-// #
-// variable "proxy_port" {
-//   type = string
-//   default = "3128"
-// }
-#
 variable "user_java_opts" {
   type = string
   default = "-Ddebug=true"
 }
-#
 variable "swagger_ui" {
   type = string
   default = "swagger"
 }
-#
 variable "promotion_auto" {
   type = bool
   default = "true"
-  # default = false
 }
 variable "spring_http_multipart_max_file_size" {
   type = string
