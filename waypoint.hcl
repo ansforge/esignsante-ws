@@ -39,8 +39,8 @@ app "cybersante/esignsante" {
     use "nomad-jobspec" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
         datacenter = var.datacenter
-        proxy_host = var.proxy_host
-        proxy_port = var.proxy_port
+        // proxy_host = var.proxy_host
+        // proxy_port = var.proxy_port
         user_java_opts = var.user_java_opts
         swagger_ui = var.swagger_ui
         promotion_auto = var.promotion_auto
@@ -56,7 +56,7 @@ app "cybersante/esignsante" {
         cooldown = var.cooldown
         seuil_scale_in = var.seuil_scale_in
         seuil_scale_out = var.seuil_scale_out
-        logstash_host = var.logstash_host
+        // logstash_host = var.logstash_host
         #
         nomad_namespace = "${workspace.name}"
         nomad_namejob = var.nomad_namejob
@@ -76,7 +76,6 @@ variable datacenter {
   default = ""
   env     = ["NOMAD_DC"]
 }
-
 variable "username" {
   type      = string
   default   = ""
@@ -90,27 +89,24 @@ variable "password" {
   sensitive = true
 }
 ####
-
-
 variable dockerfile_path {
     type = string
     default = "Dockerfile"
 }
-#
 variable "registry_path" {
     type = string
     default = "registry.repo.proxy.dev.forge.esante.gouv.fr/esignsante"
 }
 #
-variable "proxy_host" {
-  type = string
-  default = "10.0.49.163"
-}
-#
-variable "proxy_port" {
-  type = string
-  default = "3128"
-}
+// variable "proxy_host" {
+//   type = string
+//   default = "10.0.49.163"
+// }
+// #
+// variable "proxy_port" {
+//   type = string
+//   default = "3128"
+// }
 #
 variable "user_java_opts" {
   type = string
@@ -175,8 +171,4 @@ variable "seuil_scale_in" {
 variable "seuil_scale_out" {
   type = number
   default = 5
-}
-variable "logstash_host" {
-  type = string
-  default = ""
 }

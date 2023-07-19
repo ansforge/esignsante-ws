@@ -5,7 +5,7 @@ job "${nomad_namejob}" {
         namespace = "${nomad_namespace}"
 
         vault {
-                policies = ["${nomad_namespace}"]
+                policies = ["${nomad_namespace}","services-infrastructure"]
                 change_mode = "noop"
         }
 
@@ -65,8 +65,10 @@ job "${nomad_namejob}" {
 
                 task "run" {
                         # 
-                        env {
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${proxy_host} -Dhttps.proxyHost=${proxy_host} -Dhttp.proxyPort=${proxy_port} -Dhttps.proxyPort=${proxy_port}"
+                        env {   
+                                {{ with secret "services-infrastructure/proxy" }}{{ .Data.data.proxy }}
+                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ .Data.data.proxy }} -Dhttps.proxyHost={{ .Data.data.proxy }} -Dhttp.proxyPort={{ .Data.data.proxy }} -Dhttps.proxyPort={{ .Data.data.proxy }}"
+                                {{end}}
                         }
                         driver = "docker"
                         config {
