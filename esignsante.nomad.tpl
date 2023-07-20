@@ -109,8 +109,7 @@ data = <<EOH
 EOH
 
                         destination = "secrets/config.json"
-                        # destination = "local/config.json"
-                        change_mode = "noop" # noop
+                        change_mode = "noop"
                         }
 
                         template {
@@ -169,9 +168,7 @@ EOF
 			}
 			template {
 				data = <<EOH
-
 REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
-
 EOH
 				destination = "local/file.env"
                                 change_mode = "restart"
