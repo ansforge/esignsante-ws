@@ -5,7 +5,7 @@ job "${nomad_namejob}" {
         namespace = "${nomad_namespace}"
 
         vault {
-                policies = ["${nomad_namespace}","services-infrastructure"]
+                policies = ["${nomad_namespace}","proxy"]
                 change_mode = "noop"
         }
 
@@ -64,13 +64,7 @@ job "${nomad_namejob}" {
                 }
 
                 task "run" {
-                        env {   
-                                {{ with secret "services-infrastructure/proxy" }}
-                                        PROXY_HOST = {{ .Data.data.proxy }}
-                                        PROXY_PORT = {{ .Data.data.port }}
-                                {{end}}
-                                JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost=${env["PROXY_HOST"]} -Dhttps.proxyHost=${env["PROXY_HOST"]} -Dhttp.proxyPort=${env["PROXY_PORT"]} -Dhttps.proxyPort=${env["PROXY_PORT"]}"
-                        } 
+
                         driver = "docker"
                         config {
                                 image = "${artifact.image}:${artifact.tag}"
@@ -85,8 +79,7 @@ job "${nomad_namejob}" {
                         template {
 data = <<EOF
 {{ with secret "services-infrastructure/proxy" }}
-PROXY_HOST = {{ .Data.data.proxy }}
-PROXY_PORT = {{ .Data.data.port }}
+JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ .Data.data.host }} -Dhttps.proxyHost={{ .Data.data.host }} -Dhttp.proxyPort={{ .Data.data.port }} -Dhttps.proxyPort={{ .Data.data.port }}"
 {{end}}
 EOF
                                 destination = "local/file.env"
