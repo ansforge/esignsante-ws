@@ -5,17 +5,24 @@ job "${nomad_namejob}" {
         namespace = "${nomad_namespace}"
 
         vault {
-                policies = ["${nomad_namespace}","proxy"]
+                policies = ["${nomad_namespace}","proxy", "metrics_extractor_mut"]
                 change_mode = "noop"
         }
 
         group "esignsante-servers" {
-                count = "1"
+
                 restart {
                         attempts = 3
                         delay = "60s"
                         interval = "1h"
                         mode = "fail"
+                }
+
+                count = ${min_count}
+                
+                # Pour assurer une bonne répartition des instances sur les noeuds
+                spread {
+                attribute = "$${node.unique.id}"
                 }
 
                 network {
