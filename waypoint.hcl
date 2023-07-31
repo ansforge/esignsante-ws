@@ -93,11 +93,11 @@ variable "registry_path" {
 }
 variable "user_java_opts" {
   type = string
-  default = "-Ddebug=true"
+  default = ""
 }
 variable "swagger_ui" {
   type = string
-  default = "swagger"
+  default = ""
 }
 variable "promotion_auto" {
   type = bool
