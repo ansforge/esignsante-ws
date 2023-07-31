@@ -44,11 +44,11 @@ job "${nomad_namejob}" {
                         min     = ${min_count}
                         max     = ${max_count}
 
-			policy {
-				# On sélectionne l'instance la moins chargée de toutes les instances en cours,
-				# on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
-				# par seconde sont franchis. On pondère le résultat par la consommation de CPU 
-				# pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
+                        policy {
+                        # On sélectionne l'instance la moins chargée de toutes les instances en cours,
+                        # on rajoute une instance (ou on en enlève une) si les seuils spécifiés de requêtes
+                        # par seconde sont franchis. On pondère le résultat par la consommation de CPU 
+                        # pour éviter de créer une instance lors du traitement de gros fichiers par esignsante.
                                 cooldown = "${cooldown}"
                                 check "few_requests" {
                                         source = "prometheus"
@@ -71,7 +71,6 @@ job "${nomad_namejob}" {
                 }
 
                 task "run" {
-
                         driver = "docker"
                         config {
                                 image = "${artifact.image}:${artifact.tag}"
@@ -94,7 +93,6 @@ EOF
                         }
 
                         template {
-
 data = <<EOH
 {
    "signature": [ {{ $length := secrets "${nomad_namespace}/metadata/signature" | len }}{{ $i := 1 }}{{ range secrets "${nomad_namespace}/metadata/signature" }}
@@ -114,7 +112,6 @@ data = <<EOH
   ]
 }
 EOH
-
                         destination = "secrets/config.json"
                         change_mode = "noop"
                         }
@@ -144,9 +141,9 @@ EOF
                                         type = "http"
                                         port = "http"
                                         path = "/${nomad_namespace}/v1/ca"
-					header {
-						Accept = ["application/json"]
-					}
+                                        header {
+                                                Accept = ["application/json"]
+                                        }
                                         name = "alive"
                                         interval = "30s"
                                         timeout = "2s"
@@ -159,36 +156,35 @@ EOF
                                                                 "_app=${nomad_namespace}",]
                         }
                 }
-		
+
 # begin log-shipper
 # Ce bloc doit être décommenté pour définir le log-shipper.
         task "log-shipper" {
-			driver = "docker"
-			restart {
-                                interval = "3m"
-				attempts = 5
-				delay    = "15s"
-				mode     = "delay"
-			}
-			meta {
-				INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
-			}
-			template {
-				data = <<EOH
+                driver = "docker"
+                restart {
+                        interval = "3m"
+                        attempts = 5
+                        delay    = "15s"
+                        mode     = "delay"
+                }
+                meta {
+                	INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+                }
+                template {
+                	data = <<EOH
 REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
 EOH
-				destination = "local/file.env"
+                                destination = "local/file.env"
                                 change_mode = "restart"
-				env = true
-			}
-			config {
+                                env = true
+                        }
+                        config {
                                 image = "ans/nomad-filebeat:8.2.3-2.0"
-			}
+                        }
                         resources {
                                 cpu    = 100
                                 memory = 150
                         }
-	    }
-#end log-shipper
+                } #end log-shipper
         }
 }
