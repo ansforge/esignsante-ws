@@ -132,7 +132,6 @@ variable "ignore_line_breaks" {
   type = bool
   default = false
 }
-#Test à 2
 variable "min_count" {
   type = number
   default = 2
