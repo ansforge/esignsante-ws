@@ -89,7 +89,7 @@ variable dockerfile_path {
 }
 variable "registry_path" {
     type = string
-    default = "registry.repo.proxy.dev.forge.esante.gouv.fr/esignsante"
+    default = "registry.repo.proxy.prod.forge.esante.gouv.fr/esignsante"
 }
 variable "user_java_opts" {
   type = string
