@@ -16,7 +16,7 @@ runner {
 } 
 
 # An application to deploy.
-app "cybersante-esignsante" {
+app "cybersante_esignsante" {
   # Build specifies how an application should be deployed.
   build {
     use "docker" {
@@ -134,7 +134,7 @@ variable "ignore_line_breaks" {
 }
 variable "min_count" {
   type = number
-  default = 2
+  default = 1
 }
 variable "max_count" {
   type = number
