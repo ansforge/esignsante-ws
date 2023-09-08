@@ -25,7 +25,7 @@ app "cybersante_esignsante" {
 
     registry {
       use "docker" {
-        image = "${var.registry_path}/esignsante"
+        image = "/esignsante"
         tag   = gitrefpretty()
         username = var.username
         password = var.password
