@@ -23,14 +23,14 @@ app "cybersante_esignsante" {
       dockerfile = "${path.app}/${var.dockerfile_path}"
     }
 
-    registry {
-      use "docker" {
-        image = "/esignsante"
-        tag   = gitrefpretty()
-        username = var.username
-        password = var.password
-	    }
-    }
+    // registry {
+    //   use "docker" {
+    //     image = "${var.registry_path}/esignsante"
+    //     tag   = gitrefpretty()
+    //     username = var.username
+    //     password = var.password
+	  //   }
+    // }
   }
 
   # Deploy to Nomad
