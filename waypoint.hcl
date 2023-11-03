@@ -101,7 +101,8 @@ variable "swagger_ui" {
 }
 variable "promotion_auto" {
   type = bool
-  default = "true"
+  # default = "true"
+  default = "false"
 }
 variable "spring_http_multipart_max_file_size" {
   type = string

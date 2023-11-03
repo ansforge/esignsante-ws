@@ -137,7 +137,7 @@ EOF
                         service {
                                 name = "${nomad_namespace}"
                                 tags = ["urlprefix-/${nomad_namespace}/v1/"]
-                                canary_tags = ["canary instance to promote"]
+                                # canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
