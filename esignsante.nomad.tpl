@@ -30,10 +30,8 @@ job "${nomad_namejob}" {
                 }
 
                 update {
-                        # max_parallel      = 1
-                        max_parallel      = 0
-                        # canary            = 1
-                        canary            = 0
+                        max_parallel      = 1
+                        canary            = 1
                         min_healthy_time  = "30s"
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
@@ -137,7 +135,7 @@ EOF
                         service {
                                 name = "${nomad_namespace}"
                                 tags = ["urlprefix-/${nomad_namespace}/v1/"]
-                                # canary_tags = ["canary instance to promote"]
+                                canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
