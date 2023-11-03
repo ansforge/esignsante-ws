@@ -28,15 +28,15 @@ job "${nomad_namejob}" {
                 network {
                         port "http" { to = 8080 }
                 }
-
+                # Mettre la variable
                 update {
-                        max_parallel      = 1
-                        canary            = 1
+                        max_parallel      = 2
+                        canary            = 0
                         min_healthy_time  = "30s"
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
                         auto_revert       = true
-                        auto_promote      = ${promotion_auto}
+                        auto_promote      = false
                 }
 
                 scaling {
@@ -135,7 +135,7 @@ EOF
                         service {
                                 name = "${nomad_namespace}"
                                 tags = ["urlprefix-/${nomad_namespace}/v1/"]
-                                canary_tags = ["canary instance to promote"]
+                                # canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"

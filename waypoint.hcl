@@ -40,7 +40,7 @@ app "cybersante-esignsante" {
         datacenter = var.datacenter
         user_java_opts = var.user_java_opts
         swagger_ui = var.swagger_ui
-        promotion_auto = var.promotion_auto
+        # promotion_auto = var.promotion_auto
         spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
         spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
         hashing_algorithm = var.hashing_algorithm
@@ -99,11 +99,11 @@ variable "swagger_ui" {
   type = string
   default = ""
 }
-variable "promotion_auto" {
-  type = bool
-  # default = "true"
-  default = "false"
-}
+# variable "promotion_auto" {
+#   type = bool
+#   # default = "true"
+#   default = "false"
+# }
 variable "spring_http_multipart_max_file_size" {
   type = string
   default = "200MB"
@@ -136,7 +136,6 @@ variable "ignore_line_breaks" {
 variable "min_count" {
   type = number
   default = 2
-  #default = 1
 }
 variable "max_count" {
   type = number
