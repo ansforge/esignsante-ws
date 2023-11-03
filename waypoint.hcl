@@ -134,7 +134,8 @@ variable "ignore_line_breaks" {
 }
 variable "min_count" {
   type = number
-  default = 2
+  # default = 2
+  default = 1
 }
 variable "max_count" {
   type = number

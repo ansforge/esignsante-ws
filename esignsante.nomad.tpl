@@ -30,8 +30,10 @@ job "${nomad_namejob}" {
                 }
 
                 update {
-                        max_parallel      = 1
-                        canary            = 1
+                        # max_parallel      = 1
+                        max_parallel      = 0
+                        # canary            = 1
+                        canary            = 0
                         min_healthy_time  = "30s"
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
