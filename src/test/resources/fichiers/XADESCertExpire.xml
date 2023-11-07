@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><TOMF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DateCreatFic="28082018" DemandesTests="0" HeureCreatFic="115626" IdEmettFic="18751275100020" IdLotEmett="6003" ReferenceCommandeClient="Test" SchemaVersion="1.0" TypeFic="TOMWS1" xsi:noNamespaceSchemaLocation="TOM_Flux_generique_v1.0.xsd">
+	<EtabEmetteur>
+		<TypeStructure>3</TypeStructure>
+		<IdentifiantStructure>18751275100020</IdentifiantStructure>
+	</EtabEmetteur>
+	<Demandeur>
+		<TypeIdentifiant>5</TypeIdentifiant>
+		<IdTitulaire>18751275100020A1000000017</IdTitulaire>
+	</Demandeur>
+	<EtabDestinataire>
+		<TypeStructure>3</TypeStructure>
+		<IdentifiantStructure>18751275100020</IdentifiantStructure>
+	</EtabDestinataire>
+	<DONNEES_COMMUNES>
+		<ADRESSE_CARTE>
+			<NomContact/>
+			<NomEtablissement>ASIP SANTE</NomEtablissement>
+			<ADRESSE>
+				<NumVoie>9</NumVoie>
+				<ComplVoie/>
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>GEORGES PITARD</LibelleVoie>
+				<MentionComplementaire/>
+				<LieuDit/>
+				<CodePostal>75015</CodePostal>
+				<Commune>PARIS</Commune>
+				<Pays/>
+				<NumTel/>
+			</ADRESSE>
+		</ADRESSE_CARTE>
+		<ADRESSE_MAILER>
+			<NomContact/>
+			<NomEtablissement>ASIP SANTE</NomEtablissement>
+			<ADRESSE>
+				<NumVoie>9</NumVoie>
+				<ComplVoie/>
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>GEORGES PITARD</LibelleVoie>
+				<MentionComplementaire/>
+				<LieuDit/>
+				<CodePostal>75015</CodePostal>
+				<Commune>PARIS</Commune>
+				<Pays/>
+				<NumTel/>
+			</ADRESSE>
+		</ADRESSE_MAILER>
+		<ImpressionSigle>1</ImpressionSigle>
+	</DONNEES_COMMUNES>
+	<DEMANDE CodeMouvement="D" NumeroDemande="1">
+		<ProduitTitulaire>
+			<Nominatif>
+				<ProfessionnelSante>
+					<TITULAIRE>
+						<TypeIdentifiant>0</TypeIdentifiant>
+						<IdTitulaire>928898162</IdTitulaire>
+					</TITULAIRE>
+					<ETAT_CIVIL>
+						<NomPatronymique>LABOULY</NomPatronymique>
+						<Prenom>MARIE</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>fr</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>Mme</Civilite>
+						<PrenomUsuel>MARIE</PrenomUsuel>
+						<NomExercice>LABOULY</NomExercice>
+						<AuxiliaireDeSante>
+							<Profession>60</Profession>
+						</AuxiliaireDeSante>
+						<ACTIVITES>
+							<DONNEES_ACTIVITE NumeroActi="1">
+								<ModeExercice>1</ModeExercice>
+								<ID_LIEU_DE_TRAVAIL>
+									<TypeStructure>3</TypeStructure>
+									<IdentifiantStructure>18751275100020</IdentifiantStructure>
+								</ID_LIEU_DE_TRAVAIL>
+								<Fonction>000</Fonction>
+								<MandataireDelegue>0</MandataireDelegue>
+							</DONNEES_ACTIVITE>
+						</ACTIVITES>
+					</DONNEES_PROFESSIONNELLES>
+				</ProfessionnelSante>
+			</Nominatif>
+			<DONNEES_CARTE>
+				<ADRESSE_CARTE>
+					<NomContact/>
+					<NomEtablissement>ASIP Santé</NomEtablissement>
+					<ADRESSE>
+						<NumVoie>9</NumVoie>
+						<ComplVoie/>
+						<NomVoie>RUE</NomVoie>
+						<LibelleVoie>DE CHATEAUDUN</LibelleVoie>
+						<MentionComplementaire>Bureau FFO</MentionComplementaire>
+						<LieuDit/>
+						<CodePostal>75009</CodePostal>
+						<Commune>PARIS</Commune>
+						<Pays/>
+						<NumTel/>
+					</ADRESSE>
+				</ADRESSE_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<DEMANDE CodeMouvement="D" NumeroDemande="2">
+		<ProduitTitulaire>
+			<Nominatif>
+				<ProfessionnelSante>
+					<TITULAIRE>
+						<TypeIdentifiant>0</TypeIdentifiant>
+						<IdTitulaire>755013018</IdTitulaire>
+					</TITULAIRE>
+					<ETAT_CIVIL>
+						<NomPatronymique>TRUC</NomPatronymique>
+						<Prenom>GEORGES</Prenom>
+						<Prenom>FRANCK</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>fr</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>M</Civilite>
+						<PrenomUsuel>GEORGES</PrenomUsuel>
+						<NomExercice>TRUC</NomExercice>
+						<AuxiliaireDeSante>
+							<Profession>60</Profession>
+						</AuxiliaireDeSante>
+						<ACTIVITES>
+							<DONNEES_ACTIVITE NumeroActi="1">
+								<ModeExercice>1</ModeExercice>
+								<ID_LIEU_DE_TRAVAIL>
+									<TypeStructure>3</TypeStructure>
+									<IdentifiantStructure>18751275100020</IdentifiantStructure>
+								</ID_LIEU_DE_TRAVAIL>
+								<Fonction>000</Fonction>
+								<MandataireDelegue>0</MandataireDelegue>
+							</DONNEES_ACTIVITE>
+						</ACTIVITES>
+					</DONNEES_PROFESSIONNELLES>
+				</ProfessionnelSante>
+			</Nominatif>
+			<DONNEES_CARTE>
+				<ADRESSE_CARTE>
+					<NomContact/>
+					<NomEtablissement>ASIP Santé</NomEtablissement>
+					<ADRESSE>
+						<NumVoie>9</NumVoie>
+						<ComplVoie/>
+						<NomVoie>RUE</NomVoie>
+						<LibelleVoie>DE CHATEAUDUN</LibelleVoie>
+						<MentionComplementaire>Bureau FFO</MentionComplementaire>
+						<LieuDit/>
+						<CodePostal>75009</CodePostal>
+						<Commune>PARIS</Commune>
+						<Pays/>
+						<NumTel/>
+					</ADRESSE>
+				</ADRESSE_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<INFO_TOMF NbrTotalDemandes="2"/>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="id-c1f5b59bf160ee8b299567b96ec0a054"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference Id="r-id-c1f5b59bf160ee8b299567b96ec0a054-1" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><ds:XPath>not(ancestor-or-self::ds:Signature)</ds:XPath></ds:Transform><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>xLX6mAa2PnUaBaLdX3eB7NZsX5p7xMpL+f2mpdC5QQc=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-c1f5b59bf160ee8b299567b96ec0a054"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>HYSjw1hh3CxA0eiEFivFBlZbA+wbOYq+yZ8Uctt/GX4=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-c1f5b59bf160ee8b299567b96ec0a054">cyFKZoVyFQ7qsFLvP+OrxaW/3f8HjR71OKQ+n/53arn4/fMH+c/l7GneXOGXlrqI6HY1n7M5EyCUSia5y6U9E7nSjuv0wz38lKu1SuFzC70Vv/ecrxPIudnMoKsnNVe52FmDF7KZIV4l9ghhuk90Tp3siCRw1QjEqxMApF2LZ74RFyc+tm2ZeDDyJ/uCp4mSvag6e5tKhmoww/LOtjrge/re9FHAiOUGisge77p4baY1+LQ3FgaggxJ4cHRqDJ1rNUE1mWXH6eBhWIgnd/SGG5yH5k09B6/PMRCjsd19pn8U2zrMLF4yrPA2fDqXPiCktbTiBk2zV4mKKf/020ei8g==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIIhDCCBmygAwIBAgIQHV3iXj3BS94fkoHQ8XQvLzANBgkqhkiG9w0BAQsFADCBijELMAkGA1UEBhMCRlIxEzARBgNVBAoMCkFTSVAtU0FOVEUxFzAVBgNVBAsMDjAwMDIgMTg3NTEyNzUxMRcwFQYDVQQLDA5JR0MtU0FOVEUgVEVTVDE0MDIGA1UEAwwrVEVTVCBBQyBJR0MtU0FOVEUgRUxFTUVOVEFJUkUgT1JHQU5JU0FUSU9OUzAeFw0xNjA3MDcxNDAxNDJaFw0xOTA4MDcxNDAxNDJaMHcxCzAJBgNVBAYTAkZSMRMwEQYDVQQIDApQYXJpcyAoNzUpMRMwEQYDVQQKDApBU0lQLVNBTlRFMRgwFgYDVQQLDA8zMTg3NTEyNzUxMDAwMjAxJDAiBgNVBAMMG3JwcHMudHJhLmhlbml4O2FzaXBzYW50ZS5mcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJQ7i7+Xbtb4G+lwaEU4r4DbBDwczb5iKB56MlSgjArA48ST8jWgWXY1m/3zYwKNvsxQ5Rv0n2mBBZ2huJr4WucoUIgchqG5PmMv8dPkxBAiQja9oWEEFUv/d2yk+n2G3+LTpMliv8cdN7aypYUMBnFsyZ0yCAS2q9/lcfP/TwEMFSGRXKgiB/ut5lcOgt6CeyOo/bb841ww7R+lBBu/InAizRNYZKtMmbSQriGq0uS2kwLe8fk2JhT3+Ozl8QBdiaLDWWihX9OA69PFwfJ+2sfADXTlyuhkp2l4lsKD+L5xZAsrNDnyjRK4lkR848tW/rw9rEriSrKLl7KfIFrYxhkCAwEAAaOCA/YwggPyMAkGA1UdEwQCMAAwHQYDVR0OBBYEFCiQPBzns+EIG1zQGjPPii8Ml3/ZMB8GA1UdIwQYMBaAFCEuhH07HvUS3lGiIVyuk6jvW+P1MA4GA1UdDwEB/wQEAwIGwDBTBgNVHSAETDBKMEgGDSqBegGBVQEHAgEBAQEwNzA1BggrBgEFBQcCARYpaHR0cDovL2lnYy1zYW50ZS5lc2FudGUuZ291di5mci9QQyUyMFRFU1QwEwYDVR0lBAwwCgYIKwYBBQUHAwQwKwYDVR0QBCQwIoAPMjAxNjA3MDcxNDAxNDJagQ8yMDE5MDcwNzE0MDE0MlowggFVBgNVHR8EggFMMIIBSDA9oDugOYY3aHR0cDovL2lnYy1zYW50ZS5lc2FudGUuZ291di5mci9DUkwvQUNJLUVMLU9SRy1URVNULmNybDCCAQWgggEBoIH+hoH7bGRhcDovL2FubnVhaXJlLWlnYy5lc2FudGUuZ291di5mci9jbj1URVNUJTIwQUMlMjBJR0MtU0FOVEUlMjBFTEVNRU5UQUlSRSUyME9SR0FOSVNBVElPTlMsb3U9VEVTVCUyMEFDJTIwUkFDSU5FJTIwSUdDLVNBTlRFJTIwRUxFTUVOVEFJUkUsb3U9SUdDLVNBTlRFJTIwVEVTVCxvdT0wMDAyJTIwMTg3NTEyNzUxLG89QVNJUC1TQU5URSxjPUZSP2NlcnRpZmljYXRlcmV2b2NhdGlvbmxpc3Q7YmluYXJ5P2Jhc2U/b2JqZWN0Q2xhc3M9cGtpQ0EwggEOBgNVHS4EggEFMIIBATCB/qCB+6CB+IaB9WxkYXA6Ly9hbm51YWlyZS1pZ2MuZXNhbnRlLmdvdXYuZnIvY249VEVTVCUyMEFDJTIwSUdDLVNBTlRFJTIwRUxFTUVOVEFJUkUlMjBPUkdBTklTQVRJT05TLG91PVRFU1QlMjBBQyUyMFJBQ0lORSUyMElHQy1TQU5URSUyMEVMRU1FTlRBSVJFLG91PUlHQy1TQU5URSUyMFRFU1Qsb3U9MDAwMiUyMDE4NzUxMjc1MSxvPUFTSVAtU0FOVEUsYz1GUj9kZWx0YXJldm9jYXRpb25saXN0O2JpbmFyeT9iYXNlP29iamVjdENsYXNzPXBraUNBMIGBBggrBgEFBQcBAQR1MHMwJgYIKwYBBQUHMAGGGmh0dHA6Ly9vY3NwLmVzYW50ZS5nb3V2LmZyMEkGCCsGAQUFBzAChj1odHRwOi8vaWdjLXNhbnRlLmVzYW50ZS5nb3V2LmZyL0FDJTIwVEVTVC9BQ0ktRUwtT1JHLVRFU1QuY2VyMA8GCCqBegFHAQIFBAMEAYMwDQYJKoZIhvcNAQELBQADggIBAFqwKRQF1boot5aw+XnL3WhctEQZF9GzhsmigrqNJr9Lg4vi/2qrgsBegjHR3e0eSKMtKdOZQ1b8Cod+hXqN4zYxtkgoK42X7OZspLe7A7A6wQwp3SjZ4Bj65ur8yv61Y4YvXp62NkImttupSVf5nWt/c1/twEjkYHnf/a21C/9OiEnsmaxPznqr1amjBfxIPnViKasOpJufJ2pq8dXkD/IrSK8Jt6dU5laD8cO3zZRcwwY4nR6iF/fZqlOWEtX2GVjJb1UzqxAaKaZ82R9j+CTm1fE0BQ1WI0XWx+ow01y93l/yfmhEZkxndfniu1+Lr2TwgRL92ZUFKdhGdQIxanpqfmVqaq4pc3opoSIrVqZbBtMNk04LCoM5QGtWJ9U+xn6G133E5uzxVMyyT0iBq23OCdVRzwPB/EkRqpbkzdfmK62nfv0NrgT3xV14l3jbD2/BvvGUOQ/SCzloi84LZqkCh6YJKdn6HrlckFvk2I277xpiFBZhDGWkgsWjGx1V6+PReg+wGvyMJYBBUf4qoVoaHn6P+zyRP/3+tfqV4HsbeFwk3q3/QP0lAm7wezVrb0U/uxItLZBhUDJWdHbvABg8aQ27QnX9K/RbSoEPafQ7sj67n8g1VHK8W/9V7l7l7yyKNvXQuLUs+HYtZ3Imye7KPMUNSdqQ5NZ/AfLnhg+x</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-c1f5b59bf160ee8b299567b96ec0a054"><xades:SignedProperties Id="xades-id-c1f5b59bf160ee8b299567b96ec0a054"><xades:SignedSignatureProperties><xades:SigningTime>2019-10-04T07:32:59Z</xades:SigningTime><xades:SigningCertificateV2><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><ds:DigestValue>HeRkdaFJvICzqF7eX8SQxeHg2jNRrMNqiw/nfWd9Jrs6XqKmtLBCf7iUlQ1yEWYstPB+3KYm3a3aSVrWVkmWzg==</ds:DigestValue></xades:CertDigest><xades:IssuerSerialV2>MIGlMIGQpIGNMIGKMQswCQYDVQQGEwJGUjETMBEGA1UECgwKQVNJUC1TQU5URTEXMBUGA1UECwwOMDAwMiAxODc1MTI3NTExFzAVBgNVBAsMDklHQy1TQU5URSBURVNUMTQwMgYDVQQDDCtURVNUIEFDIElHQy1TQU5URSBFTEVNRU5UQUlSRSBPUkdBTklTQVRJT05TAhAdXeJePcFL3h+SgdDxdC8v</xades:IssuerSerialV2></xades:Cert></xades:SigningCertificateV2></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#r-id-c1f5b59bf160ee8b299567b96ec0a054-1"><xades:MimeType>text/xml</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></TOMF>

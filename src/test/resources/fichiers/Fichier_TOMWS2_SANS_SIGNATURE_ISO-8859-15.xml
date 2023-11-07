@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-15" standalone="yes"?>
+<Flux codeAE="ENREG" id="445" xmlns="fr.asipsante.rpps.iafi.framework.model.mosnos">
+    <horodatageEmission>2020-08-20T07:49:26.466Z</horodatageEmission>
+    <ImagePS id="1">
+        <Professionnel idPP="">
+            <prenomUsage>ééééé</prenomUsage>
+            <civilite>ççççç</civilite>
+            <paysNationalite>99999</paysNationalite>
+            <nomFamille>testé</nomFamille>
+            <prenom1>Amàne</prenom1>
+            <dateNaissance>19850202</dateNaissance>
+            <communeNaissance>02001</communeNaissance>
+            <lieuNaissance></lieuNaissance>
+            <paysNaissance>99100</paysNaissance>
+            <sexe>F</sexe>
+            <StatutEtatCivil>NCI</StatutEtatCivil>
+            <dateStatutEtatCivil>20200820</dateStatutEtatCivil>
+            <CoordonneesCorrespondance>
+                <codePostal>00000</codePostal>
+                <localite>inconnu</localite>
+                <numeroTelephonePort>4545454545</numeroTelephonePort>
+                <courriel>amine.ahmed@soprasteria.com</courriel>
+            </CoordonneesCorrespondance>
+            <ExerciceProfessionnel>
+                <profession>99</profession>
+                <categorieProfessionnelle>C</categorieProfessionnelle>
+                <nomExercice>testé</nomExercice>
+                <prenomExercice>Amàne</prenomExercice>
+                <dateEffetExercice>20200820</dateEffetExercice>
+                <SituationExercice>
+                    <modeExercice>S</modeExercice>
+                    <dateDebutActivite>20200820</dateDebutActivite>
+                    <genreActivite>GENR01</genreActivite>
+                    <sectionOrdrePharmacien></sectionOrdrePharmacien>
+                    <sousSectionOrdrePharmacien></sousSectionOrdrePharmacien>
+                    <fonction>FON-02</fonction>
+                    <EntiteGeographique>
+                        <typeIdNatStruct>1</typeIdNatStruct>
+                        <numSiret></numSiret>
+                        <numFINESSET>620117051</numFINESSET>
+                        <numStructAE></numStructAE>
+                        <numFINESSEJ></numFINESSEJ>
+                        <numSIREN></numSIREN>
+                        <raisonSociale>ENTREPRISE ADAPTÉE LA FONDATION HOPALE</raisonSociale>
+                        <secteurActivite>SA16</secteurActivite>
+                        <CoordonneesEG>
+                            <libelleVoie>DE LA MANCHE</libelleVoie>
+                            <codePostal>62606</codePostal>
+                            <COGCommune>62108</COGCommune>
+                            <localite>Berck</localite>
+                            <pays></pays>
+                        </CoordonneesEG>
+                    </EntiteGeographique>
+                </SituationExercice>
+            </ExerciceProfessionnel>
+        </Professionnel>
+        <horodatageEmission>2020-08-20T07:49:26.466Z</horodatageEmission>
+    </ImagePS>
+</Flux>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TOMF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	DateCreatFic="28082018" DemandesTests="0" HeureCreatFic="115626"
+	IdEmettFic="18751275100020" IdLotEmett="2019013111"
+	ReferenceCommandeClient="Test" SchemaVersion="1.0" TypeFic="TOMWS1"
+	xsi:noNamespaceSchemaLocation="TOM_WS_Flux_generique_v1.0.xsd">
+	<EtabEmetteur>
+		<TypeStructure>3</TypeStructure>
+		<IdentifiantStructure>18751275100020</IdentifiantStructure>
+	</EtabEmetteur>
+	<Demandeur>
+		<TypeIdentifiant>3</TypeIdentifiant>
+		<IdTitulaire>490000031R507765</IdTitulaire>
+	</Demandeur>
+	<EtabDestinataire>
+		<TypeStructure>1</TypeStructure>
+		<IdentifiantStructure>490000031</IdentifiantStructure>
+	</EtabDestinataire>
+	<DONNEES_COMMUNES>
+		<ADRESSE_CARTE>
+			<NomContact />
+			<NomEtablissement>C.H.U. D' ANGER</NomEtablissement>
+			<ADRESSE>
+				<NumVoie> 4  </NumVoie>
+				<ComplVoie />
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>LARREY</LibelleVoie>
+				<MentionComplementaire />
+				<LieuDit />
+				<CodePostal>49933</CodePostal>
+				<Commune>ANGERS CEDEX 9</Commune>
+				<Pays />
+				<NumTel>0241353637</NumTel>
+			</ADRESSE>
+		</ADRESSE_CARTE>
+		<ADRESSE_MAILER>
+			<NomContact />
+			<NomEtablissement>C.H.U. D' ANGERS</NomEtablissement>
+			<ADRESSE>
+				<NumVoie>4  </NumVoie>
+				<ComplVoie />
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>LARREY</LibelleVoie>
+				<MentionComplementaire />
+				<LieuDit />
+				<CodePostal>49933</CodePostal>
+				<Commune>ANGERS CEDEX 9</Commune>
+				<Pays />
+				<NumTel>0241353637</NumTel>
+			</ADRESSE>
+		</ADRESSE_MAILER>
+		<ImpressionSigle>0</ImpressionSigle>
+	</DONNEES_COMMUNES>
+	<DEMANDE CodeMouvement="D" NumeroDemande="1">
+		<ProduitTitulaire>
+			<Nominatif>
+				<Administratif EnEtabSoins="true">
+					<NumeroRegistre>31952</NumeroRegistre>
+					<ETAT_CIVIL>
+						<NomPatronymique>test</NomPatronymique>
+						<Prenom>test2</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>gd</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>Mlle</Civilite>
+						<PrenomUsuel>test3</PrenomUsuel>
+						<NomExercice>test4</NomExercice>
+						<DONNEES_ACTIVITE>
+							<ID_LIEU_DE_TRAVAIL>
+								<TypeStructure>1</TypeStructure>
+								<IdentifiantStructure>490000031</IdentifiantStructure>
+							</ID_LIEU_DE_TRAVAIL>
+							<Fonction>000</Fonction>
+							<MandataireDelegue>1</MandataireDelegue>
+						</DONNEES_ACTIVITE>
+					</DONNEES_PROFESSIONNELLES>
+				</Administratif>
+			</Nominatif>
+			<DONNEES_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<DEMANDE CodeMouvement="D" NumeroDemande="2">
+		<ProduitTitulaire>
+			<Nominatif>
+				<ProfessionnelSante>
+					<TITULAIRE>
+						<TypeIdentifiant>0</TypeIdentifiant>
+						<IdTitulaire>309115350</IdTitulaire>
+					</TITULAIRE>
+					<ETAT_CIVIL>
+						<NomPatronymique>test5</NomPatronymique>
+						<Prenom>test6</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>en</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>M</Civilite>
+						<PrenomUsuel>test7</PrenomUsuel>
+						<NomExercice>test8</NomExercice>
+						<AuxiliaireDeSante>
+							<Profession>98</Profession>
+							<Specialisation>05</Specialisation>
+						</AuxiliaireDeSante>
+						<ACTIVITES>
+							<DONNEES_ACTIVITE NumeroActi="1">
+								<ModeExercice>1</ModeExercice>
+								<ID_LIEU_DE_TRAVAIL>
+									<TypeStructure>1</TypeStructure>
+									<IdentifiantStructure>490000031</IdentifiantStructure>
+								</ID_LIEU_DE_TRAVAIL>
+								<Fonction>000</Fonction>
+								<MandataireDelegue>0</MandataireDelegue>
+							</DONNEES_ACTIVITE>
+						</ACTIVITES>
+					</DONNEES_PROFESSIONNELLES>
+				</ProfessionnelSante>
+			</Nominatif>
+			<DONNEES_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<INFO_TOMF NbrTotalDemandes="2" />
+	<ds:Signature
+		xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Tao_Sig_Id_SIG">
+		<ds:SignedInfo>
+			<ds:CanonicalizationMethod
+				Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+			<ds:SignatureMethod
+				Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+			<ds:Reference URI="">
+				<ds:Transforms>
+					<ds:Transform
+						Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+				</ds:Transforms>
+				<ds:DigestMethod
+					Algorithm="http://www.w3.org/2001/04/xmlenc#sha512" />
+				<ds:DigestValue>IEWuKoVD0h3ZXk+immNyiiCNrF/kX8MoL1aXCaj5CfCF9voSAdQ3oxWD6BfmukkPobOovEoh+0/2
+					rVVHRmPoJA==</ds:DigestValue>
+			</ds:Reference>
+		</ds:SignedInfo>
+		<ds:SignatureValue Id="">T16fJC/SYox+MJVPGmtmJHR7LlisgrkDB+dSkB3jkIfnb1Hd2ntz7dmYle57iUbcT/u5Z0DuwmiA
+			QCWHR1SwyTzXB/XgJpH57o8gyH6SEn6Uizizb+NYUAMMuJ6KNdg3H4TJWfbh6ubWW38vQBGm3EY6
+			O0vBF2yL8w22XhBcdg7ETh8FsPujQKtLwsWCnfj3w31w1xGOyKJ6xzVCo70VYuol295fYm6GhiJp
+			sNeIvRnuGW7VVCykagJ31LZ0msx9xqd8CBulj1/yUksDJebxOrNn3SWDZhTY2HU16Z3+OD7hdxiA
+			Q/jXp1f/wIij7UX6YZsA42lI7Nl6teJZiMd+Uw==</ds:SignatureValue>
+		<ds:KeyInfo>
+			<ds:X509Data>
+				<ds:X509Certificate>MIIIiTCCBnGgAwIBAgIQHV3iXj3BS97ffkmXuSuKmTANBgkqhkiG9w0BAQsFADCBijELMAkGA1UE
+					BhMCRlIxEzARBgNVBAoMCkFTSVAtU0FOVEUxFzAVBgNVBAsMDjAwMDIgMTg3NTEyNzUxMRcwFQYD
+					VQQLDA5JR0MtU0FOVEUgVEVTVDE0MDIGA1UEAwwrVEVTVCBBQyBJR0MtU0FOVEUgRUxFTUVOVEFJ
+					UkUgT1JHQU5JU0FUSU9OUzAeFw0xOTA4MDgxMzMxMzhaFw0yMjA5MDgxMzMxMzhaMHwxCzAJBgNV
+					BAYTAkZSMRMwEQYDVQQIDApQYXJpcyAoNzUpMRMwEQYDVQQKDApBU0lQLVNBTlRFMRgwFgYDVQQL
+					DA8zMTg3NTEyNzUxMDAwMjAxKTAnBgNVBAMMIGFzaXBzaWduLmZsdXguaGVuaXguYXNpcHNhbnRl
+					LmZyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAye4a/39jlyC/XsN6wpDUgKekm7ih
+					lY8nTTroLCTYZq8KbtQg7epSX8pPrzil82lZAax195eC77j1LBQKCWmaHkzpNfzShrcEL/I1JP23
+					wt8dJnYFlETdgMFiWNsmsajyE5PtbSp0VrZMWRu/xLLRtpHkikw9avjoe7cu3i+8XNk5tkFaheU+
+					j1OngCK8w/TdBDD9rLNPMj72ChvcS9PSFM2gcrlWhxxyuXp+xMskmmhxuD183NMRvul15KtoCte1
+					rkmF6J4pjj5dCpEj8FomiWVzw7eqsEAlLyHhIEBAoknzqhcKgEnxbBr8BZ69rgDoDHgienhie9YQ
+					YI99tImfSQIDAQABo4ID9jCCA/IwCQYDVR0TBAIwADAdBgNVHQ4EFgQUFItRucpnF7L5x6q5Qo4s
+					Sf3kKF0wHwYDVR0jBBgwFoAUIS6EfTse9RLeUaIhXK6TqO9b4/UwDgYDVR0PAQH/BAQDAgbAMFMG
+					A1UdIARMMEowSAYNKoF6AYFVAQcCAQEBATA3MDUGCCsGAQUFBwIBFilodHRwOi8vaWdjLXNhbnRl
+					LmVzYW50ZS5nb3V2LmZyL1BDJTIwVEVTVDATBgNVHSUEDDAKBggrBgEFBQcDBDArBgNVHRAEJDAi
+					gA8yMDE5MDgwODEzMzEzOFqBDzIwMjIwODA4MTMzMTM4WjCCAVUGA1UdHwSCAUwwggFIMD2gO6A5
+					hjdodHRwOi8vaWdjLXNhbnRlLmVzYW50ZS5nb3V2LmZyL0NSTC9BQ0ktRUwtT1JHLVRFU1QuY3Js
+					MIIBBaCCAQGggf6GgftsZGFwOi8vYW5udWFpcmUtaWdjLmVzYW50ZS5nb3V2LmZyL2NuPVRFU1Ql
+					MjBBQyUyMElHQy1TQU5URSUyMEVMRU1FTlRBSVJFJTIwT1JHQU5JU0FUSU9OUyxvdT1URVNUJTIw
+					QUMlMjBSQUNJTkUlMjBJR0MtU0FOVEUlMjBFTEVNRU5UQUlSRSxvdT1JR0MtU0FOVEUlMjBURVNU
+					LG91PTAwMDIlMjAxODc1MTI3NTEsbz1BU0lQLVNBTlRFLGM9RlI/Y2VydGlmaWNhdGVyZXZvY2F0
+					aW9ubGlzdDtiaW5hcnk/YmFzZT9vYmplY3RDbGFzcz1wa2lDQTCCAQ4GA1UdLgSCAQUwggEBMIH+
+					oIH7oIH4hoH1bGRhcDovL2FubnVhaXJlLWlnYy5lc2FudGUuZ291di5mci9jbj1URVNUJTIwQUMl
+					MjBJR0MtU0FOVEUlMjBFTEVNRU5UQUlSRSUyME9SR0FOSVNBVElPTlMsb3U9VEVTVCUyMEFDJTIw
+					UkFDSU5FJTIwSUdDLVNBTlRFJTIwRUxFTUVOVEFJUkUsb3U9SUdDLVNBTlRFJTIwVEVTVCxvdT0w
+					MDAyJTIwMTg3NTEyNzUxLG89QVNJUC1TQU5URSxjPUZSP2RlbHRhcmV2b2NhdGlvbmxpc3Q7Ymlu
+					YXJ5P2Jhc2U/b2JqZWN0Q2xhc3M9cGtpQ0EwgYEGCCsGAQUFBwEBBHUwczAmBggrBgEFBQcwAYYa
+					aHR0cDovL29jc3AuZXNhbnRlLmdvdXYuZnIwSQYIKwYBBQUHMAKGPWh0dHA6Ly9pZ2Mtc2FudGUu
+					ZXNhbnRlLmdvdXYuZnIvQUMlMjBURVNUL0FDSS1FTC1PUkctVEVTVC5jZXIwDwYIKoF6AUcBAgUE
+					AwQBgzANBgkqhkiG9w0BAQsFAAOCAgEArggLF7A7SUCZlHbXX5HxAgnto4Gl6oSKLKIuBOeWjZm+
+					Nj1Ut2V6TlTH84cM2MCmPa9XcOeNLGdd6ktYrU9DK22+JGO3TUeb5byQhPX7d9P5SJhqjWPxhClr
+					GITwuRUH9mHDOzXlcPBHXH1dkr3reUbq+tDoAFZJTHyAJxRQOCIfbGCq1wwtmngv7qMu4l71krD9
+					HaPCgupWfXHhy5NcrwlDlhUKsrqhHACqKU12kNiWSvdBdWacKZAO9G4ZxjzrQpA961tHlGL/enNf
+					dny9jt37HFjZehFm9iN2bqaYnaLnYMirG6OKdgwFc1iaFdwY/UQo1o0uSA8Ss8qF+WPZv4VSWvC4
+					xRWi9q2eDgWy83zSYOowLPxWNLVPU0wxGatqx874ZhPelygUektWEYfbdCaNh8QpnvTdEcjnSW6c
+					Zr9nou7/g/XTEY+C7XkWKfWwtB66rGl/BP5fA8IHKzLZmBG5RY893izx8SRAm5ymgQftUzZgnW/I
+					a6Z1iCbaHsLzgES/8zbbYDVsDMkn07Ed27NehGHUKwxdwIiGcyzRBQs3Xqbuno7hs21v/ZfSJvKd
+					3ZryZq2gwcTusQOBTf5sTCtj1ZyQouF695TLfkopcuj6d+Mb/q2pj1AbbUrpWsqctzTl4UIALDB8
+					Az46WOf++yCnTH+romyutPFCBnOuXUs=</ds:X509Certificate>
+			</ds:X509Data>
+			<ds:KeyValue>
+				<ds:RSAKeyValue>
+					<ds:Modulus>ye4a/39jlyC/XsN6wpDUgKekm7ihlY8nTTroLCTYZq8KbtQg7epSX8pPrzil82lZAax195eC77j1
+						LBQKCWmaHkzpNfzShrcEL/I1JP23wt8dJnYFlETdgMFiWNsmsajyE5PtbSp0VrZMWRu/xLLRtpHk
+						ikw9avjoe7cu3i+8XNk5tkFaheU+j1OngCK8w/TdBDD9rLNPMj72ChvcS9PSFM2gcrlWhxxyuXp+
+						xMskmmhxuD183NMRvul15KtoCte1rkmF6J4pjj5dCpEj8FomiWVzw7eqsEAlLyHhIEBAoknzqhcK
+						gEnxbBr8BZ69rgDoDHgienhie9YQYI99tImfSQ==</ds:Modulus>
+					<ds:Exponent>AQAB</ds:Exponent>
+				</ds:RSAKeyValue>
+			</ds:KeyValue>
+		</ds:KeyInfo>
+	</ds:Signature>
+</TOMF>

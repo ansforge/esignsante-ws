@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TOMF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	DateCreatFic="28082018" DemandesTests="0" HeureCreatFic="115626"
+	IdEmettFic="18751275100020" IdLotEmett="2019013111"
+	ReferenceCommandeClient="Test" SchemaVersion="1.0" TypeFic="TOMWS1"
+	xsi:noNamespaceSchemaLocation="TOM_WS_Flux_generique_v1.0.xsd">
+	<EtabEmetteur>
+		<TypeStructure>3</TypeStructure>
+		<IdentifiantStructure>18751275100020</IdentifiantStructure>
+	</EtabEmetteur>
+	<Demandeur>
+		<TypeIdentifiant>3</TypeIdentifiant>
+		<IdTitulaire>490000031R507765</IdTitulaire>
+	</Demandeur>
+	<EtabDestinataire>
+		<TypeStructure>1</TypeStructure>
+		<IdentifiantStructure>490000031</IdentifiantStructure>
+	</EtabDestinataire>
+	<DONNEES_COMMUNES>
+		<ADRESSE_CARTE>
+			<NomContact />
+			<NomEtablissement>C.H.U. D' ANGERS</NomEtablissement>
+			<ADRESSE>
+				<NumVoie> 4  </NumVoie>
+				<ComplVoie />
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>LARREY</LibelleVoie>
+				<MentionComplementaire />
+				<LieuDit />
+				<CodePostal>49933</CodePostal>
+				<Commune>ANGERS CEDEX 9</Commune>
+				<Pays />
+				<NumTel>0241353637</NumTel>
+			</ADRESSE>
+		</ADRESSE_CARTE>
+		<ADRESSE_MAILER>
+			<NomContact />
+			<NomEtablissement>C.H.U. D' ANGERS</NomEtablissement>
+			<ADRESSE>
+				<NumVoie>4  </NumVoie>
+				<ComplVoie />
+				<NomVoie>RUE</NomVoie>
+				<LibelleVoie>LARREY</LibelleVoie>
+				<MentionComplementaire />
+				<LieuDit />
+				<CodePostal>49933</CodePostal>
+				<Commune>ANGERS CEDEX 9</Commune>
+				<Pays />
+				<NumTel>0241353637</NumTel>
+			</ADRESSE>
+		</ADRESSE_MAILER>
+		<ImpressionSigle>0</ImpressionSigle>
+	</DONNEES_COMMUNES>
+	<DEMANDE CodeMouvement="D" NumeroDemande="1">
+		<ProduitTitulaire>
+			<Nominatif>
+				<Administratif EnEtabSoins="true">
+					<NumeroRegistre>31952</NumeroRegistre>
+					<ETAT_CIVIL>
+						<NomPatronymique>test</NomPatronymique>
+						<Prenom>test2</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>gd</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>Mlle</Civilite>
+						<PrenomUsuel>test3</PrenomUsuel>
+						<NomExercice>test4</NomExercice>
+						<DONNEES_ACTIVITE>
+							<ID_LIEU_DE_TRAVAIL>
+								<TypeStructure>1</TypeStructure>
+								<IdentifiantStructure>490000031</IdentifiantStructure>
+							</ID_LIEU_DE_TRAVAIL>
+							<Fonction>000</Fonction>
+							<MandataireDelegue>1</MandataireDelegue>
+						</DONNEES_ACTIVITE>
+					</DONNEES_PROFESSIONNELLES>
+				</Administratif>
+			</Nominatif>
+			<DONNEES_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<DEMANDE CodeMouvement="D" NumeroDemande="2">
+		<ProduitTitulaire>
+			<Nominatif>
+				<ProfessionnelSante>
+					<TITULAIRE>
+						<TypeIdentifiant>0</TypeIdentifiant>
+						<IdTitulaire>309115350</IdTitulaire>
+					</TITULAIRE>
+					<ETAT_CIVIL>
+						<NomPatronymique>test5</NomPatronymique>
+						<Prenom>test6</Prenom>
+					</ETAT_CIVIL>
+					<LANGUES>
+						<Langue>en</Langue>
+					</LANGUES>
+					<DONNEES_PROFESSIONNELLES>
+						<Civilite>M</Civilite>
+						<PrenomUsuel>test7</PrenomUsuel>
+						<NomExercice>test8</NomExercice>
+						<AuxiliaireDeSante>
+							<Profession>98</Profession>
+							<Specialisation>05</Specialisation>
+						</AuxiliaireDeSante>
+						<ACTIVITES>
+							<DONNEES_ACTIVITE NumeroActi="1">
+								<ModeExercice>1</ModeExercice>
+								<ID_LIEU_DE_TRAVAIL>
+									<TypeStructure>1</TypeStructure>
+									<IdentifiantStructure>490000031</IdentifiantStructure>
+								</ID_LIEU_DE_TRAVAIL>
+								<Fonction>000</Fonction>
+								<MandataireDelegue>0</MandataireDelegue>
+							</DONNEES_ACTIVITE>
+						</ACTIVITES>
+					</DONNEES_PROFESSIONNELLES>
+				</ProfessionnelSante>
+			</Nominatif>
+			<DONNEES_CARTE>
+			</DONNEES_CARTE>
+		</ProduitTitulaire>
+	</DEMANDE>
+	<INFO_TOMF NbrTotalDemandes="2" />
+</TOMF
