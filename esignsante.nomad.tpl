@@ -30,13 +30,11 @@ job "${nomad_namejob}" {
                 }
                 # Mettre la variable
                 update {
-                        max_parallel      = 2
-                        canary            = 0
+                        max_parallel      = 1
                         min_healthy_time  = "30s"
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
                         auto_revert       = true
-                        auto_promote      = false
                 }
 
                 scaling {
@@ -167,10 +165,10 @@ EOF
                         mode     = "delay"
                 }
                 meta {
-                	INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+                        INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
                 }
                 template {
-                	data = <<EOH
+                        data = <<EOH
 REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
 EOH
                                 destination = "local/file.env"
