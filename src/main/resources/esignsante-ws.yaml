@@ -671,6 +671,10 @@ components:
           description: Document à signer.
           type: string
           format: binary
+        element:
+          description: Nom de l'élément à signer quand on signe un fragment XML (optionnel).
+          type: string
+          pattern: '^[a-zA-Z_0-9\-:]*$'
     SignDocumentWithProof:
       type: object
       properties:
@@ -746,6 +750,10 @@ components:
           description: Identifiant du demandeur utilisé pour renseigner le champ applicantId de la preuve.
           type: string
           pattern: '^[a-zA-Z_0-9\-]*$'
+        element:
+          description: Nom de l'élément à signer quand on signe un fragment XML (optionnel).
+          type: string
+          pattern: '^[a-zA-Z_0-9\-:]*$'
       required:
         - idSignConf
         - file

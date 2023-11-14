@@ -111,7 +111,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	 */
 	private ResponseEntity<ESignSanteSignatureReportWithProof> digitalSignatureWithProof(final String secret,
 			final Long idSignConf, final MultipartFile doc, final Long idVerifSignConf,
-			final ProofParameters proofParameters, final ESignatureType type, final List<String> signers) {
+			final ProofParameters proofParameters, final ESignatureType type, final List<String> signers, final String element) {
 		final Optional<String> acceptHeader = getAcceptHeader();
 		ResponseEntity<ESignSanteSignatureReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 		// get configurations
@@ -134,6 +134,9 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 					log.error(HttpStatus.UNAUTHORIZED.getReasonPhrase());
 				} else {
 					final SignatureParameters signParams = signConf.get().getSignParams();
+					if (element != null && !element.isEmpty()) { 	
+						signParams.setElementToSign(element); 	
+					}
 					signParams.setRoles(signers);
 					final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
 					final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
@@ -273,7 +276,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReportWithProof> signatureXMLdsigWithProof(final Long idSignConf,
 			final MultipartFile doc, final Long idVerifSignConf, final String requestId, final String proofTag,
-			final String applicantId, final String secret) {
+			final String applicantId, final String secret, final String element) {
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			// get version object for proof generation
@@ -292,7 +295,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 				proofParameters.setOpenidTokens(tokens);
 			}
 			return digitalSignatureWithProof(secret, idSignConf, doc, idVerifSignConf, proofParameters,
-					ESignatureType.XMLDSIG, null);
+					ESignatureType.XMLDSIG, null, element);
 		} catch (EsignsanteClientException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -334,7 +337,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 				proofParameters.setOpenidTokens(tokens);
 			}
 			return digitalSignatureWithProof(secret, idSignConf, doc, idVerifSignConf, proofParameters,
-					ESignatureType.XADES, signers);
+					ESignatureType.XADES, signers, null);
 		} catch (EsignsanteClientException e) {
 			// Problème lors du traitement du Header X-openidToken
 			log.error(ExceptionUtils.getStackTrace(e));
@@ -376,7 +379,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 				proofParameters.setOpenidTokens(tokens);
 			}
 			return digitalSignatureWithProof(secret, idSignConf, doc, idVerifSignConf, proofParameters,
-					ESignatureType.PADES, signers);
+					ESignatureType.PADES, signers, null);
 		} catch (EsignsanteClientException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -393,7 +396,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	 * @return the response entity
 	 */
 	private ResponseEntity<ESignSanteSignatureReport> digitalSignature(final String secret, final Long idSignConf,
-			final MultipartFile doc, final ESignatureType type, final List<String> signers) {
+			final MultipartFile doc, final ESignatureType type, final List<String> signers, final String element) {
 		final Optional<String> acceptHeader = getAcceptHeader();
 		ResponseEntity<ESignSanteSignatureReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 		if (idSignConf != null && doc != null) {
@@ -407,6 +410,9 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 					log.error(HttpStatus.UNAUTHORIZED.getReasonPhrase());
 				} else {
 					final SignatureParameters signParams = signConf.get().getSignParams();
+					if (element != null && !element.isEmpty()) { 	
+						signParams.setElementToSign(element); 	
+					}
 					signParams.setRoles(signers);
 					re = sign(signParams, doc, type);
 					log.info("Digital Signature : {}", HttpStatus.OK.getReasonPhrase());
@@ -471,8 +477,8 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	 */
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signatureXMLdsig(final Long idSignConf, final MultipartFile doc,
-			final String secret) {
-		return digitalSignature(secret, idSignConf, doc, ESignatureType.XMLDSIG, null);
+			final String secret, final String element) {
+		return digitalSignature(secret, idSignConf, doc, ESignatureType.XMLDSIG, null, element);
 	}
 
 	/**
@@ -486,7 +492,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signatureXades(final Long idSignConf, final MultipartFile doc,
 			final String secret, List<String> signers) {
-		return digitalSignature(secret, idSignConf, doc, ESignatureType.XADES, signers);
+		return digitalSignature(secret, idSignConf, doc, ESignatureType.XADES, signers, null);
 	}
 
 	/**
@@ -500,7 +506,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signaturePades(final Long idSignConf, final MultipartFile doc,
 			final String secret, List<String> signers) {
-		return digitalSignature(secret, idSignConf, doc, ESignatureType.PADES, signers);
+		return digitalSignature(secret, idSignConf, doc, ESignatureType.PADES, signers, null);
 	}
 
 	/**

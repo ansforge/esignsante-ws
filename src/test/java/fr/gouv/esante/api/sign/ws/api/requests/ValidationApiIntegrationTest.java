@@ -51,7 +51,7 @@ public class ValidationApiIntegrationTest {
 	private MockMvc mockMvc;
 
 	/** The doc. */
-	private MockMultipartFile doc;
+	private MockMultipartFile doc, docFragment;
 
 	/** The pdf. */
 	private MockMultipartFile pdf, pdf2;
@@ -78,6 +78,9 @@ public class ValidationApiIntegrationTest {
 		doc = new MockMultipartFile("file", "doc_signe_xades_ISO-8859-15.xml", null,
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("doc_signe_xades_ISO-8859-15.xml"));
 
+		docFragment = new MockMultipartFile("file", "signed_fragment_inside_security.xml", null,
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("signed_fragment_inside_security.xml"));
+		
 		pdf = new MockMultipartFile("file", "doc_signe_pades.pdf", null,
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("doc_signe_pades.pdf"));
 
@@ -106,6 +109,26 @@ public class ValidationApiIntegrationTest {
 		assertTrue(body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN05\"}"), "Le 1er code erreur attendu n'est pas le bon");
 		assertTrue(body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"), "Le 2nd code erreur attendu n'est pas le bon");
 	}
+	
+	/**
+	 * Cas passant validation XMLDsig par fragment.
+	 * Test en échec lors du build par maven, mais en succès en test JUnit 5 unitairement, à vérifier.
+	 *
+	 * @throws Exception the exception
+	 */
+	/*
+	@Test
+	public void verifSignXMLdsigFragmentTest() throws Exception {
+
+		final MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/xmldsigwithproof").file(docFragment)
+						.param("idVerifSignConf", "1").param("requestId", "Request-1").param("proofTag", "MonTAG")
+						.param("applicantId", "RPPS").param("idProofConf", "1").with(csrf()).accept("application/json"))
+				.andExpect(status().isOk()).andDo(print()).andReturn();
+
+		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(4, body.names().length());
+	}*/
 
 	/**
 	 * Cas passant validation XADES.

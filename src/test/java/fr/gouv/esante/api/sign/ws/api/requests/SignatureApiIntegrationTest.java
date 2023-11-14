@@ -53,6 +53,7 @@ public class SignatureApiIntegrationTest {
 
     /** The xml. */
     private MockMultipartFile xml;
+    private MockMultipartFile xmlFragment;
     
     /** The pdf. */
     private MockMultipartFile pdf; 
@@ -81,6 +82,10 @@ public class SignatureApiIntegrationTest {
         xml = new MockMultipartFile("file", "Fichier_TOMWS2_SANS_SIGNATURE_ISO-8859-15.xml", null,
                 Thread.currentThread().getContextClassLoader().getResourceAsStream("Fichier_TOMWS2_SANS_SIGNATURE_ISO-8859-15.xml"));
 
+        xmlFragment = new MockMultipartFile("file", "unsigned_request_security.xml", null,
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("unsigned_request_security.xml"));
+
+        
         pdf = new MockMultipartFile("file", "ANS_EDB_POC_OUVERTURE_ESIGNSANTE_V1.0.pdf", null,
                 Thread.currentThread().getContextClassLoader().getResourceAsStream("ANS_EDB_POC_OUVERTURE_ESIGNSANTE_V1.0.pdf"));
         
@@ -165,6 +170,23 @@ public class SignatureApiIntegrationTest {
     public void signatureXMLdsigTestNoProof() throws Exception {
         final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.multipart("/signatures/xmldsig").file(xml).param("secret", "123456")
                 .param("idSignConf", "1").with(csrf()).accept("application/json")).andExpect(status().is2xxSuccessful())
+                .andDo(print()).andReturn();
+
+        final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
+        assertEquals(0, body.getJSONArray("erreurs").length());
+        assertEquals(2, body.names().length());
+
+    }
+    
+    /**
+     * Cas passant signature XMLDSIG avec fragment sans preuve.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void signatureXMLdsigFragmentTestNoProof() throws Exception {
+        final MvcResult result = mockMvc.perform(MockMvcRequestBuilders.multipart("/signatures/xmldsig").file(xmlFragment).param("secret", "password")
+                .param("idSignConf", "3").param("element", "Security").with(csrf()).accept("application/json")).andExpect(status().is2xxSuccessful())
                 .andDo(print()).andReturn();
 
         final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
