@@ -28,15 +28,13 @@ job "${nomad_namejob}" {
                 network {
                         port "http" { to = 8080 }
                 }
-
+                # Mettre la variable
                 update {
                         max_parallel      = 1
-                        canary            = 1
                         min_healthy_time  = "30s"
                         progress_deadline = "5m"
                         healthy_deadline  = "2m"
                         auto_revert       = true
-                        auto_promote      = ${promotion_auto}
                 }
 
                 scaling {
@@ -135,7 +133,6 @@ EOF
                         service {
                                 name = "${nomad_namespace}"
                                 tags = ["urlprefix-/${nomad_namespace}/v1/"]
-                                canary_tags = ["canary instance to promote"]
                                 port = "http"
                                 check {
                                         type = "http"
@@ -168,10 +165,10 @@ EOF
                         mode     = "delay"
                 }
                 meta {
-                	INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+                        INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
                 }
                 template {
-                	data = <<EOH
+                        data = <<EOH
 REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
 EOH
                                 destination = "local/file.env"
