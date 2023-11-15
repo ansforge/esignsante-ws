@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 1998-2021, ANS. All rights reserved.
+ * (c) Copyright 1998-2023, ANS. All rights reserved.
  */
 
 package fr.gouv.esante.api.sign.config.provider.impl;
@@ -133,7 +133,7 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
         private final AtomicBoolean stop = new AtomicBoolean(false);
 
         /**
-         * MD5 checksum.
+         * checksum.
          */
         private String checksum;
 
@@ -144,9 +144,9 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
         public void reloadConfiguration() {
             final File file = new File(System.getProperty("ws.conf"));
             try {
-                checksum = getFileChecksum(MessageDigest.getInstance("MD5"), file);
+                checksum = getFileChecksum(MessageDigest.getInstance("SHA-512"), file);
             } catch (IOException | NoSuchAlgorithmException e) {
-                e.printStackTrace();
+            	log.error(e.getStackTrace().toString());
             }
             start();
         }
@@ -198,14 +198,14 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
         @Override
         public void run() {
             log.info("Configuration file poll thread started.");
-            //Use MD5 algorithm
-            MessageDigest md5Digest;
+
+            MessageDigest digest;
             try {
-                md5Digest = MessageDigest.getInstance("MD5");
+            	digest = MessageDigest.getInstance("SHA-512");
                 while (!isStopped()) { // infinite loop basically
                     //Get the newChecksum
                     final File file = new File(System.getProperty("ws.conf"));
-                    String newChecksum = getFileChecksum(md5Digest, file);
+                    String newChecksum = getFileChecksum(digest, file);
                     if (newChecksum.equals(checksum)) {
                         log.debug("pas de nouvelle configuration détecté");
                     } else {
@@ -216,8 +216,11 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
                     }
                     Thread.sleep(SLEEP);
                 }
-            } catch (NoSuchAlgorithmException | IOException | InterruptedException e) {
+            } catch (NoSuchAlgorithmException | IOException e) {
                 log.error("une erreur est survenue durant la surveillance du fichier de configuration : ", e);
+            } catch (InterruptedException e) {
+            	log.error("une erreur est survenue durant la surveillance du fichier de configuration : ", e);
+            	Thread.currentThread().interrupt();
             }
         }
 
@@ -231,7 +234,6 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
         private String getFileChecksum(MessageDigest digest, File file) throws IOException
         {
             //Get file input stream for reading the file content
-            ;
 			try (FileInputStream fis = new FileInputStream(file)){
 				//Create byte array to read data in chunks
 	            byte[] byteArray = new byte[1024];

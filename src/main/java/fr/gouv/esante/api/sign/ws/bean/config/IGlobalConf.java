@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 1998-2021, ANS. All rights reserved.
+ * (c) Copyright 1998-2023, ANS. All rights reserved.
  */
 package fr.gouv.esante.api.sign.ws.bean.config;
 

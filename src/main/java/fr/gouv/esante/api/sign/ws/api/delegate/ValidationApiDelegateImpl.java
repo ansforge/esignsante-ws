@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 1998-2021, ANS. All rights reserved.
+ * (c) Copyright 1998-2023, ANS. All rights reserved.
  */
 
 package fr.gouv.esante.api.sign.ws.api.delegate;
@@ -647,7 +647,9 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
             size = maxSize;
         }
         final byte[] data = new byte[size];
-        in.read(data);
+        if (in.read(data) > 0) {
+          log.debug("binary stream data not empty, ok to proceed");
+        }
         in.close();
 
         int ascii = 0;
