@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import jakarta.annotation.PostConstruct;
@@ -146,7 +147,7 @@ public class EsignsanteConfigurationsJson implements IEsignsanteConfigurationsPr
             try {
                 checksum = getFileChecksum(MessageDigest.getInstance("SHA-512"), file);
             } catch (IOException | NoSuchAlgorithmException e) {
-            	log.error(e.getStackTrace().toString());
+            	log.error(Arrays.toString(e.getStackTrace()));
             }
             start();
         }

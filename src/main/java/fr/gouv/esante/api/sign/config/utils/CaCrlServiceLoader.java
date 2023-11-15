@@ -61,12 +61,14 @@ public class CaCrlServiceLoader {
 
 	private static void loadCrl(final ICACRLService serviceCaCrl, final List<String> crlList) throws IOException {
 		final File crlFile;
+		final var filePrefix = "ca-bundle";
+		final var fileSuffix = ".crl";
 		if (SystemUtils.IS_OS_UNIX) {
 			FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions
 					.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
-			crlFile = Files.createTempFile("ca-bundle", ".crl", attr).toFile();
+			crlFile = Files.createTempFile(filePrefix, fileSuffix, attr).toFile();
 		} else {
-			crlFile = Files.createTempFile("ca-bundle", ".crl").toFile();
+			crlFile = Files.createTempFile(filePrefix, fileSuffix).toFile();
 			boolean readableSet = crlFile.setReadable(true, true);
 			boolean writableSet = crlFile.setWritable(true, true);
 			boolean executableSet = crlFile.setExecutable(true, true);
@@ -90,12 +92,14 @@ public class CaCrlServiceLoader {
 
 	private static void loadCa(final ICACRLService serviceCaCrl, final List<String> certList) throws IOException {
 		final File caFile;
+		final var filePrefix = "ca-bundle";
+		final var fileSuffix = ".crt";
 		if (SystemUtils.IS_OS_UNIX) {
 			FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions
 					.asFileAttribute(PosixFilePermissions.fromString("rwx------"));
-			caFile = Files.createTempFile("ca-bundle", ".crt", attr).toFile();
+			caFile = Files.createTempFile(filePrefix, fileSuffix, attr).toFile();
 		} else {
-			caFile = Files.createTempFile("ca-bundle", ".crt").toFile();
+			caFile = Files.createTempFile(filePrefix, fileSuffix).toFile();
 			boolean readableSet = caFile.setReadable(true, true);
 			boolean writableSet = caFile.setWritable(true, true);
 			boolean executableSet = caFile.setExecutable(true, true);
