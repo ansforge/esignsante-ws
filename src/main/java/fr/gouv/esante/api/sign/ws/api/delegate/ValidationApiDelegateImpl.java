@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
  * The Class ValidationApiDelegateImpl.
  */
 @Service
+@Primary
 public class ValidationApiDelegateImpl extends ApiDelegate implements ValidationApiDelegate {
 
 	/** Default ESignSante major version. */

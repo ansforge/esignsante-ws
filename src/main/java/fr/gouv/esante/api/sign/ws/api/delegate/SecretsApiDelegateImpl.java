@@ -6,6 +6,7 @@ package fr.gouv.esante.api.sign.ws.api.delegate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import fr.gouv.esante.api.sign.ws.util.Secrets;
  * The Class SecretsApiDelegateImpl.
  */
 @Service
+@Primary
 public class SecretsApiDelegateImpl extends ApiDelegate implements SecretsApiDelegate {
 
     /**
