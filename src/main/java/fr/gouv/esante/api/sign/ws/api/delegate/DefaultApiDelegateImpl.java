@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
  * The Class DefaultApiDelegateImpl.
  */
 @Service
+@Primary
 public class DefaultApiDelegateImpl extends ApiDelegate implements DefaultApiDelegate {
 
     /**
