@@ -207,10 +207,10 @@
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
-				<version>2.1.0</version>
+				<version>3.4.0</version>
 				<configuration>
 					<from>
-						<image>${docker.registry}/openjdk:11-slim-buster</image>
+						<image>${docker.registry}/openjdk:17-jdk-slim-buster</image>
 					</from>
 					<to>
 						<image>${image.registry}/cybersante/esignsante</image>
@@ -371,10 +371,8 @@
 				<artifactory.hostname>
 					http://repo.proxy-dev-forge.asip.hst.fluxus.net</artifactory.hostname>
 				<ldap.server.url>ldap://annuaire.asipsante.fr</ldap.server.url>
-				<docker.registry>
-					registry.repo.docker.proxy-prod-forge.asip.hst.fluxus.net</docker.registry>
-				<image.registry>
-					registry.repo.docker.proxy-prod-forge.asip.hst.fluxus.net</image.registry>
+				<docker.registry>registry.repo.proxy.prod.forge.esante.gouv.fr</docker.registry>
+				<image.registry>registry.repo.proxy.prod.forge.esante.gouv.fr</image.registry>
 			</properties>
 			<distributionManagement>
 				<repository>
@@ -406,10 +404,8 @@
 				<artifactory.password>password</artifactory.password>
 				<artifactory.hostname>http://st-forge.asipsante.fr:8081</artifactory.hostname>
 				<ldap.server.url>ldap://annuaire-igc.esante.gouv.fr:389</ldap.server.url>
-				<docker.registry>
-					registry.repo.docker.proxy-prod-forge.asip.hst.fluxus.net</docker.registry>
-				<image.registry>
-					registry.repo.docker.proxy-prod-forge.asip.hst.fluxus.net</image.registry>
+				<docker.registry>registry.repo.proxy.prod.forge.esante.gouv.fr</docker.registry>
+				<image.registry>registry.repo.proxy.prod.forge.esante.gouv.fr</image.registry>
 			</properties>
 			<distributionManagement>
 				<repository>
