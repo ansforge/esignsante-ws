@@ -1,5 +1,5 @@
 /**
- * (c) Copyright 1998-2021, ANS. All rights reserved.
+ * (c) Copyright 1998-2023, ANS. All rights reserved.
  */
 
 package fr.gouv.esante.api.sign.ws.api.delegate;
@@ -65,788 +65,787 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
 @Service
 public class ValidationApiDelegateImpl extends ApiDelegate implements ValidationApiDelegate {
 
-    /** Default ESignSante major version. */
-    private static final int MAJOR = 2;
+	/** Default ESignSante major version. */
+	private static final int MAJOR = 2;
 
-    /** Default ESignSante version. */
-    private static final Version DEFAULT_VERSION = new Version(MAJOR, 0, 0, 0);
+	/** Default ESignSante version. */
+	private static final Version DEFAULT_VERSION = new Version(MAJOR, 0, 0, 0);
 
-    /**
-     * The log.
-     */
-    Logger log = LoggerFactory.getLogger(ValidationApiDelegateImpl.class);
+	/**
+	 * The log.
+	 */
+	Logger log = LoggerFactory.getLogger(ValidationApiDelegateImpl.class);
 
-    /** The signature validation service. */
-    @Autowired
-    private ISignatureValidationService signatureValidationService;
+	/** The signature validation service. */
+	@Autowired
+	private ISignatureValidationService signatureValidationService;
 
-    /** The signature service. */
-    @Autowired
-    private ISignatureService signatureService;
+	/** The signature service. */
+	@Autowired
+	private ISignatureService signatureService;
 
-    /** The certificate validation service. */
-    @Autowired
-    private ICertificateValidationService certificateValidationService;
+	/** The certificate validation service. */
+	@Autowired
+	private ICertificateValidationService certificateValidationService;
 
-    /** The proof generation service. */
-    @Autowired
-    private IProofGenerationService proofGenerationService;
+	/** The proof generation service. */
+	@Autowired
+	private IProofGenerationService proofGenerationService;
 
-    /** The service ca crl. */
-    @Autowired
-    private ICACRLService serviceCaCrl;
+	/** The service ca crl. */
+	@Autowired
+	private ICACRLService serviceCaCrl;
 
-    /** The global configurations. */
-    @Autowired
-    private IGlobalConf globalConf;
+	/** The global configurations. */
+	@Autowired
+	private IGlobalConf globalConf;
 
-    /** ESignSante Build Properties. */
-    @Autowired
-    private BuildProperties buildProperties;
+	/** ESignSante Build Properties. */
+	@Autowired
+	private BuildProperties buildProperties;
 
-    /**
-     * Validate digital signature with proof.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @param proofParameters the proof parameters
-     * @param idProofConf     the id proof conf
-     * @param isXades         the is xades
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReportWithProof> validateDigitalSignatureWithProof(
-            final Long idVerifSignConf, final MultipartFile doc, final ProofParameters proofParameters,
-            final Long idProofConf, ESignatureType type) {
-        final Optional<String> acceptHeader = getAcceptHeader();
-        ResponseEntity<ESignSanteValidationReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+	/**
+	 * Validate digital signature with proof.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @param proofParameters the proof parameters
+	 * @param idProofConf     the id proof conf
+	 * @param isXades         the is xades
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReportWithProof> validateDigitalSignatureWithProof(
+			final Long idVerifSignConf, final MultipartFile doc, final ProofParameters proofParameters,
+			final Long idProofConf, ESignatureType type) {
+		final Optional<String> acceptHeader = getAcceptHeader();
+		ResponseEntity<ESignSanteValidationReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-        final Optional<SignVerifConf> verifConf = globalConf.getSignatureVerificationById(idVerifSignConf.toString());
-        final Optional<ProofConf> signProofConf = globalConf.getProofById(idProofConf.toString());
-        if (!verifConf.isPresent() || !signProofConf.isPresent()){
-            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            log.error("Configuration {}" , HttpStatus.NOT_FOUND.getReasonPhrase());
-        } else {
-            if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
-                if (doc == null || proofParamsMissing(proofParameters)) {
-                    re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                } else {
-                    final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
-                    final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
-                    re = validateWithProof(doc, proofParameters, type, signVerifParams,
-                            signProofParams);
-                    log.info("Validate Digital Signature With Proof Generated : {}", HttpStatus.OK.getReasonPhrase());
-                }
-            }
-        }
-        return re;
-    }
+		final Optional<SignVerifConf> verifConf = globalConf.getSignatureVerificationById(idVerifSignConf.toString());
+		final Optional<ProofConf> signProofConf = globalConf.getProofById(idProofConf.toString());
+		if (!verifConf.isPresent() || !signProofConf.isPresent()) {
+			re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			log.error("Configuration {}", HttpStatus.NOT_FOUND.getReasonPhrase());
+		} else {
+			if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
+				if (doc == null || proofParamsMissing(proofParameters)) {
+					re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				} else {
+					final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
+					final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
+					re = validateWithProof(doc, proofParameters, type, signVerifParams, signProofParams);
+					log.info("Validate Digital Signature With Proof Generated : {}", HttpStatus.OK.getReasonPhrase());
+				}
+			}
+		}
+		return re;
+	}
 
-    /**
-     * Validate with Proof.
-     *
-     * @param doc                      the doc
-     * @param proofParameters          the proof parameters
-     * @param type                     the signature type
-     * @param signValidationParameters the sign validation parameters
-     * @param signProofParams          the sign proof params
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReportWithProof> validateWithProof(
-            final MultipartFile doc, final ProofParameters proofParameters, ESignatureType type,
-            final SignatureValidationParameters signValidationParameters, final SignatureParameters signProofParams) {
-        ResponseEntity<ESignSanteValidationReportWithProof> re;
-        try {
-            // Validation de la signature du document
-            final RapportValidationSignature rapportVerifSignANS = genSignVerifReport(doc, type,
-                    signValidationParameters);
-
-            // Génération de la preuve
-            final String proof = proofGenerationService.generateSignVerifProof(rapportVerifSignANS, proofParameters,
-                    serviceCaCrl.getCacrlWrapper());
-
-            // Contrôle du certificat de signature de la preuve
-            final HttpStatus status = SignWsUtils.checkCertificate(signProofParams, serviceCaCrl.getCacrlWrapper());
-            if (status != HttpStatus.CONTINUE) {
-                re = new ResponseEntity<>(status);
-            } else {
-                // Signature de la preuve
-                final RapportSignature rapportSignProofANS = signatureService.signXMLDsig(proof, signProofParams);
-                final ESignSanteValidationReportWithProof rapport = populateResultSignWithProof(
-                        rapportVerifSignANS.getListeErreurSignature(), rapportVerifSignANS.getMetaData(),
-                        rapportVerifSignANS.isValide(), rapportSignProofANS.getDocSigne());
-                re = new ResponseEntity<>(rapport, HttpStatus.OK);
-            }
-        } catch (final EsignsanteClientException | EsignsanteParseException e1) {
-            log.error(ExceptionUtils.getStackTrace(e1));
-            re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        } catch (final EsignsanteServerException e1) {
-            log.error(ExceptionUtils.getStackTrace(e1));
-            re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (final IOException | EsignsanteException e1) {
-            log.error(ExceptionUtils.getStackTrace(e1));
-            re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return re;
-    }
-
-    /**
-     * Called operation.
-     *
-     * @param opName the op name
-     * @return the string
-     */
-    private String calledOperation(final String opName) {
-        final Optional<NativeWebRequest> request = getRequest();
-        String operation = opName;
-        if (request.isPresent()) {
-            operation = request.get().getContextPath() + opName;
-        }
-        return operation;
-    }
-
-    /**
-     * Verif signature XMldsig with proof.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @param requestId       the request id
-     * @param proofTag        the proof tag
-     * @param applicantId     the applicant id
-     * @param idProofConf     the id proof conf
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXMLdsigWithProof(
-            final Long idVerifSignConf, final MultipartFile doc, final String requestId, final String proofTag,
-            final String applicantId, final Long idProofConf) {
-        Version wsVersion = DEFAULT_VERSION;
-        try {
-            wsVersion = new Version(buildProperties.getVersion());
-        } catch (final ParseException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-        }
-        final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
-                calledOperation("/validation/signatures/xmldsigwithproof"), wsVersion);
-			return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf, ESignatureType.XMLDSIG);
-    }
-
-    /**
-     * Verif signature xades with proof.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @param requestId       the request id
-     * @param proofTag        the proof tag
-     * @param applicantId     the applicant id
-     * @param idProofConf     the id proof conf     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXadesWithProof(
-            final Long idVerifSignConf, final MultipartFile doc, final String requestId, final String proofTag,
-            final String applicantId, final Long idProofConf) {
-        Version wsVersion = DEFAULT_VERSION;
-        try {
-            wsVersion = new Version(buildProperties.getVersion());
-        } catch (final ParseException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-        }
-        final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
-                calledOperation("/validation/signatures/xadesbaselinebwithproof"), wsVersion);       
-	        return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf, ESignatureType.XADES);
-    }
-    
-    /**
-     * Verif signature pades with proof.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @param requestId       the request id
-     * @param proofTag        the proof tag
-     * @param applicantId     the applicant id
-     * @param idProofConf     the id proof conf
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReportWithProof> verifSignaturePadesWithProof(
-            final Long idVerifSignConf, final MultipartFile doc, final String requestId, final String proofTag,
-            final String applicantId, final Long idProofConf) {
-        Version wsVersion = DEFAULT_VERSION;
-        try {
-            wsVersion = new Version(buildProperties.getVersion());
-        } catch (final ParseException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-        }
-        final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
-                calledOperation("/validation/signatures/padesbaselinebwithproof"), wsVersion);
-        
+	/**
+	 * Validate with Proof.
+	 *
+	 * @param doc                      the doc
+	 * @param proofParameters          the proof parameters
+	 * @param type                     the signature type
+	 * @param signValidationParameters the sign validation parameters
+	 * @param signProofParams          the sign proof params
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReportWithProof> validateWithProof(final MultipartFile doc,
+			final ProofParameters proofParameters, ESignatureType type,
+			final SignatureValidationParameters signValidationParameters, final SignatureParameters signProofParams) {
+		ResponseEntity<ESignSanteValidationReportWithProof> re;
 		try {
-			// Remplissage de la liste des beans OpenId  
+			// Validation de la signature du document
+			final RapportValidationSignature rapportVerifSignANS = genSignVerifReport(doc, type,
+					signValidationParameters);
+
+			// Génération de la preuve
+			final String proof = proofGenerationService.generateSignVerifProof(rapportVerifSignANS, proofParameters,
+					serviceCaCrl.getCacrlWrapper());
+
+			// Contrôle du certificat de signature de la preuve
+			final HttpStatus status = SignWsUtils.checkCertificate(signProofParams, serviceCaCrl.getCacrlWrapper());
+			if (status != HttpStatus.CONTINUE) {
+				re = new ResponseEntity<>(status);
+			} else {
+				// Signature de la preuve
+				final RapportSignature rapportSignProofANS = signatureService.signXMLDsig(proof, signProofParams);
+				final ESignSanteValidationReportWithProof rapport = populateResultSignWithProof(
+						rapportVerifSignANS.getListeErreurSignature(), rapportVerifSignANS.getMetaData(),
+						rapportVerifSignANS.isValide(), rapportSignProofANS.getDocSigne());
+				re = new ResponseEntity<>(rapport, HttpStatus.OK);
+			}
+		} catch (final EsignsanteClientException | EsignsanteParseException e1) {
+			log.error(ExceptionUtils.getStackTrace(e1));
+			re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		} catch (final EsignsanteServerException e1) {
+			log.error(ExceptionUtils.getStackTrace(e1));
+			re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+		} catch (final IOException | EsignsanteException e1) {
+			log.error(ExceptionUtils.getStackTrace(e1));
+			re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return re;
+	}
+
+	/**
+	 * Called operation.
+	 *
+	 * @param opName the op name
+	 * @return the string
+	 */
+	private String calledOperation(final String opName) {
+		final Optional<NativeWebRequest> request = getRequest();
+		String operation = opName;
+		if (request.isPresent()) {
+			operation = request.get().getContextPath() + opName;
+		}
+		return operation;
+	}
+
+	/**
+	 * Verif signature XMldsig with proof.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @param requestId       the request id
+	 * @param proofTag        the proof tag
+	 * @param applicantId     the applicant id
+	 * @param idProofConf     the id proof conf
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXMLdsigWithProof(
+			final Long idVerifSignConf, final MultipartFile doc, final String requestId, final String proofTag,
+			final String applicantId, final Long idProofConf) {
+		Version wsVersion = DEFAULT_VERSION;
+		try {
+			wsVersion = new Version(buildProperties.getVersion());
+		} catch (final ParseException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+		}
+		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+				calledOperation("/validation/signatures/xmldsigwithproof"), wsVersion);
+		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
+				ESignatureType.XMLDSIG);
+	}
+
+	/**
+	 * Verif signature xades with proof.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @param requestId       the request id
+	 * @param proofTag        the proof tag
+	 * @param applicantId     the applicant id
+	 * @param idProofConf     the id proof conf * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXadesWithProof(final Long idVerifSignConf,
+			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
+			final Long idProofConf) {
+		Version wsVersion = DEFAULT_VERSION;
+		try {
+			wsVersion = new Version(buildProperties.getVersion());
+		} catch (final ParseException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+		}
+		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+				calledOperation("/validation/signatures/xadesbaselinebwithproof"), wsVersion);
+		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
+				ESignatureType.XADES);
+	}
+
+	/**
+	 * Verif signature pades with proof.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @param requestId       the request id
+	 * @param proofTag        the proof tag
+	 * @param applicantId     the applicant id
+	 * @param idProofConf     the id proof conf
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignaturePadesWithProof(final Long idVerifSignConf,
+			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
+			final Long idProofConf) {
+		Version wsVersion = DEFAULT_VERSION;
+		try {
+			wsVersion = new Version(buildProperties.getVersion());
+		} catch (final ParseException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+		}
+		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+				calledOperation("/validation/signatures/padesbaselinebwithproof"), wsVersion);
+
+		try {
+			// Remplissage de la liste des beans OpenId
 			List<OpenIdTokenBean> tokens;
 			tokens = SignWsUtils.convertOpenIdTokens(parseOpenIdTokenHeader());
-	        if (!tokens.isEmpty()) {
+			if (!tokens.isEmpty()) {
 				proofParameters.setOpenidTokens(tokens);
-			}   
-	        return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf, ESignatureType.PADES);
+			}
+			return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
+					ESignatureType.PADES);
 		} catch (EsignsanteClientException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-    }
+	}
 
-    /**
-     * Validate digital signature.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @param type            the signature type
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReport> validateDigitalSignature(
-            final Long idVerifSignConf, final MultipartFile doc, ESignatureType type) {
-        final Optional<String> acceptHeader = getAcceptHeader();
-        ResponseEntity<ESignSanteValidationReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+	/**
+	 * Validate digital signature.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @param type            the signature type
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReport> validateDigitalSignature(final Long idVerifSignConf,
+			final MultipartFile doc, ESignatureType type) {
+		final Optional<String> acceptHeader = getAcceptHeader();
+		ResponseEntity<ESignSanteValidationReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-        final Optional<SignVerifConf> verifConf = globalConf.getSignatureVerificationById(idVerifSignConf.toString());
+		final Optional<SignVerifConf> verifConf = globalConf.getSignatureVerificationById(idVerifSignConf.toString());
 
-        if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
-            if (doc == null) {
-                re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            } else if (!verifConf.isPresent()) {
-                re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                log.error("Configuration {}" , HttpStatus.NOT_FOUND.getReasonPhrase());
-            } else {
-                final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
-                re = validate(doc, type, signVerifParams);
-                log.info("Validate Digital Signature : {}", HttpStatus.OK.getReasonPhrase());
-            }
-        }
-        return re;
-    }
+		if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
+			if (doc == null) {
+				re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else if (!verifConf.isPresent()) {
+				re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				log.error("Configuration {}", HttpStatus.NOT_FOUND.getReasonPhrase());
+			} else {
+				final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
+				re = validate(doc, type, signVerifParams);
+				log.info("Validate Digital Signature : {}", HttpStatus.OK.getReasonPhrase());
+			}
+		}
+		return re;
+	}
 
-    /**
-     * Validate.
-     *
-     * @param doc                      the doc
-     * @param type                     the signature type
-     * @param signValidationParameters the sign validation parameters
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReport> validate(
-            final MultipartFile doc, ESignatureType type,
-            final SignatureValidationParameters signValidationParameters) {
-        ResponseEntity<ESignSanteValidationReport> re;
-        try {
-            // Validation de la signature du document
-            final RapportValidationSignature rapportVerifSignANS = genSignVerifReport(doc, type,
-                    signValidationParameters);
-            final ESignSanteValidationReport rapport = populateResultSign(rapportVerifSignANS.getListeErreurSignature(),
-                    rapportVerifSignANS.getMetaData(), rapportVerifSignANS.isValide());
+	/**
+	 * Validate.
+	 *
+	 * @param doc                      the doc
+	 * @param type                     the signature type
+	 * @param signValidationParameters the sign validation parameters
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReport> validate(final MultipartFile doc, ESignatureType type,
+			final SignatureValidationParameters signValidationParameters) {
+		ResponseEntity<ESignSanteValidationReport> re;
+		try {
+			// Validation de la signature du document
+			final RapportValidationSignature rapportVerifSignANS = genSignVerifReport(doc, type,
+					signValidationParameters);
+			final ESignSanteValidationReport rapport = populateResultSign(rapportVerifSignANS.getListeErreurSignature(),
+					rapportVerifSignANS.getMetaData(), rapportVerifSignANS.isValide());
 
-            re = new ResponseEntity<>(rapport, HttpStatus.OK);
-        } catch (final EsignsanteClientException | EsignsanteParseException e2) {
-            log.error(ExceptionUtils.getStackTrace(e2));
-            re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        } catch (final EsignsanteServerException e2) {
-            log.error(ExceptionUtils.getStackTrace(e2));
-            re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (final IOException | EsignsanteException e2) {
-            log.error(ExceptionUtils.getStackTrace(e2));
-            re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return re;
-    }
+			re = new ResponseEntity<>(rapport, HttpStatus.OK);
+		} catch (final EsignsanteClientException | EsignsanteParseException e2) {
+			log.error(ExceptionUtils.getStackTrace(e2));
+			re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		} catch (final EsignsanteServerException e2) {
+			log.error(ExceptionUtils.getStackTrace(e2));
+			re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+		} catch (final IOException | EsignsanteException e2) {
+			log.error(ExceptionUtils.getStackTrace(e2));
+			re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return re;
+	}
 
-    /**
-     * Verif signature XM ldsig.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReport> verifSignatureXMLdsig(final Long idVerifSignConf,
-                                                                      final MultipartFile doc) {
-        return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XMLDSIG);
-    }
+	/**
+	 * Verif signature XM ldsig.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReport> verifSignatureXMLdsig(final Long idVerifSignConf,
+			final MultipartFile doc) {
+		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XMLDSIG);
+	}
 
-    /**
-     * Verif signature xades.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReport> verifSignatureXades(final Long idVerifSignConf,
-                                                                    final MultipartFile doc) {
-        return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XADES);
-    }
-    
-    /**
-     * Verif signature pades.
-     *
-     * @param idVerifSignConf the id verif sign conf
-     * @param doc             the doc
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReport> verifSignaturePades(final Long idVerifSignConf,
-                                                                    final MultipartFile doc) {
-        return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.PADES);
-    }
+	/**
+	 * Verif signature xades.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReport> verifSignatureXades(final Long idVerifSignConf,
+			final MultipartFile doc) {
+		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XADES);
+	}
 
-    /**
-     * Generate rapport validation signature.
-     *
-     * @param doc original document
-     * @param type Xades, Pades or D-sig
-     * @param signValidationParameters signature validation parameters
-     * @return RapportValidationSignature
-     * @throws IOException stream file exception
-     * @throws EsignsanteException asipsign exception
-     */
-    private RapportValidationSignature genSignVerifReport(
-            final MultipartFile doc, ESignatureType type,
-            final SignatureValidationParameters signValidationParameters)
-            throws IOException, EsignsanteException {
+	/**
+	 * Verif signature pades.
+	 *
+	 * @param idVerifSignConf the id verif sign conf
+	 * @param doc             the doc
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReport> verifSignaturePades(final Long idVerifSignConf,
+			final MultipartFile doc) {
+		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.PADES);
+	}
 
-        // Validation de la signature du document
-        final RapportValidationSignature rapportVerifSignANS;
-        if (ESignatureType.XADES.equals(type)) {
-            rapportVerifSignANS = signatureValidationService.validateXADESBaseLineBSignature(doc.getBytes(),
-                    signValidationParameters, serviceCaCrl.getCacrlWrapper());
-        } else if(ESignatureType.PADES.equals(type)) {
-        	rapportVerifSignANS = signatureValidationService.validatePADESBaseLineBSignature(doc.getBytes(),
-                    signValidationParameters, serviceCaCrl.getCacrlWrapper());
-        } else {
-            rapportVerifSignANS = signatureValidationService.validateXMLDsigSignature(doc.getBytes(),
-                    signValidationParameters, serviceCaCrl.getCacrlWrapper());
-        }
+	/**
+	 * Generate rapport validation signature.
+	 *
+	 * @param doc                      original document
+	 * @param type                     Xades, Pades or D-sig
+	 * @param signValidationParameters signature validation parameters
+	 * @return RapportValidationSignature
+	 * @throws IOException         stream file exception
+	 * @throws EsignsanteException asipsign exception
+	 */
+	private RapportValidationSignature genSignVerifReport(final MultipartFile doc, ESignatureType type,
+			final SignatureValidationParameters signValidationParameters) throws IOException, EsignsanteException {
 
-        return rapportVerifSignANS;
-    }
+		// Validation de la signature du document
+		final RapportValidationSignature rapportVerifSignANS;
+		if (ESignatureType.XADES.equals(type)) {
+			rapportVerifSignANS = signatureValidationService.validateXADESBaseLineBSignature(doc.getBytes(),
+					signValidationParameters, serviceCaCrl.getCacrlWrapper());
+		} else if (ESignatureType.PADES.equals(type)) {
+			rapportVerifSignANS = signatureValidationService.validatePADESBaseLineBSignature(doc.getBytes(),
+					signValidationParameters, serviceCaCrl.getCacrlWrapper());
+		} else {
+			rapportVerifSignANS = signatureValidationService.validateXMLDsigSignature(doc.getBytes(),
+					signValidationParameters, serviceCaCrl.getCacrlWrapper());
+		}
 
-    /**
-     * Verif certificat with proof.
-     *
-     * @param idVerifCertConf the id verif cert conf
-     * @param doc             the doc
-     * @param requestId       the request id
-     * @param proofTag        the proof tag
-     * @param applicantId     the applicant id
-     * @param idProofConf     the id proof conf
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReportWithProof> verifCertificatWithProof(
-            final Long idVerifCertConf, final MultipartFile doc, final String requestId, final String proofTag,
-            final String applicantId, final Long idProofConf) {
+		return rapportVerifSignANS;
+	}
 
-        final Optional<String> acceptHeader = getAcceptHeader();
-        ResponseEntity<ESignSanteValidationReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+	/**
+	 * Verif certificat with proof.
+	 *
+	 * @param idVerifCertConf the id verif cert conf
+	 * @param doc             the doc
+	 * @param requestId       the request id
+	 * @param proofTag        the proof tag
+	 * @param applicantId     the applicant id
+	 * @param idProofConf     the id proof conf
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReportWithProof> verifCertificatWithProof(final Long idVerifCertConf,
+			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
+			final Long idProofConf) {
 
-        final Optional<CertVerifConf> verifConf = globalConf.getCertificateVerificationById(idVerifCertConf.toString());
-        final Optional<ProofConf> signProofConf = globalConf.getProofById(idProofConf.toString());
+		final Optional<String> acceptHeader = getAcceptHeader();
+		ResponseEntity<ESignSanteValidationReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-        Version wsVersion = DEFAULT_VERSION;
-        try {
-            wsVersion = new Version(buildProperties.getVersion());
-        } catch (final ParseException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-        }
-        final ProofParameters proofParameters = new ProofParameters("VerifCert", requestId, proofTag,
-                applicantId, wsVersion);
+		final Optional<CertVerifConf> verifConf = globalConf.getCertificateVerificationById(idVerifCertConf.toString());
+		final Optional<ProofConf> signProofConf = globalConf.getProofById(idProofConf.toString());
 
-        if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
-            if (doc == null || proofParamsMissing(proofParameters)) {
-                re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            } else if (!verifConf.isPresent() || !signProofConf.isPresent()) {
-                re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                log.error("Certificate Validation Configuration {}" , HttpStatus.NOT_FOUND.getReasonPhrase());
-            } else {
-                final CertificateValidationParameters certVerifParams = verifConf.get().getCertVerifParams();
-                final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
-                re = validateCertWithProof(doc, certVerifParams, signProofParams,
-                        proofParameters);
-                log.info("Certificate Validation Done, Proof Generated : {}", HttpStatus.OK.getReasonPhrase());
-            }
-        }
-        return re;
-    }
+		Version wsVersion = DEFAULT_VERSION;
+		try {
+			wsVersion = new Version(buildProperties.getVersion());
+		} catch (final ParseException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+		}
+		final ProofParameters proofParameters = new ProofParameters("VerifCert", requestId, proofTag, applicantId,
+				wsVersion);
 
-    /**
-     * Checks if proof params are present.
-     *
-     * @param proofParameters the proof parameters
-     * @return boolean
-     */
-    private boolean proofParamsMissing(final ProofParameters proofParameters) {
-        return proofParameters.getRequestid() == null || proofParameters.getProofTag() == null
-                || proofParameters.getApplicantId() == null;
-    }
+		if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
+			if (doc == null || proofParamsMissing(proofParameters)) {
+				re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else if (!verifConf.isPresent() || !signProofConf.isPresent()) {
+				re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				log.error("Certificate Validation Configuration {}", HttpStatus.NOT_FOUND.getReasonPhrase());
+			} else {
+				final CertificateValidationParameters certVerifParams = verifConf.get().getCertVerifParams();
+				final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
+				re = validateCertWithProof(doc, certVerifParams, signProofParams, proofParameters);
+				log.info("Certificate Validation Done, Proof Generated : {}", HttpStatus.OK.getReasonPhrase());
+			}
+		}
+		return re;
+	}
 
-    /**
-     * Validate cert with proof.
-     *
-     * @param doc                      the doc
-     * @param certValidationParameters the cert validation parameters
-     * @param signProofParams          the sign proof params
-     * @param proofParameters          the proof parameters
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReportWithProof> validateCertWithProof(
-            final MultipartFile doc, final CertificateValidationParameters certValidationParameters,
-            final SignatureParameters signProofParams, final ProofParameters proofParameters) {
-        
-        ResponseEntity<ESignSanteValidationReportWithProof> re;
-        
-        try {
-            final RapportValidationCertificat rapportVerifCertANS = createRapportValidationCertificat(doc,
-                    certValidationParameters);
+	/**
+	 * Checks if proof params are present.
+	 *
+	 * @param proofParameters the proof parameters
+	 * @return boolean
+	 */
+	private boolean proofParamsMissing(final ProofParameters proofParameters) {
+		return proofParameters.getRequestid() == null || proofParameters.getProofTag() == null
+				|| proofParameters.getApplicantId() == null;
+	}
 
-            // Génération de la preuve
-            final String proof = proofGenerationService.generateCertVerifProof(rapportVerifCertANS, proofParameters,
-                    serviceCaCrl.getCacrlWrapper());
+	/**
+	 * Validate cert with proof.
+	 *
+	 * @param doc                      the doc
+	 * @param certValidationParameters the cert validation parameters
+	 * @param signProofParams          the sign proof params
+	 * @param proofParameters          the proof parameters
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReportWithProof> validateCertWithProof(final MultipartFile doc,
+			final CertificateValidationParameters certValidationParameters, final SignatureParameters signProofParams,
+			final ProofParameters proofParameters) {
 
-            // Contrôle du certificat de signature de la preuve
-            final HttpStatus status = SignWsUtils.checkCertificate(signProofParams, serviceCaCrl.getCacrlWrapper());
-            if (status != HttpStatus.CONTINUE) {
-                re = new ResponseEntity<>(status);
-            } else {
-                // Signature de la preuve
-                final RapportSignature rapportSignProofANS = signatureService.signXADESBaselineB(proof,
-                        signProofParams);
+		ResponseEntity<ESignSanteValidationReportWithProof> re;
 
-                final ESignSanteValidationReportWithProof rapport = populateResultVerifCertWithProof(
-                        rapportVerifCertANS.getListeErreurCertificat(), rapportVerifCertANS.getMetaData(),
-                        rapportVerifCertANS.isValide(), rapportSignProofANS.getDocSigne());
+		try {
+			final RapportValidationCertificat rapportVerifCertANS = createRapportValidationCertificat(doc,
+					certValidationParameters);
 
-                re = new ResponseEntity<>(rapport, HttpStatus.OK);
-            }
-        } catch (final EsignsanteClientException e3) {
-            log.error(ExceptionUtils.getStackTrace(e3));
-            re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        } catch (final EsignsanteServerException e3) {
-            log.error(ExceptionUtils.getStackTrace(e3));
-            re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (final IOException | EsignsanteException e3) {
-            log.error(ExceptionUtils.getStackTrace(e3));
-            re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return re;
-    }
+			// Génération de la preuve
+			final String proof = proofGenerationService.generateCertVerifProof(rapportVerifCertANS, proofParameters,
+					serviceCaCrl.getCacrlWrapper());
 
-    /**
-     * Verif certificat.
-     *
-     * @param idVerifCertConf the id verif cert conf
-     * @param doc             the doc
-     * @return the response entity
-     */
-    @Override
-    public ResponseEntity<ESignSanteValidationReport> verifCertificat(final Long idVerifCertConf, final MultipartFile doc) {
-        
-        final Optional<String> acceptHeader = getAcceptHeader();
-        ResponseEntity<ESignSanteValidationReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+			// Contrôle du certificat de signature de la preuve
+			final HttpStatus status = SignWsUtils.checkCertificate(signProofParams, serviceCaCrl.getCacrlWrapper());
+			if (status != HttpStatus.CONTINUE) {
+				re = new ResponseEntity<>(status);
+			} else {
+				// Signature de la preuve
+				final RapportSignature rapportSignProofANS = signatureService.signXADESBaselineB(proof,
+						signProofParams);
 
-        final Optional<CertVerifConf> verifConf = globalConf.getCertificateVerificationById(idVerifCertConf.toString());
+				final ESignSanteValidationReportWithProof rapport = populateResultVerifCertWithProof(
+						rapportVerifCertANS.getListeErreurCertificat(), rapportVerifCertANS.getMetaData(),
+						rapportVerifCertANS.isValide(), rapportSignProofANS.getDocSigne());
 
-        if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
-            if (doc == null) {
-                re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            } else if (!verifConf.isPresent()) {
-                re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                log.error("Certificate Validation Configuration {}" , HttpStatus.NOT_FOUND.getReasonPhrase());
-            } else {
-                final CertificateValidationParameters certVerifParams = verifConf.get().getCertVerifParams();
-                re = validateCert(doc, certVerifParams);
-                log.info("Certificate Validation Done : {}", HttpStatus.OK.getReasonPhrase());
-            }
-        }
-        return re;
-    }
+				re = new ResponseEntity<>(rapport, HttpStatus.OK);
+			}
+		} catch (final EsignsanteClientException e3) {
+			log.error(ExceptionUtils.getStackTrace(e3));
+			re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		} catch (final EsignsanteServerException e3) {
+			log.error(ExceptionUtils.getStackTrace(e3));
+			re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+		} catch (final IOException | EsignsanteException e3) {
+			log.error(ExceptionUtils.getStackTrace(e3));
+			re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return re;
+	}
 
-    /**
-     * Validate cert.
-     *
-     * @param doc                      the doc
-     * @param certValidationParameters the cert validation parameters
-     * @return the response entity
-     */
-    private ResponseEntity<ESignSanteValidationReport> validateCert(
-            final MultipartFile doc, final CertificateValidationParameters certValidationParameters) {
-        
-        ResponseEntity<ESignSanteValidationReport> re;
-        
-        try {
-            final RapportValidationCertificat rapportVerifCertANS = createRapportValidationCertificat(doc,
-                    certValidationParameters);
+	/**
+	 * Verif certificat.
+	 *
+	 * @param idVerifCertConf the id verif cert conf
+	 * @param doc             the doc
+	 * @return the response entity
+	 */
+	@Override
+	public ResponseEntity<ESignSanteValidationReport> verifCertificat(final Long idVerifCertConf,
+			final MultipartFile doc) {
 
-            final ESignSanteValidationReport rapport = populateResultVerifCert(
-                    rapportVerifCertANS.getListeErreurCertificat(), rapportVerifCertANS.getMetaData(),
-                    rapportVerifCertANS.isValide());
+		final Optional<String> acceptHeader = getAcceptHeader();
+		ResponseEntity<ESignSanteValidationReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-            re = new ResponseEntity<>(rapport, HttpStatus.OK);
+		final Optional<CertVerifConf> verifConf = globalConf.getCertificateVerificationById(idVerifCertConf.toString());
 
-        } catch (final EsignsanteClientException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-            re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        } catch (final EsignsanteServerException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-            re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
-        } catch (final IOException | EsignsanteException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
-            re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return re;
-    }
+		if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
+			if (doc == null) {
+				re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else if (!verifConf.isPresent()) {
+				re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				log.error("Certificate Validation Configuration {}", HttpStatus.NOT_FOUND.getReasonPhrase());
+			} else {
+				final CertificateValidationParameters certVerifParams = verifConf.get().getCertVerifParams();
+				re = validateCert(doc, certVerifParams);
+				log.info("Certificate Validation Done : {}", HttpStatus.OK.getReasonPhrase());
+			}
+		}
+		return re;
+	}
 
-    /**
-     * Generate rapport validation certificat.
-     * 
-     * @param doc original document
-     * @param certValidationParameters certificate validation paramters
-     * @return RapportValidationCertificat
-     * @throws EsignsanteException asipsign exception
-     * @throws IOException stream file exception
-     */
-    private RapportValidationCertificat createRapportValidationCertificat(
-            final MultipartFile doc, final CertificateValidationParameters certValidationParameters)
-            throws EsignsanteException, IOException {
-        
-        final RapportValidationCertificat rapportVerifCertANS;
-        
-        if (isBinaryFile(doc)) {
-            rapportVerifCertANS = certificateValidationService.validateCertificat(doc.getBytes(),
-                    certValidationParameters, serviceCaCrl.getCacrlWrapper());
-        } else {
-            final String docString = new String(doc.getBytes(), UniversalDetector.detectCharset(doc.getInputStream()));
-            rapportVerifCertANS = certificateValidationService.validateCertificat(docString, certValidationParameters,
-                    serviceCaCrl.getCacrlWrapper());
-        }
+	/**
+	 * Validate cert.
+	 *
+	 * @param doc                      the doc
+	 * @param certValidationParameters the cert validation parameters
+	 * @return the response entity
+	 */
+	private ResponseEntity<ESignSanteValidationReport> validateCert(final MultipartFile doc,
+			final CertificateValidationParameters certValidationParameters) {
 
-        return rapportVerifCertANS;
-    }
+		ResponseEntity<ESignSanteValidationReport> re;
 
-    /**
-     * Checks if is binary file.
-     * Guess whether given file is binary. Just checks for anything under 0x09.
-     * @param doc the doc
-     * @return true si binaire / false si texte
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    private boolean isBinaryFile(final MultipartFile doc) throws IOException {
-        
-        boolean isBinary = false;
-        final int maxSize = 1024;
-        final int textThreshold = 95;
-        final int base = 100;
-        final InputStream in = doc.getInputStream();
-        int size = in.available();
-        if (size > maxSize) {
-            size = maxSize;
-        }
-        final byte[] data = new byte[size];
-        in.read(data);
-        in.close();
+		try {
+			final RapportValidationCertificat rapportVerifCertANS = createRapportValidationCertificat(doc,
+					certValidationParameters);
 
-        int ascii = 0;
-        int other = 0;
+			final ESignSanteValidationReport rapport = populateResultVerifCert(
+					rapportVerifCertANS.getListeErreurCertificat(), rapportVerifCertANS.getMetaData(),
+					rapportVerifCertANS.isValide());
 
-        for (final byte b : data) {
-            if (b < 0x09) {
-                isBinary = true;
-                break;
-            } else {
-                if (b == 0x09 || b == 0x0A || b == 0x0C || b == 0x0D) {
-                    ascii++;
-                } else if (b >= 0x20 && b <= 0x7E) {
-                    ascii++;
-                } else {
-                    other++;
-                }
-            }
-        }
+			re = new ResponseEntity<>(rapport, HttpStatus.OK);
 
-        if (!isBinary) {
-            if (!(other == 0)) {
-                isBinary = base * other / (ascii + other) > textThreshold;
-            }
-        }
+		} catch (final EsignsanteClientException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+			re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		} catch (final EsignsanteServerException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+			re = new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+		} catch (final IOException | EsignsanteException e) {
+			log.error(ExceptionUtils.getStackTrace(e));
+			re = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return re;
+	}
 
-        return isBinary;
-    }
+	/**
+	 * Generate rapport validation certificat.
+	 * 
+	 * @param doc                      original document
+	 * @param certValidationParameters certificate validation paramters
+	 * @return RapportValidationCertificat
+	 * @throws EsignsanteException asipsign exception
+	 * @throws IOException         stream file exception
+	 */
+	private RapportValidationCertificat createRapportValidationCertificat(final MultipartFile doc,
+			final CertificateValidationParameters certValidationParameters) throws EsignsanteException, IOException {
 
-    /**
-     * Populate result sign.
-     *
-     * @param erreursSignature the erreurs signature
-     * @param metadata         the metadata
-     * @param isValide         the is valide
-     * @return the rapport verif
-     */
-    private ESignSanteValidationReport populateResultSign(final List<ErreurSignature> erreursSignature,
-                                                    final List<MetaDatum> metadata, final boolean isValide) {
-        
-        final ESignSanteValidationReport rapport = new ESignSanteValidationReport();
+		final RapportValidationCertificat rapportVerifCertANS;
 
-        rapport.setValide(isValide);
+		if (isBinaryFile(doc)) {
+			rapportVerifCertANS = certificateValidationService.validateCertificat(doc.getBytes(),
+					certValidationParameters, serviceCaCrl.getCacrlWrapper());
+		} else {
+			final String docString = new String(doc.getBytes(), UniversalDetector.detectCharset(doc.getInputStream()));
+			rapportVerifCertANS = certificateValidationService.validateCertificat(docString, certValidationParameters,
+					serviceCaCrl.getCacrlWrapper());
+		}
 
-        final List<Erreur> erreurs = new ArrayList<>();
+		return rapportVerifCertANS;
+	}
 
-        for (final ErreurSignature erreurANS : erreursSignature) {
-            final Erreur erreur = new Erreur();
-            erreur.setCodeErreur(erreurANS.getCode());
-            erreur.setMessage(erreurANS.getMessage());
-            erreurs.add(erreur);
-        }
+	/**
+	 * Checks if is binary file. Guess whether given file is binary. Just checks for
+	 * anything under 0x09.
+	 * 
+	 * @param doc the doc
+	 * @return true si binaire / false si texte
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private boolean isBinaryFile(final MultipartFile doc) throws IOException {
 
-        rapport.setErreurs(erreurs);
+		boolean isBinary = false;
+		final int maxSize = 1024;
+		final int textThreshold = 95;
+		final int base = 100;
+		final InputStream in = doc.getInputStream();
+		int size = in.available();
+		if (size > maxSize) {
+			size = maxSize;
+		}
+		final byte[] data = new byte[size];
+		if (in.read(data) > 0) {
+			log.debug("binary stream data not empty, ok to proceed");
+		}
+		in.close();
 
-        final List<Metadata> metas = new ArrayList<>();
-        for (final MetaDatum metadatum : metadata) {
-            final Metadata meta = new Metadata();
-            meta.setTypeMetadata(metadatum.getType().getName());
-            if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
-                    || metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
-                meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
-            } else {
-                meta.setMessage(metadatum.getValue());
-            }
-            metas.add(meta);
-        }
-        rapport.setMetaData(metas);
-        return rapport;
-    }
+		int ascii = 0;
+		int other = 0;
 
-    /**
-     * Populate result sign with proof.
-     *
-     * @param erreursSignature the erreurs signature
-     * @param metadata         the metadata
-     * @param isValide         the is valide
-     * @param preuve           the preuve
-     * @return the rapport verif with proof
-     */
-    private ESignSanteValidationReportWithProof populateResultSignWithProof(
-            final List<ErreurSignature> erreursSignature, final List<MetaDatum> metadata, final boolean isValide,
-            final String preuve) {
-        
-        final ESignSanteValidationReportWithProof rapport = new ESignSanteValidationReportWithProof();
+		for (final byte b : data) {
+			if (b < 0x09) {
+				isBinary = true;
+				break;
+			} else if (b == 0x09 || b == 0x0A || b == 0x0C || b == 0x0D) {
+				ascii++;
+			} else if (b >= 0x20 && b <= 0x7E) {
+				ascii++;
+			} else {
+				other++;
+			}
+		}
 
-        rapport.setValide(isValide);
-        rapport.setPreuve(Base64.getEncoder().encodeToString(preuve.getBytes()));
-        final List<Erreur> erreurs = new ArrayList<>();
+		if (!isBinary) {
+			if (!(other == 0)) {
+				isBinary = base * other / (ascii + other) > textThreshold;
+			}
+		}
 
-        for (final ErreurSignature erreurANS : erreursSignature) {
-            final Erreur erreur = new Erreur();
-            erreur.setCodeErreur(erreurANS.getCode());
-            erreur.setMessage(erreurANS.getMessage());
-            erreurs.add(erreur);
-        }
+		return isBinary;
+	}
 
-        rapport.setErreurs(erreurs);
+	/**
+	 * Populate result sign.
+	 *
+	 * @param erreursSignature the erreurs signature
+	 * @param metadata         the metadata
+	 * @param isValide         the is valide
+	 * @return the rapport verif
+	 */
+	private ESignSanteValidationReport populateResultSign(final List<ErreurSignature> erreursSignature,
+			final List<MetaDatum> metadata, final boolean isValide) {
 
-        final List<Metadata> metas = new ArrayList<>();
-        for (final MetaDatum metadatum : metadata) {
-            final Metadata meta = new Metadata();
-            meta.setTypeMetadata(metadatum.getType().getName());
-            if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
-                    || metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
-                meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
-            } else {
-                meta.setMessage(metadatum.getValue());
-            }
-            metas.add(meta);
-        }
-        rapport.setMetaData(metas);
+		final ESignSanteValidationReport rapport = new ESignSanteValidationReport();
 
-        return rapport;
-    }
+		rapport.setValide(isValide);
 
-    /**
-     * Populate result verif cert.
-     *
-     * @param erreursVerifCert the erreurs verif cert
-     * @param metadata         the metadata
-     * @param isValide         the is valide
-     * @return the rapport verif
-     */
-    private ESignSanteValidationReport populateResultVerifCert(final List<ErreurCertificat> erreursVerifCert,
-                                                         final List<MetaDatum> metadata, final boolean isValide) {
-        final ESignSanteValidationReport rapport = new ESignSanteValidationReport();
+		final List<Erreur> erreurs = new ArrayList<>();
 
-        rapport.setValide(isValide);
+		for (final ErreurSignature erreurANS : erreursSignature) {
+			final Erreur erreur = new Erreur();
+			erreur.setCodeErreur(erreurANS.getCode());
+			erreur.setMessage(erreurANS.getMessage());
+			erreurs.add(erreur);
+		}
 
-        final List<Erreur> erreurs = new ArrayList<>();
+		rapport.setErreurs(erreurs);
 
-        for (final ErreurCertificat erreurANS : erreursVerifCert) {
-            final Erreur erreur = new Erreur();
-            erreur.setCodeErreur(erreurANS.getType().getCode());
-            erreur.setMessage(erreurANS.getMessage());
-            erreurs.add(erreur);
-        }
-        rapport.setErreurs(erreurs);
-        final List<Metadata> metas = new ArrayList<>();
+		final List<Metadata> metas = new ArrayList<>();
+		for (final MetaDatum metadatum : metadata) {
+			final Metadata meta = new Metadata();
+			meta.setTypeMetadata(metadatum.getType().getName());
+			if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
+					|| metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
+				meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
+			} else {
+				meta.setMessage(metadatum.getValue());
+			}
+			metas.add(meta);
+		}
+		rapport.setMetaData(metas);
+		return rapport;
+	}
 
-        for (final MetaDatum metadatum : metadata) {
-            final Metadata meta = new Metadata();
-            meta.setTypeMetadata(metadatum.getType().getName());
-            if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
-                    || metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
-                meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
-            } else {
-                meta.setMessage(metadatum.getValue());
-            }
-            metas.add(meta);
-        }
-        rapport.setMetaData(metas);
+	/**
+	 * Populate result sign with proof.
+	 *
+	 * @param erreursSignature the erreurs signature
+	 * @param metadata         the metadata
+	 * @param isValide         the is valide
+	 * @param preuve           the preuve
+	 * @return the rapport verif with proof
+	 */
+	private ESignSanteValidationReportWithProof populateResultSignWithProof(
+			final List<ErreurSignature> erreursSignature, final List<MetaDatum> metadata, final boolean isValide,
+			final String preuve) {
 
-        return rapport;
+		final ESignSanteValidationReportWithProof rapport = new ESignSanteValidationReportWithProof();
 
-    }
+		rapport.setValide(isValide);
+		rapport.setPreuve(Base64.getEncoder().encodeToString(preuve.getBytes()));
+		final List<Erreur> erreurs = new ArrayList<>();
 
-    /**
-     * Populate result verif cert with proof.
-     *
-     * @param erreursVerifCert the erreurs verif cert
-     * @param metadata         the metadata
-     * @param isValide         the is valide
-     * @param proof            the proof
-     * @return the rapport verif with proof
-     */
-    private ESignSanteValidationReportWithProof populateResultVerifCertWithProof(
-            final List<ErreurCertificat> erreursVerifCert, final List<MetaDatum> metadata,
-            final boolean isValide, final String proof) {
-        final ESignSanteValidationReportWithProof rapport = new ESignSanteValidationReportWithProof();
+		for (final ErreurSignature erreurANS : erreursSignature) {
+			final Erreur erreur = new Erreur();
+			erreur.setCodeErreur(erreurANS.getCode());
+			erreur.setMessage(erreurANS.getMessage());
+			erreurs.add(erreur);
+		}
 
-        rapport.setValide(isValide);
-        rapport.setPreuve(Base64.getEncoder().encodeToString(proof.getBytes()));
-        final List<Erreur> erreurs = new ArrayList<>();
+		rapport.setErreurs(erreurs);
 
-        for (final ErreurCertificat erreurANS : erreursVerifCert) {
-            final Erreur erreur = new Erreur();
-            erreur.setCodeErreur(erreurANS.getType().getCode());
-            erreur.setMessage(erreurANS.getMessage());
-            erreurs.add(erreur);
-        }
-        rapport.setErreurs(erreurs);
-        final List<Metadata> metas = new ArrayList<>();
+		final List<Metadata> metas = new ArrayList<>();
+		for (final MetaDatum metadatum : metadata) {
+			final Metadata meta = new Metadata();
+			meta.setTypeMetadata(metadatum.getType().getName());
+			if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
+					|| metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
+				meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
+			} else {
+				meta.setMessage(metadatum.getValue());
+			}
+			metas.add(meta);
+		}
+		rapport.setMetaData(metas);
 
-        for (final MetaDatum metadatum : metadata) {
-            final Metadata meta = new Metadata();
-            meta.setTypeMetadata(metadatum.getType().getName());
-            if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
-                    || metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
-                meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
-            } else {
-                meta.setMessage(metadatum.getValue());
-            }
-            metas.add(meta);
-        }
-        rapport.setMetaData(metas);
+		return rapport;
+	}
 
-        return rapport;
-    }
+	/**
+	 * Populate result verif cert.
+	 *
+	 * @param erreursVerifCert the erreurs verif cert
+	 * @param metadata         the metadata
+	 * @param isValide         the is valide
+	 * @return the rapport verif
+	 */
+	private ESignSanteValidationReport populateResultVerifCert(final List<ErreurCertificat> erreursVerifCert,
+			final List<MetaDatum> metadata, final boolean isValide) {
+		final ESignSanteValidationReport rapport = new ESignSanteValidationReport();
+
+		rapport.setValide(isValide);
+
+		final List<Erreur> erreurs = new ArrayList<>();
+
+		for (final ErreurCertificat erreurANS : erreursVerifCert) {
+			final Erreur erreur = new Erreur();
+			erreur.setCodeErreur(erreurANS.getType().getCode());
+			erreur.setMessage(erreurANS.getMessage());
+			erreurs.add(erreur);
+		}
+		rapport.setErreurs(erreurs);
+		final List<Metadata> metas = new ArrayList<>();
+
+		for (final MetaDatum metadatum : metadata) {
+			final Metadata meta = new Metadata();
+			meta.setTypeMetadata(metadatum.getType().getName());
+			if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
+					|| metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
+				meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
+			} else {
+				meta.setMessage(metadatum.getValue());
+			}
+			metas.add(meta);
+		}
+		rapport.setMetaData(metas);
+
+		return rapport;
+
+	}
+
+	/**
+	 * Populate result verif cert with proof.
+	 *
+	 * @param erreursVerifCert the erreurs verif cert
+	 * @param metadata         the metadata
+	 * @param isValide         the is valide
+	 * @param proof            the proof
+	 * @return the rapport verif with proof
+	 */
+	private ESignSanteValidationReportWithProof populateResultVerifCertWithProof(
+			final List<ErreurCertificat> erreursVerifCert, final List<MetaDatum> metadata, final boolean isValide,
+			final String proof) {
+		final ESignSanteValidationReportWithProof rapport = new ESignSanteValidationReportWithProof();
+
+		rapport.setValide(isValide);
+		rapport.setPreuve(Base64.getEncoder().encodeToString(proof.getBytes()));
+		final List<Erreur> erreurs = new ArrayList<>();
+
+		for (final ErreurCertificat erreurANS : erreursVerifCert) {
+			final Erreur erreur = new Erreur();
+			erreur.setCodeErreur(erreurANS.getType().getCode());
+			erreur.setMessage(erreurANS.getMessage());
+			erreurs.add(erreur);
+		}
+		rapport.setErreurs(erreurs);
+		final List<Metadata> metas = new ArrayList<>();
+
+		for (final MetaDatum metadatum : metadata) {
+			final Metadata meta = new Metadata();
+			meta.setTypeMetadata(metadatum.getType().getName());
+			if (metadatum.getType().equals(MetaDataType.RAPPORT_DIAGNOSTIQUE)
+					|| metadatum.getType().equals(MetaDataType.RAPPORT_DSS)) {
+				meta.setMessage(Base64.getEncoder().encodeToString(metadatum.getValue().getBytes()));
+			} else {
+				meta.setMessage(metadatum.getValue());
+			}
+			metas.add(meta);
+		}
+		rapport.setMetaData(metas);
+
+		return rapport;
+	}
 
 }
