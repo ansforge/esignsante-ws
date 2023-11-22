@@ -26,7 +26,7 @@ import java.util.Date;
  * Si config.crl.scheduling est renseigné, le rechargement suit l'expression cron.
  */
 @Component
-@ComponentScan("fr.gouv.esante.api.sign")
+//@ComponentScan("fr.gouv.esante.api.sign")
 public class RefreshConfigurations {
 
     /**

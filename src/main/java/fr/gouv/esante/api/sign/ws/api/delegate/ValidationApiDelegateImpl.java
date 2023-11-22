@@ -63,8 +63,6 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
 /**
  * The Class ValidationApiDelegateImpl.
  */
-@Service
-@Primary
 public class ValidationApiDelegateImpl extends ApiDelegate implements ValidationApiDelegate {
 
 	/** Default ESignSante major version. */
