@@ -7,8 +7,8 @@
     <mirror>
       <id>artifactory</id>
       <mirrorOf>*</mirrorOf>
-      <name>ASIP repository.</name>
-      <url>https://repo.proxy.dev.forge.asip.hst.fluxus.net/artifactory/repo-dev/</url>
+      <name>ANS repository</name>
+      <url>http://repo.proxy-dev-forge.asip.hst.fluxus.net/artifactory/repo-dev/</url>
     </mirror>
   </mirrors>
 </settings>
