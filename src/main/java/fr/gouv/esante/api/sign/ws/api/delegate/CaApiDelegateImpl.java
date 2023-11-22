@@ -20,8 +20,6 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
 /**
  * The Class CaApiDelegateImpl.
  */
-@Service
-@Primary
 public class CaApiDelegateImpl extends ApiDelegate implements CaApiDelegate {
 
     /** The cacrl service. */

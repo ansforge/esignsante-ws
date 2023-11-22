@@ -25,8 +25,6 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
 /**
  * The Class ConfigurationsApiDelegateImpl.
  */
-@Service
-@Primary
 public class ConfigurationsApiDelegateImpl extends ApiDelegate implements ConfigurationsApiDelegate {
 
     /**

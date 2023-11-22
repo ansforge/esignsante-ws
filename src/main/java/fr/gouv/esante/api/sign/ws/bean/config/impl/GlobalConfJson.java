@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 /**
  * The type Global conf json.
  */
-@Component
 public class GlobalConfJson implements IGlobalConf {
 
     /**

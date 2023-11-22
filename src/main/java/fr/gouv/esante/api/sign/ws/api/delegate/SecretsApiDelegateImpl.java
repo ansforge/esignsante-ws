@@ -19,8 +19,6 @@ import fr.gouv.esante.api.sign.ws.util.Secrets;
 /**
  * The Class SecretsApiDelegateImpl.
  */
-@Service
-@Primary
 public class SecretsApiDelegateImpl extends ApiDelegate implements SecretsApiDelegate {
 
     /**
