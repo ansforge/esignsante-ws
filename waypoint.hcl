@@ -39,7 +39,6 @@ app "cybersante-esignsante" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
         datacenter = var.datacenter
         user_java_opts = var.user_java_opts
-        swagger_ui = var.swagger_ui
         spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
         spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
         hashing_algorithm = var.hashing_algorithm
@@ -54,6 +53,9 @@ app "cybersante-esignsante" {
         seuil_scale_out = var.seuil_scale_out
         nomad_namespace = "${workspace.name}"
         nomad_namejob = var.nomad_namejob
+        spring_security_user_name = var.spring_security_user_name
+        spring_security_user_password = var.spring_security_user_password
+        swagger_ui_enabled = var.swagger_ui_enabled        
       })
     }
   }
@@ -91,10 +93,6 @@ variable "registry_path" {
     default = "registry.repo.proxy.prod.forge.esante.gouv.fr/esignsante"
 }
 variable "user_java_opts" {
-  type = string
-  default = ""
-}
-variable "swagger_ui" {
   type = string
   default = ""
 }
@@ -146,4 +144,14 @@ variable "seuil_scale_in" {
 variable "seuil_scale_out" {
   type = number
   default = 5
+}
+variable "spring_security_user_name" {
+  type = string
+}
+variable "spring_security_user_password" {
+  type = string
+}
+variable "swagger_ui_enabled" {
+  type = bool
+  default = false
 }

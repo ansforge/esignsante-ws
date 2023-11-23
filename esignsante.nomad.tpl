@@ -83,7 +83,7 @@ job "${nomad_namejob}" {
                         template {
 data = <<EOF
 {{ with secret "services-infrastructure/proxy" }}
-JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dspring.profiles.active=${swagger_ui} -Dhttp.proxyHost={{ .Data.data.host }} -Dhttps.proxyHost={{ .Data.data.host }} -Dhttp.proxyPort={{ .Data.data.port }} -Dhttps.proxyPort={{ .Data.data.port }}"
+JAVA_TOOL_OPTIONS="${user_java_opts} -Dspring.config.location=/var/esignsante/application.properties -Dhttp.proxyHost={{ .Data.data.host }} -Dhttps.proxyHost={{ .Data.data.host }} -Dhttp.proxyPort={{ .Data.data.port }} -Dhttps.proxyPort={{ .Data.data.port }}"
 {{end}}
 EOF
                                 destination = "local/file.env"
@@ -123,6 +123,13 @@ config.secret=${config_secret}
 server.servlet.context-path=/${nomad_namespace}/v1
 com.sun.org.apache.xml.internal.security.ignoreLineBreaks=${ignore_line_breaks}
 management.endpoints.web.exposure.include=prometheus,metrics,health
+springdoc.swagger-ui.csrf.enabled=false
+springdoc.packagesToScan=fr.gouv.esante.api.sign.ws.api
+springdoc.pathsToMatch=/*
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.enabled=${swagger_ui_enabled}
+spring.security.user.name=${spring_security_user_name}
+spring.security.user.password=${spring_security_user_password}
 EOF
                         destination = "secrets/application.properties"
                         }
