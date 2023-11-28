@@ -57,6 +57,7 @@ import fr.gouv.esante.api.sign.ws.util.WsVars;
 /**
  * The Class SignaturesApiDelegateImpl.
  */
+@Service
 public class SignaturesApiDelegateImpl extends ApiDelegate implements SignaturesApiDelegate {
 
 	/** Default ESignSante major version. */
