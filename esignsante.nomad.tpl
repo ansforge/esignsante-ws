@@ -68,7 +68,7 @@ job "${nomad_namejob}" {
                         }
                 }
 
-                task "run" {
+                task "esignsante" {
                         driver = "docker"
                         config {
                                 image = "${artifact.image}:${artifact.tag}"
@@ -144,10 +144,7 @@ EOF
                                 check {
                                         type = "http"
                                         port = "http"
-                                        path = "/${nomad_namespace}/v1/ca"
-                                        header {
-                                                Accept = ["application/json"]
-                                        }
+                                        path = "/${nomad_namespace}/v1/actuator/health"
                                         name = "alive"
                                         interval = "30s"
                                         timeout = "2s"
@@ -172,7 +169,7 @@ EOF
                         mode     = "delay"
                 }
                 meta {
-                        INSTANCE = "$\u007BNOMAD_ALLOC_NAME\u007D"
+                        INSTANCE = "$${NOMAD_ALLOC_NAME}"
                 }
                 template {
                         data = <<EOH

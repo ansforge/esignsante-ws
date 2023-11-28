@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"fr.gouv.esante.api.sign.ws", "fr.gouv.esante.api.sign.ws.api" , "fr.gouv.esante.api.sign.config", "fr.gouv.esante.api.sign.scheduled"})
+@ComponentScan(basePackages = {"fr.gouv.esante.api.sign.ws", "fr.gouv.esante.api.sign.ws.api", "fr.gouv.esante.api.sign.ws.api.delegate", "fr.gouv.esante.api.sign.config", "fr.gouv.esante.api.sign.scheduled"})
 public class Application implements CommandLineRunner {
 
     /** The log. */
