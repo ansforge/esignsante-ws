@@ -10,7 +10,7 @@
 	<version>2.7.6-SNAPSHOT</version>
 	<properties>
 		<java.version>17</java.version>
-		<esignsante-lib.version>2.5.1</esignsante-lib.version>
+		<esignsante-lib.version>2.5.2</esignsante-lib.version>
 		<start-class>fr.gouv.esante.api.sign.ws.Application</start-class>
 		<dist>docker</dist>
 	</properties>
