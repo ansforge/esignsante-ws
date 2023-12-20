@@ -39,6 +39,7 @@ import fr.gouv.esante.api.sign.service.ISignatureValidationService;
 import fr.gouv.esante.api.sign.service.impl.utils.Version;
 import fr.gouv.esante.api.sign.utils.EsignsanteClientException;
 import fr.gouv.esante.api.sign.utils.EsignsanteException;
+import fr.gouv.esante.api.sign.utils.EsignsanteParseException;
 import fr.gouv.esante.api.sign.utils.EsignsanteServerException;
 import fr.gouv.esante.api.sign.ws.api.SignaturesApiDelegate;
 import fr.gouv.esante.api.sign.ws.bean.config.IGlobalConf;
@@ -139,15 +140,17 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 					final SignatureParameters signParams = signConf.get().getSignParams();
 					if (element != null && !element.isEmpty()) { 	
 						signParams.setElementToSign(element);
+					} else {
+						signParams.setElementToSign(null);
 					}
 					signParams.setRoles(signers);
 					final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();
 					final SignatureParameters signProofParams = signProofConf.get().getSignProofParams();
 					re = signWithProof(doc, proofParameters, type, signParams, signVerifParams, signProofParams);
-					log.info("Digital Signature With Proof Generated : {}", HttpStatus.OK.getReasonPhrase());
 				}
 			}
 		}
+		log.info("Code retour de la requête: "+re.getStatusCode().toString());
 		return re;
 	}
 
@@ -414,16 +417,18 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 				} else {
 					final SignatureParameters signParams = signConf.get().getSignParams();
 					if (element != null && !element.isEmpty()) { 	
-						signParams.setElementToSign(element); 	
+						signParams.setElementToSign(element);
+					} else {
+						signParams.setElementToSign(null);
 					}
 					signParams.setRoles(signers);
 					re = sign(signParams, doc, type);
-					log.info("Digital Signature : {}", HttpStatus.OK.getReasonPhrase());
 				}
 			}
 		} else {
 			re = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		log.info("Code retour de la requête: "+re.getStatusCode().toString());
 		return re;
 	}
 
@@ -457,7 +462,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 						rapportSignature.getDocSigneBytes());
 				re = new ResponseEntity<>(rapport, HttpStatus.OK);
 			}
-		} catch (final EsignsanteClientException e2) {
+		} catch (final EsignsanteParseException | EsignsanteClientException e2) {
 			log.error(ExceptionUtils.getStackTrace(e2));
 			re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 		} catch (final EsignsanteServerException e2) {
