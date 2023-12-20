@@ -136,7 +136,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 				} else {
 					final SignatureParameters signParams = signConf.get().getSignParams();
 					if (element != null && !element.isEmpty()) { 	
-						signParams.setElementToSign(element); 	
+						signParams.setElementToSign(element);
 					}
 					signParams.setRoles(signers);
 					final SignatureValidationParameters signVerifParams = verifConf.get().getSignVerifParams();

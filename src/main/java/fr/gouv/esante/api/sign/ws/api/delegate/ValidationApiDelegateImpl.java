@@ -225,7 +225,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xmldsigwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XMLDSIG);
@@ -251,7 +251,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xadesbaselinebwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XADES);
@@ -278,7 +278,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/padesbaselinebwithproof"), wsVersion);
 
 		try {
