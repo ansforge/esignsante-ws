@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -98,6 +97,9 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	/** Enable/disable secret. */
 	@Value("${config.secret}")
 	private String secretEnabled;
+	
+	// Static vars
+	private final String proofSignRequestType = "Sign";
 
 	/**
 	 * Digital signature with proof.
@@ -285,7 +287,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/xmldsigwithproof"), wsVersion);
 
 		try {
@@ -326,7 +328,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/xadesbaselinebwithproof"), wsVersion);
 
 
@@ -369,7 +371,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("Sign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/padesbaselinebwithproof"), wsVersion);
 
 		try {

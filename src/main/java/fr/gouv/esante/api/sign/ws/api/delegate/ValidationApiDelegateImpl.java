@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -104,6 +103,10 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	/** ESignSante Build Properties. */
 	@Autowired
 	private BuildProperties buildProperties;
+	
+	// Static vars
+	private final String proofVerifSignRequestType = "VerifSign";
+	private final String proofVerifCertRequestType = "VerifCert";
 
 	/**
 	 * Validate digital signature with proof.
@@ -225,7 +228,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xmldsigwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XMLDSIG);
@@ -251,7 +254,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xadesbaselinebwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XADES);
@@ -278,7 +281,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("VerifSign", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/padesbaselinebwithproof"), wsVersion);
 
 		try {
@@ -454,7 +457,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters("VerifCert", requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.proofVerifCertRequestType, requestId, proofTag, applicantId,
 				wsVersion);
 
 		if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
