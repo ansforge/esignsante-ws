@@ -105,8 +105,8 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	private BuildProperties buildProperties;
 	
 	// Static vars
-	private final String proofVerifSignRequestType = "VerifSign";
-	private final String proofVerifCertRequestType = "VerifCert";
+	private final String verifSignRequestType = "VerifSign";
+	private final String verifCertRequestType = "VerifCert";
 
 	/**
 	 * Validate digital signature with proof.
@@ -222,13 +222,14 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXMLdsigWithProof(
 			final Long idVerifSignConf, final MultipartFile doc, final String requestId, final String proofTag,
 			final String applicantId, final Long idProofConf) {
+		log.info("Validation de signature XMLDsig avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			wsVersion = new Version(buildProperties.getVersion());
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.verifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xmldsigwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XMLDSIG);
@@ -248,13 +249,14 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignatureXadesWithProof(final Long idVerifSignConf,
 			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
 			final Long idProofConf) {
+		log.info("Validation de signature XADES-Baseline-B avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			wsVersion = new Version(buildProperties.getVersion());
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.verifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/xadesbaselinebwithproof"), wsVersion);
 		return validateDigitalSignatureWithProof(idVerifSignConf, doc, proofParameters, idProofConf,
 				ESignatureType.XADES);
@@ -275,13 +277,14 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	public ResponseEntity<ESignSanteValidationReportWithProof> verifSignaturePadesWithProof(final Long idVerifSignConf,
 			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
 			final Long idProofConf) {
+		log.info("Validation de signature PADES-Baseline-B avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			wsVersion = new Version(buildProperties.getVersion());
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofVerifSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.verifSignRequestType, requestId, proofTag, applicantId,
 				calledOperation("/validation/signatures/padesbaselinebwithproof"), wsVersion);
 
 		try {
@@ -371,6 +374,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	@Override
 	public ResponseEntity<ESignSanteValidationReport> verifSignatureXMLdsig(final Long idVerifSignConf,
 			final MultipartFile doc) {
+		log.info("Validation de signature XMLDsig.");
 		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XMLDSIG);
 	}
 
@@ -384,6 +388,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	@Override
 	public ResponseEntity<ESignSanteValidationReport> verifSignatureXades(final Long idVerifSignConf,
 			final MultipartFile doc) {
+		log.info("Validation de signature XADES-Baseline-B.");
 		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.XADES);
 	}
 
@@ -397,6 +402,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	@Override
 	public ResponseEntity<ESignSanteValidationReport> verifSignaturePades(final Long idVerifSignConf,
 			final MultipartFile doc) {
+		log.info("Validation de signature PADES-Baseline-B.");
 		return validateDigitalSignature(idVerifSignConf, doc, ESignatureType.PADES);
 	}
 
@@ -444,7 +450,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	public ResponseEntity<ESignSanteValidationReportWithProof> verifCertificatWithProof(final Long idVerifCertConf,
 			final MultipartFile doc, final String requestId, final String proofTag, final String applicantId,
 			final Long idProofConf) {
-
+		log.info("Validation de certificat avec preuve.");
 		final Optional<String> acceptHeader = getAcceptHeader();
 		ResponseEntity<ESignSanteValidationReportWithProof> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -457,7 +463,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofVerifCertRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.verifCertRequestType, requestId, proofTag, applicantId,
 				wsVersion);
 
 		if (acceptHeader.isPresent() && acceptHeader.get().contains(WsVars.HEADER_TYPE.getVar())) {
@@ -548,7 +554,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	@Override
 	public ResponseEntity<ESignSanteValidationReport> verifCertificat(final Long idVerifCertConf,
 			final MultipartFile doc) {
-
+		log.info("Validation de certificat.");
 		final Optional<String> acceptHeader = getAcceptHeader();
 		ResponseEntity<ESignSanteValidationReport> re = new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 

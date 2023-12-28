@@ -16,11 +16,15 @@
        <!--  <appender-ref ref="RollingFile" /> -->
         <appender-ref ref="Console" />
     </root>
-
+    
+    <logger name="eu.europa.esig.dss.validation.CommonCertificateVerifier" level="OFF"/>
+ 	<logger name="eu.europa.esig.dss.validation.SignedDocumentValidator" level="OFF"/>
+ 	<logger name="eu.europa.esig.dss.xades.validation.XAdESCertificateSource" level="OFF"/>
+ 	<logger name="eu.europa.esig.dss.xades.validation.XAdESSignature" level="OFF"/>
+    
     <!-- LOG "com.baeldung*" at TRACE level -->
     <!--<logger name="com.baeldung" level="trace" additivity="false">-->
       <!--   <appender-ref ref="RollingFile" /> -->
         <!--<appender-ref ref="Console" />-->
     <!--</logger>-->
-
 </configuration>
