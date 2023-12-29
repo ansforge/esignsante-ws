@@ -186,6 +186,6 @@ EOF
 #                                cpu    = 100
 #                                memory = 150
 #                        }
-#                } 
-#        } #end log-shipper
+#                } #end log-shipper
+        } 
 }
