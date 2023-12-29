@@ -20,7 +20,7 @@ app "cybersante-esignsante" {
   # Build specifies how an application should be deployed.
   build {
 	use "docker-pull" {
-		image = "ans/esignsante"
+		image = "${var.registry_path}/ans/esignsante"
 		tag   = "${var.esignsante_version}"
 		disable_entrypoint = true
 	}

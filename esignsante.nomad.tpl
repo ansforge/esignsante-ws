@@ -71,7 +71,7 @@ job "${nomad_namejob}" {
                 task "esignsante" {
                         driver = "docker"
                         config {
-                                image = "esignsante/esignsante:${esignsante_version}"
+                                image = "${artifact.image}:${artifact.tag}"
                                 volumes = ["secrets:/var/esignsante"]
                                 args = [
                                         "--ws.conf=/var/esignsante/config.json",
