@@ -160,32 +160,32 @@ EOF
 
 # begin log-shipper
 # Ce bloc doit être décommenté pour définir le log-shipper.
-        task "log-shipper" {
-                driver = "docker"
-                restart {
-                        interval = "3m"
-                        attempts = 5
-                        delay    = "15s"
-                        mode     = "delay"
-                }
-                meta {
-                        INSTANCE = "$${NOMAD_ALLOC_NAME}"
-                }
-                template {
-                        data = <<EOH
-REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
-EOH
-                                destination = "local/file.env"
-                                change_mode = "restart"
-                                env = true
-                        }
-                        config {
-                                image = "ans/nomad-filebeat:8.2.3-2.0"
-                        }
-                        resources {
-                                cpu    = 100
-                                memory = 150
-                        }
-                } #end log-shipper
-        }
+#        task "log-shipper" {
+#                driver = "docker"
+#                restart {
+#                        interval = "3m"
+#                        attempts = 5
+#                        delay    = "15s"
+#                        mode     = "delay"
+#                }
+#                meta {
+#                        INSTANCE = "$${NOMAD_ALLOC_NAME}"
+#                }
+#                template {
+#                        data = <<EOH
+#REDIS_HOSTS = {{ range service "PileELK-redis" }}{{ .Address }}:{{ .Port }}{{ end }}
+#EOH
+#                                destination = "local/file.env"
+#                                change_mode = "restart"
+#                                env = true
+#                        }
+#                        config {
+#                                image = "ans/nomad-filebeat:8.2.3-2.0"
+#                        }
+#                        resources {
+#                                cpu    = 100
+#                                memory = 150
+#                        }
+#                } 
+#        } #end log-shipper
 }
