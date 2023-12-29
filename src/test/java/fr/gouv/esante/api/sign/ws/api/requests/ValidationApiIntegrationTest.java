@@ -210,9 +210,10 @@ public class ValidationApiIntegrationTest {
 	 */
 	@Test
 	public void verifCertificatExpireTest() throws Exception {
-		final MockMultipartFile cert = new MockMultipartFile("file", "rpps.tra.henix.asipsante.fr-sign-expire.pem",
+		String docName = "rpps.tra.henix.asipsante.fr-sign-expire.pem";
+		final MockMultipartFile cert = new MockMultipartFile("file", docName,
 				null, Thread.currentThread().getContextClassLoader()
-						.getResourceAsStream("rpps.tra.henix.asipsante.fr-sign-expire.pem"));
+						.getResourceAsStream(docName));
 		final MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.multipart("/validation/certificats").file(cert)
 						.param("idVerifCertConf", "1").with(csrf()).accept("application/json"))
