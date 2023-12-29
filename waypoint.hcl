@@ -19,18 +19,11 @@ runner {
 app "cybersante-esignsante" {
   # Build specifies how an application should be deployed.
   build {
-    use "docker" {
-      dockerfile = "${path.app}/${var.dockerfile_path}"
-    }
-
-    registry {
-      use "docker" {
-        image = "${var.registry_path}/esignsante:${var.esignsante_version}"
-        tag   = gitrefpretty()
-        username = var.username
-        password = var.password
-      }
-    }
+	use "docker-pull" {
+		image = "ans/esignsante"
+		tag   = "${var.esignsante_version}"
+		disable_entrypoint = true
+	}
   }
 
   # Deploy to Nomad
