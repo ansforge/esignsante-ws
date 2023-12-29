@@ -100,7 +100,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	private String secretEnabled;
 	
 	// Static vars
-	private final String proofSignRequestType = "Sign";
+	private final String requestType = "Sign";
 
 	/**
 	 * Digital signature with proof.
@@ -290,7 +290,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.requestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/xmldsigwithproof"), wsVersion);
 
 		try {
@@ -331,7 +331,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.requestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/xadesbaselinebwithproof"), wsVersion);
 
 
@@ -374,7 +374,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 		} catch (final ParseException e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		final ProofParameters proofParameters = new ProofParameters(this.proofSignRequestType, requestId, proofTag, applicantId,
+		final ProofParameters proofParameters = new ProofParameters(this.requestType, requestId, proofTag, applicantId,
 				calledOperation("/signatures/padesbaselinebwithproof"), wsVersion);
 
 		try {

@@ -25,7 +25,7 @@ app "cybersante-esignsante" {
 
     registry {
       use "docker" {
-        image = "${var.registry_path}/esignsante"
+        image = "${var.registry_path}/esignsante:${var.esignsante_version}"
         tag   = gitrefpretty()
         username = var.username
         password = var.password
@@ -38,6 +38,7 @@ app "cybersante-esignsante" {
     use "nomad-jobspec" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
         datacenter = var.datacenter
+		esignsante_version = var.esignsante_version
         user_java_opts = var.user_java_opts
         spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
         spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
@@ -91,6 +92,9 @@ variable dockerfile_path {
 variable "registry_path" {
     type = string
     default = "registry.repo.proxy.prod.forge.esante.gouv.fr/esignsante"
+}
+variable "esignsante_version" {
+	type = string
 }
 variable "user_java_opts" {
   type = string
