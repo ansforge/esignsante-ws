@@ -4,7 +4,7 @@ labels = { "domaine" = "esignsante" }
 
 runner {
   enabled = true
-  profile = "common-odr"
+  # profile = "common-odr"
   data_source "git" {
     url = "https://github.com/ansforge/esignsante-ws.git"
     ref = "gitref"
