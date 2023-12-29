@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-15"?><Flux codeAE="ENREG" id="445">
+    <horodatageEmission>2020-08-20T07:49:26.466Z</horodatageEmission>
+    <ImagePS id="1">
+        <Professionnel idPP="">
+            <prenomUsage>Amàne</prenomUsage>
+            <civilite>MME</civilite>
+            <paysNationalite>99999</paysNationalite>
+            <nomFamille>testé</nomFamille>
+            <prenom1>Amàne</prenom1>
+            <dateNaissance>19850202</dateNaissance>
+            <communeNaissance>02001</communeNaissance>
+            <lieuNaissance/>
+            <paysNaissance>99100</paysNaissance>
+            <sexe>F</sexe>
+            <StatutEtatCivil>NCI</StatutEtatCivil>
+            <dateStatutEtatCivil>20200820</dateStatutEtatCivil>
+            <CoordonneesCorrespondance>
+                <codePostal>00000</codePostal>
+                <localite>inconnu</localite>
+                <numeroTelephonePort>4545454545</numeroTelephonePort>
+                <courriel>amine.ahmed@soprasteria.com</courriel>
+            </CoordonneesCorrespondance>
+            <ExerciceProfessionnel>
+                <profession>99</profession>
+                <categorieProfessionnelle>C</categorieProfessionnelle>
+                <nomExercice>testé</nomExercice>
+                <prenomExercice>Amàne</prenomExercice>
+                <dateEffetExercice>20200820</dateEffetExercice>
+                <SituationExercice>
+                    <modeExercice>S</modeExercice>
+                    <dateDebutActivite>20200820</dateDebutActivite>
+                    <genreActivite>GENR01</genreActivite>
+                    <sectionOrdrePharmacien/>
+                    <sousSectionOrdrePharmacien/>
+                    <fonction>FON-02</fonction>
+                    <EntiteGeographique>
+                        <typeIdNatStruct>1</typeIdNatStruct>
+                        <numSiret/>
+                        <numFINESSET>620117051</numFINESSET>
+                        <numStructAE/>
+                        <numFINESSEJ/>
+                        <numSIREN/>
+                        <raisonSociale>ENTREPRISE ADAPTÉE LA FONDATION HOPALE</raisonSociale>
+                        <secteurActivite>SA16</secteurActivite>
+                        <CoordonneesEG>
+                            <libelleVoie>DE LA MANCHE</libelleVoie>
+                            <codePostal>62606</codePostal>
+                            <COGCommune>62108</COGCommune>
+                            <localite>Berck</localite>
+                            <pays/>
+                        </CoordonneesEG>
+                    </EntiteGeographique>
+                </SituationExercice>
+            </ExerciceProfessionnel>
+        </Professionnel>
+        <horodatageEmission>2020-08-20T07:49:26.466Z</horodatageEmission>
+    </ImagePS>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Tao_Sig_Id_SIG"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>k10uOt99aPSweXY4mDB+lDZrWGdFJjItBWzLF4lzbZE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="">rGdsUprSxrPG8uVsPKbLBb8hV6iKO6veJ20H+hAGwr2vjxvXSSK1bpq9BF6NghUZVD9LOBQYzw4+&#13;
+Cfu63IwOy079naqMcWNVM0pDlAQa4Nnlw/LUNIAJRjHXM+zpDmNmwVpkCoowxWW8CYslgt7tc4pE&#13;
+izluruVfJUL2qe2TcGx/q8aoOb33ZQNFnNFZPiH3+Sjad8fJ7zJWJKD2/YrV9U178vNzDKDIo3+s&#13;
+8Xv0vyUf7tBtZh4D3/0/lA9zypu5ysYeNeaHDgYdhA1fUF8nq33SInzx3zw08mR03DDcGS0jafLO&#13;
+hLTOjzjsVsHfMQe0dX2dVKBH97fdcoEOncb01Q==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIIgzCCBmugAwIBAgIQHV3iXj3BS94O16ls/QxhATANBgkqhkiG9w0BAQsFADCBijELMAkGA1UE&#13;
+BhMCRlIxEzARBgNVBAoMCkFTSVAtU0FOVEUxFzAVBgNVBAsMDjAwMDIgMTg3NTEyNzUxMRcwFQYD&#13;
+VQQLDA5JR0MtU0FOVEUgVEVTVDE0MDIGA1UEAwwrVEVTVCBBQyBJR0MtU0FOVEUgRUxFTUVOVEFJ&#13;
+UkUgT1JHQU5JU0FUSU9OUzAeFw0yMTEyMjMxNDQ5MDlaFw0yNDEyMjMxNDQ5MDlaMHYxCzAJBgNV&#13;
+BAYTAkZSMRMwEQYDVQQIDApQYXJpcyAoNzUpMRMwEQYDVQQKDApBU0lQLVNBTlRFMRgwFgYDVQQL&#13;
+DA8zMTg3NTEyNzUxMDAwMjAxIzAhBgNVBAMMGnRlc3RzaWduLnRlc3QuYXNpcHNhbnRlLmZyMIIB&#13;
+IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxKLhrlOUDIq2IHpc7ura00TrATHrcra1QBWW&#13;
+pIzjxyAk76y4HHp7Vn2YIISX22c7xUII5W1r8ZLgDbNkUD8ahgoxaYpPVcJtv8qvpaOFujesxxEQ&#13;
+IhKvfg9uBqSlJiWIRDS9jyxlLXk9yP0BDLXX+lHjekrdd0JLWUnUax5Hpa5IkZasJxzy5H4eHBZ9&#13;
+9IqNVX0PvyAlEQl60g4UkmYC69L9LE0oBinr1Uxi/r+q1bUcU2EHvYaILqgJmCKFeh/wRwaI4y6T&#13;
+m5p44hrHP2FlOiUepWa3kWQVTT1Q7TcdO1AjsFmPsbsE0SuCPNZmAA4FnmfNqMwW0vLcnKNZPHNp&#13;
+9QIDAQABo4ID9jCCA/IwCQYDVR0TBAIwADAdBgNVHQ4EFgQUdqQMo8pQTbBRLT9dt7lMKf0OfUEw&#13;
+HwYDVR0jBBgwFoAUIS6EfTse9RLeUaIhXK6TqO9b4/UwDgYDVR0PAQH/BAQDAgbAMFMGA1UdIARM&#13;
+MEowSAYNKoF6AYFVAQcCAQEBATA3MDUGCCsGAQUFBwIBFilodHRwOi8vaWdjLXNhbnRlLmVzYW50&#13;
+ZS5nb3V2LmZyL1BDJTIwVEVTVDATBgNVHSUEDDAKBggrBgEFBQcDBDArBgNVHRAEJDAigA8yMDIx&#13;
+MTIyMzE0NDkwOVqBDzIwMjQxMjIzMTQ0OTA5WjCCAVUGA1UdHwSCAUwwggFIMD2gO6A5hjdodHRw&#13;
+Oi8vaWdjLXNhbnRlLmVzYW50ZS5nb3V2LmZyL0NSTC9BQ0ktRUwtT1JHLVRFU1QuY3JsMIIBBaCC&#13;
+AQGggf6GgftsZGFwOi8vYW5udWFpcmUtaWdjLmVzYW50ZS5nb3V2LmZyL2NuPVRFU1QlMjBBQyUy&#13;
+MElHQy1TQU5URSUyMEVMRU1FTlRBSVJFJTIwT1JHQU5JU0FUSU9OUyxvdT1URVNUJTIwQUMlMjBS&#13;
+QUNJTkUlMjBJR0MtU0FOVEUlMjBFTEVNRU5UQUlSRSxvdT1JR0MtU0FOVEUlMjBURVNULG91PTAw&#13;
+MDIlMjAxODc1MTI3NTEsbz1BU0lQLVNBTlRFLGM9RlI/Y2VydGlmaWNhdGVyZXZvY2F0aW9ubGlz&#13;
+dDtiaW5hcnk/YmFzZT9vYmplY3RDbGFzcz1wa2lDQTCCAQ4GA1UdLgSCAQUwggEBMIH+oIH7oIH4&#13;
+hoH1bGRhcDovL2FubnVhaXJlLWlnYy5lc2FudGUuZ291di5mci9jbj1URVNUJTIwQUMlMjBJR0Mt&#13;
+U0FOVEUlMjBFTEVNRU5UQUlSRSUyME9SR0FOSVNBVElPTlMsb3U9VEVTVCUyMEFDJTIwUkFDSU5F&#13;
+JTIwSUdDLVNBTlRFJTIwRUxFTUVOVEFJUkUsb3U9SUdDLVNBTlRFJTIwVEVTVCxvdT0wMDAyJTIw&#13;
+MTg3NTEyNzUxLG89QVNJUC1TQU5URSxjPUZSP2RlbHRhcmV2b2NhdGlvbmxpc3Q7YmluYXJ5P2Jh&#13;
+c2U/b2JqZWN0Q2xhc3M9cGtpQ0EwgYEGCCsGAQUFBwEBBHUwczAmBggrBgEFBQcwAYYaaHR0cDov&#13;
+L29jc3AuZXNhbnRlLmdvdXYuZnIwSQYIKwYBBQUHMAKGPWh0dHA6Ly9pZ2Mtc2FudGUuZXNhbnRl&#13;
+LmdvdXYuZnIvQUMlMjBURVNUL0FDSS1FTC1PUkctVEVTVC5jZXIwDwYIKoF6AUcBAgUEAwQBgzAN&#13;
+BgkqhkiG9w0BAQsFAAOCAgEAjx8LBmX95sHM9nWiuLjSXVcxjUoxITGE+3wqxktu8pQqMpfi7t19&#13;
+Nh259auyQ78kZfVkMUJiXzdc+oqjlXC8lYjbC9j+3oYoJTElf0gzK60ZWcJf40OhX8rbjkEb+Jv0&#13;
+nUFNXNZM5f8Y7DXHxHMbzvK4DQocZev+3hA6LRwEvAPEIIw17mUJpK0/IOeRKvbvPrusgNJ/L/J4&#13;
+TjBYBDEIDFtOVTfEKiNLdxbLzKynS8iAt02bWYAAkif8c5+VUZzJnCkUK4fEdjqt8mMAjvdIeejJ&#13;
+HbrIhnT38I/GdN15ltJQj31yV8WIOoWOCpDjfSO9QmExgfi9UnYEmc3pRBTlDpWZCRsUvIPU4TD1&#13;
+zgD3Frsz8fBqaYLbXdYC70hEJpcFG3uCkEx5pZIh2w+6xRBwoS9w/6VX/veiNGq/E7e7wshGI7iO&#13;
+hvyS34yT8vIrFnYfBof1/t0Fkl65z2l7JXM2ditBC/hdYuPyC+JgHxaGXMe3qPTGJ00ekYZGmnTl&#13;
+TQ2yT9cUZx5soZoH9qUBg4MzHdhBH+Ajh+zGtkj6LaXSpgVBSkdpTAfVMYu3tqCIXzf7k7q0qtIZ&#13;
+HE0BVIYoF0Z6uP39kMnw0nGykhCzAkjLslbmbr5X8RFlR/pquRP6dfutENy+lEJmNwLXQuOptD/w&#13;
+vArAFKNPrDVLINAJAUiOy6Q=</ds:X509Certificate></ds:X509Data><ds:KeyValue><ds:RSAKeyValue><ds:Modulus>xKLhrlOUDIq2IHpc7ura00TrATHrcra1QBWWpIzjxyAk76y4HHp7Vn2YIISX22c7xUII5W1r8ZLg&#13;
+DbNkUD8ahgoxaYpPVcJtv8qvpaOFujesxxEQIhKvfg9uBqSlJiWIRDS9jyxlLXk9yP0BDLXX+lHj&#13;
+ekrdd0JLWUnUax5Hpa5IkZasJxzy5H4eHBZ99IqNVX0PvyAlEQl60g4UkmYC69L9LE0oBinr1Uxi&#13;
+/r+q1bUcU2EHvYaILqgJmCKFeh/wRwaI4y6Tm5p44hrHP2FlOiUepWa3kWQVTT1Q7TcdO1AjsFmP&#13;
+sbsE0SuCPNZmAA4FnmfNqMwW0vLcnKNZPHNp9Q==</ds:Modulus><ds:Exponent>AQAB</ds:Exponent></ds:RSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></Flux>

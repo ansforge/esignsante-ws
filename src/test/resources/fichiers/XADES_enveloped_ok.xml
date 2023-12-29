@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.gouv.esante.api.sign</groupId>
+	<artifactId>esignsante-lib</artifactId>
+	<version>2.5.4-SNAPSHOT</version>
+	<name>esignsante-lib</name>
+	<packaging>jar</packaging>
+	<properties>
+		<dss.version>5.12.1</dss.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>17</java.version>
+	</properties>
+	<scm>
+		<developerConnection>${developperConnectionJenkinsfile}</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>artifactory</id>
+			<url>${distributionRepositoryJenkinsfile}</url>
+		</repository>
+	</distributionManagement>
+	<dependencies>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.4.14</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-xades</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-pades</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-pades-pdfbox</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-detailed-report-jaxb</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-policy-jaxb</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-service</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-crl-parser-x509crl</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-token</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-utils-apache-commons</artifactId>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.10.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.meanbean</groupId>
+			<artifactId>meanbean</artifactId>
+			<version>2.0.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.1.2-jre</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.29.2-GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.32</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.albfernandez</groupId>
+			<artifactId>juniversalchardet</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<!--		bouncy castle        -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>*.properties</include>
+					<include>*.sh</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources/certificates</directory>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources/fichiers</directory>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>3.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<header>licence-header.txt</header>
+					<includes>
+						<include>**/*.java</include>
+						<include>**/*.properties</include>
+					</includes>
+					<strictCheck>true</strictCheck>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<id>download-acr-crl</id>
+						<!-- the wget goal actually binds itself to this phase
+						by default -->
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>
+								${artifactory.hostname}/artifactory/crl/ACR-EL-TEST.crl</url>
+							<outputFileName>ACR-EL-TEST.crl</outputFileName>
+							<!-- default target location, just to demonstrate
+							the parameter -->
+							<outputDirectory>
+								${project.build.testOutputDirectory}</outputDirectory>
+							<overwrite>true</overwrite>
+							<skipCache>true</skipCache>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-aci-crl</id>
+						<!-- the wget goal actually binds itself to this phase
+						by default -->
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>
+								${artifactory.hostname}/artifactory/crl/ACI-EL-ORG-TEST.crl</url>
+							<outputFileName>ACI-EL-ORG-TEST.crl</outputFileName>
+							<!-- default target location, just to demonstrate
+							the parameter -->
+							<outputDirectory>
+								${project.build.testOutputDirectory}</outputDirectory>
+							<overwrite>true</overwrite>
+							<skipCache>true</skipCache>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-acr-crl-std</id>
+						<!-- the wget goal actually binds itself to this phase
+						by default -->
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>
+								${artifactory.hostname}/artifactory/crl/ACR-ST-TEST.crl</url>
+							<outputFileName>ACR-ST-TEST.crl</outputFileName>
+							<!-- default target location, just to demonstrate
+							the parameter -->
+							<outputDirectory>
+								${project.build.testOutputDirectory}</outputDirectory>
+							<overwrite>true</overwrite>
+							<skipCache>true</skipCache>
+						</configuration>
+					</execution>
+					<execution>
+						<id>download-openssl-exe</id>
+						<!-- the wget goal actually binds itself to this phase
+						by default -->
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>
+								${artifactory.hostname}/artifactory/ext-release-local/org/openssl/1.0.2c/openssl.exe</url>
+							<outputFileName>openssl.exe</outputFileName>
+							<!-- default target location, just to demonstrate
+							the parameter -->
+							<outputDirectory>
+								${project.build.testOutputDirectory}</outputDirectory>
+							<overwrite>false</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-crl</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<exec dir="${project.build.testOutputDirectory}/" executable="cmd.exe" osfamily="Windows">
+									<arg value="/c openssl.exe crl -inform DER -in ACI-EL-ORG-TEST.crl -out ACI-EL-ORG-TEST.pem"/>
+								</exec>
+								<exec dir="${project.build.testOutputDirectory}/" executable="cmd.exe" osfamily="Windows">
+									<arg value="/c openssl.exe crl -inform DER -in ACR-EL-TEST.crl -out ACR-EL-TEST.pem"/>
+								</exec>
+								<exec dir="${project.build.testOutputDirectory}/" executable="cmd.exe" osfamily="Windows">
+									<arg value="/c openssl.exe crl -inform DER -in ACR-ST-TEST.crl -out ACR-ST-TEST.pem"/>
+								</exec>
+								<exec dir="${project.build.testOutputDirectory}/" executable="cmd.exe" osfamily="Windows">
+									<arg value="/c type ACI-EL-ORG-TEST.pem ACR-EL-TEST.pem ACR-ST-TEST.pem&gt; ca-bundle.crl"/>
+								</exec>
+								<exec dir="${project.build.testOutputDirectory}/" executable="/bin/bash" osfamily="unix">
+									<arg value="${project.build.testOutputDirectory}/bundle-crl.sh"/>
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+	<profiles>
+		<profile>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<id>dev</id>
+			<properties>
+				<!--proxy BT -->
+				<artifactory.hostname>
+					http://repo.proxy-dev-forge.asip.hst.fluxus.net</artifactory.hostname>
+			</properties>
+		</profile>
+		<profile>
+			<activation>
+				<os>
+					<family>Linux</family>
+				</os>
+			</activation>
+			<id>jenkins</id>
+			<properties>
+				<artifactory.hostname>http://st-forge.asipsante.fr:8081/</artifactory.hostname>
+			</properties>
+			<distributionManagement>
+				<repository>
+					<id>artifactory</id>
+					<url>${distributionRepositoryJenkinsfile}</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="id-73499e83af1223e6a56dfe9db57461ea"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference Id="r-id-73499e83af1223e6a56dfe9db57461ea-1" URI=""><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2"><dsig-filter2:XPath xmlns:dsig-filter2="http://www.w3.org/2002/06/xmldsig-filter2" Filter="subtract">/descendant::ds:Signature</dsig-filter2:XPath></ds:Transform><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>HqFTazdhfyFTpycbdwD/cUi8L3AO6MJNYkaxJH8eojs=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#xades-id-73499e83af1223e6a56dfe9db57461ea"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>Jmh8EOACnNrIJfR8VhhZuDbINjIyJKrvVf1LiTKgeCs=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="value-id-73499e83af1223e6a56dfe9db57461ea">GfA24iVTYJlsebubrBPzMNnLHLsRo0CyoOVBcXc7OHqb/PD7S22g/o/d6203BN72hwLV6nxEqTVSo8z+RfijqgDZ0UF3P+XaoIgsuMSjkD4DMei+Ovx8PEphH1FhSC7UgoqoaZKFTWDKmTIR7aRfzX0ZyX/iXIW51gZ1e89Sd4wY/9vBycOdaTqFVeEq1xil/tle4hjva0HVdegfRWtpVPKQIxvI+QeEs3IvPhkzxq7+qEYuwdSrWXBN1T7HrhcjmLnuGMGhf0erRoEWrkZoE1kQIs/4LWlYkWyflNxMSOQ5nK2KzOiKN6tdr+ch2ONjxtB7LmoFBhvJZT3fUw9s/g==</ds:SignatureValue><ds:KeyInfo><ds:X509Data><ds:X509SubjectName>CN=esignsante,OU=300000000077081,O=MINISTERE DE TEST7708,ST=Côte-d'Or (21),C=FR</ds:X509SubjectName><ds:X509Certificate>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</ds:X509Certificate></ds:X509Data><ds:X509Data><ds:X509SubjectName>CN=TEST AC IGC-SANTE ELEMENTAIRE ORGANISATIONS,OU=IGC-SANTE TEST,OU=0002 187512751,O=ASIP-SANTE,C=FR</ds:X509SubjectName><ds:X509Certificate>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</ds:X509Certificate></ds:X509Data><ds:X509Data><ds:X509SubjectName>CN=TEST AC RACINE IGC-SANTE ELEMENTAIRE,OU=IGC-SANTE TEST,OU=0002 187512751,O=ASIP-SANTE,C=FR</ds:X509SubjectName><ds:X509Certificate>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</ds:X509Certificate></ds:X509Data></ds:KeyInfo><ds:Object><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="#id-73499e83af1223e6a56dfe9db57461ea"><xades:SignedProperties Id="xades-id-73499e83af1223e6a56dfe9db57461ea"><xades:SignedSignatureProperties><xades:SigningTime>2023-12-29T08:48:59Z</xades:SigningTime><xades:SigningCertificateV2><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><ds:DigestValue>6gpdszz2xAepeuhFbKX8hyHYNNehnKKTcGbDoXxM7jhm63QZRbdf8w46EgorYEROsT1XzvAe5SE6QznmHHsSzA==</ds:DigestValue></xades:CertDigest><xades:IssuerSerialV2>MIGlMIGQpIGNMIGKMQswCQYDVQQGEwJGUjETMBEGA1UECgwKQVNJUC1TQU5URTEXMBUGA1UECwwOMDAwMiAxODc1MTI3NTExFzAVBgNVBAsMDklHQy1TQU5URSBURVNUMTQwMgYDVQQDDCtURVNUIEFDIElHQy1TQU5URSBFTEVNRU5UQUlSRSBPUkdBTklTQVRJT05TAhBVkm7RZp+RvVZjvEFm9hoP</xades:IssuerSerialV2></xades:Cert></xades:SigningCertificateV2><xades:SignerRoleV2><xades:ClaimedRoles><xades:ClaimedRole>délégataire de signature pour M. Spok</xades:ClaimedRole><xades:ClaimedRole>délégataire de signature pour M. Haddok</xades:ClaimedRole></xades:ClaimedRoles></xades:SignerRoleV2></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#r-id-73499e83af1223e6a56dfe9db57461ea-1"><xades:MimeType>application/octet-stream</xades:MimeType></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></project>

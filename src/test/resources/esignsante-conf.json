@@ -129,7 +129,7 @@
       "idVerifSign": "2",
       "description": "",
       "metadata": "",
-      "rules": "TrustedCertificat,BundleCRLNonNull,ExistenceBaliseSigningTime,ExistenceDuCertificatDeSignature,ExpirationCertificat,ExpirationCRL,NonRepudiation,RevocationCertificat,SignatureNonVide,TrustedCertificat,ValidationSignature,FormatSignature"
+      "rules": "TrustedCertificat,ExistenceBaliseSigningTime,ExistenceDuCertificatDeSignature,ExpirationCertificat,NonRepudiation,RevocationCertificat,SignatureNonVide,TrustedCertificat,ValidationSignature,FormatSignature"
     }
   ],
   "certificateVerification": [

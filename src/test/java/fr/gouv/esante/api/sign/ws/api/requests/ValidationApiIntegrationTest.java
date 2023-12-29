@@ -51,7 +51,7 @@ public class ValidationApiIntegrationTest {
 	private MockMvc mockMvc;
 
 	/** The doc. */
-	private MockMultipartFile doc, docFragment;
+	private MockMultipartFile doc, docFragment, docXadesSigned;
 
 	/** The pdf. */
 	private MockMultipartFile pdf, pdf2;
@@ -75,9 +75,12 @@ public class ValidationApiIntegrationTest {
 	 */
 	@BeforeEach
 	public void init() throws Exception {
-		doc = new MockMultipartFile("file", "doc_signe_xades_ISO-8859-15.xml", null,
-				Thread.currentThread().getContextClassLoader().getResourceAsStream("doc_signe_xades_ISO-8859-15.xml"));
-
+		doc = new MockMultipartFile("file", "XMLDsig_enveloping_ok.xml", null,
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("XMLDsig_enveloping_ok.xml"));
+		
+		docXadesSigned = new MockMultipartFile("file", "XADES_enveloped_ok.xml", null,
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("XADES_enveloped_ok.xml"));
+		
 		docFragment = new MockMultipartFile("file", "signed_fragment_inside_security.xml", null,
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("signed_fragment_inside_security.xml"));
 		
@@ -105,9 +108,7 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(4, body.names().length());
-		assertEquals(2, body.getJSONArray("erreurs").length());
-		assertTrue(body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN05\"}"), "Le 1er code erreur attendu n'est pas le bon");
-		assertTrue(body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"), "Le 2nd code erreur attendu n'est pas le bon");
+		assertEquals(0, body.getJSONArray("erreurs").length());
 	}
 	
 	/**
@@ -116,7 +117,7 @@ public class ValidationApiIntegrationTest {
 	 *
 	 * @throws Exception the exception
 	 */
-	/*
+	
 	@Test
 	public void verifSignXMLdsigFragmentTest() throws Exception {
 
@@ -128,7 +129,7 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(4, body.names().length());
-	}*/
+	}
 
 	/**
 	 * Cas passant validation XADES.
@@ -139,16 +140,14 @@ public class ValidationApiIntegrationTest {
 	public void verifSignXadesBaselineBTest() throws Exception {
 
 		final MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/xadesbaselinebwithproof").file(doc)
+				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/xadesbaselinebwithproof").file(docXadesSigned)
 						.param("idVerifSignConf", "1").param("requestId", "Request-1").param("proofTag", "MonTAG")
 						.param("applicantId", "RPPS").param("idProofConf", "1").with(csrf()).accept("application/json"))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(4, body.names().length());
-		assertEquals(2, body.getJSONArray("erreurs").length());
-		assertTrue(body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN05\"}"), "Le 1er  code erreur attendu n'est pas le bon");
-		assertTrue(body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"), "Le 2nd code erreur attendu n'est pas le bon");
+		assertEquals(0, body.getJSONArray("erreurs").length());
 	}
 
 	/**
@@ -176,7 +175,7 @@ public class ValidationApiIntegrationTest {
 	@Test
 	public void verifSignPadesBaselineBTest() throws Exception {
 		final MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/padesbaselineb").file(pdf2)
+				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/padesbaselineb").file(pdf)
 						.param("idVerifSignConf", "1").with(csrf()).accept("application/json"))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 
@@ -195,7 +194,7 @@ public class ValidationApiIntegrationTest {
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("XADESCertExpire.xml"));
 		final MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.multipart("/validation/signatures/xadesbaselineb").file(document)
-						.param("idVerifSignConf", "1").with(csrf()).accept("application/json"))
+						.param("idVerifSignConf", "2").with(csrf()).accept("application/json"))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
@@ -221,7 +220,7 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(3, body.names().length());
-		assertEquals(2, body.getJSONArray("erreurs").length());
+		assertEquals(1, body.getJSONArray("erreurs").length());
 		assertTrue(body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERCERT01\"}"), "Le code erreur attendu n'est pas le bon");
 	}
 
@@ -259,7 +258,9 @@ public class ValidationApiIntegrationTest {
 
 		final JSONObject body = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(3, body.names().length());
-		assertEquals(3, body.getJSONArray("erreurs").length());
+		assertEquals(2, body.getJSONArray("erreurs").length());
+		assertTrue(body.getJSONArray("erreurs").get(0).toString().endsWith("\"codeErreur\":\"ERSIGN01\"}"), "Le code erreur attendu n'est pas le bon");
+		assertTrue(body.getJSONArray("erreurs").get(1).toString().endsWith("\"codeErreur\":\"ERDOCN01\"}"), "Le code erreur attendu n'est pas le bon");
 	}
 
 	/**
