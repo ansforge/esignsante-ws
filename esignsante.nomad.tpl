@@ -71,7 +71,7 @@ job "${nomad_namejob}" {
                 task "esignsante" {
                         driver = "docker"
                         config {
-                                image = "esignsante/esignsante:${esignsante_version}"
+                                image = "ans/esignsante:${esignsante_version}"
                                 volumes = ["secrets:/var/esignsante"]
                                 args = [
                                         "--ws.conf=/var/esignsante/config.json",
@@ -187,5 +187,5 @@ EOH
                                 memory = 150
                         }
                 } #end log-shipper
-        }
+        } 
 }

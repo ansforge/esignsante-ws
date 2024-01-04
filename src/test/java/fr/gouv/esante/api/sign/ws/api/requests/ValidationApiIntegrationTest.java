@@ -54,7 +54,7 @@ public class ValidationApiIntegrationTest {
 	private MockMultipartFile doc, docFragment, docXadesSigned;
 
 	/** The pdf. */
-	private MockMultipartFile pdf, pdf2;
+	private MockMultipartFile pdf;
 
 	static {
 		final String confPath;
@@ -86,10 +86,6 @@ public class ValidationApiIntegrationTest {
 		
 		pdf = new MockMultipartFile("file", "doc_signe_pades.pdf", null,
 				Thread.currentThread().getContextClassLoader().getResourceAsStream("doc_signe_pades.pdf"));
-
-		pdf2 = new MockMultipartFile("file", "ANS organigramme-signed-pades-baseline-b.pdf", null,
-				Thread.currentThread().getContextClassLoader()
-						.getResourceAsStream("ANS organigramme-signed-pades-baseline-b.pdf"));
 	}
 
 	/**

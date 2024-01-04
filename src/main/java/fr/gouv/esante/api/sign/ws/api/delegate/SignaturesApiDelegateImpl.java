@@ -64,7 +64,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	private static final int MAJOR = 2;
 
 	/** Default ESignSante version. */
-	private static final Version DEFAULT_VERSION = new Version(MAJOR, 6, 0, 0);
+	private static final Version DEFAULT_VERSION = new Version(MAJOR, 7, 9);
 
 	/**
 	 * The log.
@@ -283,6 +283,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	public ResponseEntity<ESignSanteSignatureReportWithProof> signatureXMLdsigWithProof(final Long idSignConf,
 			final MultipartFile doc, final Long idVerifSignConf, final String requestId, final String proofTag,
 			final String applicantId, final String secret, final String element) {
+		log.info("Signature XMLDsig avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			// get version object for proof generation
@@ -324,6 +325,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	public ResponseEntity<ESignSanteSignatureReportWithProof> signatureXadesWithProof(final Long idSignConf,
 			final MultipartFile doc, final Long idVerifSignConf, final String requestId, final String proofTag,
 			final String applicantId, final String secret, List<String> signers) {
+		log.info("Signature XADES-Baseline-B avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			// get version object for proof generation
@@ -367,6 +369,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	public ResponseEntity<ESignSanteSignatureReportWithProof> signaturePadesWithProof(final Long idSignConf,
 			final MultipartFile doc, final Long idVerifSignConf, final String requestId, final String proofTag,
 			final String applicantId, final String secret, List<String> signers) {
+		log.info("Signature PADES-Baseline-B avec preuve.");
 		Version wsVersion = DEFAULT_VERSION;
 		try {
 			// get version object for proof generation
@@ -486,6 +489,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signatureXMLdsig(final Long idSignConf, final MultipartFile doc,
 			final String secret, final String element) {
+		log.info("Signature XMLDsig.");
 		return digitalSignature(secret, idSignConf, doc, ESignatureType.XMLDSIG, null, element);
 	}
 
@@ -500,6 +504,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signatureXades(final Long idSignConf, final MultipartFile doc,
 			final String secret, List<String> signers) {
+		log.info("Signature XADES-Baseline-B.");
 		return digitalSignature(secret, idSignConf, doc, ESignatureType.XADES, signers, null);
 	}
 
@@ -514,6 +519,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	@Override
 	public ResponseEntity<ESignSanteSignatureReport> signaturePades(final Long idSignConf, final MultipartFile doc,
 			final String secret, List<String> signers) {
+		log.info("Signature PADES-Baseline-B.");
 		return digitalSignature(secret, idSignConf, doc, ESignatureType.PADES, signers, null);
 	}
 
