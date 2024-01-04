@@ -69,7 +69,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 	private static final int MAJOR = 2;
 
 	/** Default ESignSante version. */
-	private static final Version DEFAULT_VERSION = new Version(MAJOR, 0, 0, 0);
+	private static final Version DEFAULT_VERSION = new Version(MAJOR, 7, 9);
 
 	/**
 	 * The log.
@@ -173,7 +173,7 @@ public class ValidationApiDelegateImpl extends ApiDelegate implements Validation
 				re = new ResponseEntity<>(status);
 			} else {
 				// Signature de la preuve
-				final RapportSignature rapportSignProofANS = signatureService.signXMLDsig(proof, signProofParams);
+				final RapportSignature rapportSignProofANS = signatureService.signXADESBaselineB(proof, signProofParams);
 				final ESignSanteValidationReportWithProof rapport = populateResultSignWithProof(
 						rapportVerifSignANS.getListeErreurSignature(), rapportVerifSignANS.getMetaData(),
 						rapportVerifSignANS.isValide(), rapportSignProofANS.getDocSigne());

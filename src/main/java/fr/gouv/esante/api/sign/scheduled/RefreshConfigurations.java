@@ -4,21 +4,21 @@
 
 package fr.gouv.esante.api.sign.scheduled;
 
-import fr.gouv.esante.api.sign.config.utils.CaCrlServiceLoader;
-import fr.gouv.esante.api.sign.service.ICACRLService;
-import fr.gouv.esante.api.sign.ws.bean.config.IGlobalConf;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
+import fr.gouv.esante.api.sign.config.utils.CaCrlServiceLoader;
+import fr.gouv.esante.api.sign.service.ICACRLService;
+import fr.gouv.esante.api.sign.ws.bean.config.IGlobalConf;
 
 /**
  * The Class RefreshConfigurations.

@@ -3,16 +3,18 @@
  */
 package fr.gouv.esante.api.sign.ws.bean.config.impl;
 
-import fr.gouv.esante.api.sign.config.observer.CaCrlObserver;
-import fr.gouv.esante.api.sign.ws.bean.ConfigurationMapper;
-import fr.gouv.esante.api.sign.ws.bean.config.IGlobalConf;
-import fr.gouv.esante.api.sign.ws.bean.object.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Component;
+import fr.gouv.esante.api.sign.config.observer.CaCrlObserver;
+import fr.gouv.esante.api.sign.ws.bean.ConfigurationMapper;
+import fr.gouv.esante.api.sign.ws.bean.config.IGlobalConf;
+import fr.gouv.esante.api.sign.ws.bean.object.CaConf;
+import fr.gouv.esante.api.sign.ws.bean.object.CertVerifConf;
+import fr.gouv.esante.api.sign.ws.bean.object.ProofConf;
+import fr.gouv.esante.api.sign.ws.bean.object.SignVerifConf;
+import fr.gouv.esante.api.sign.ws.bean.object.SignatureConf;
 
 /**
  * The type Global conf json.
