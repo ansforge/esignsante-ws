@@ -81,9 +81,6 @@ variable dockerfile_path {
     type = string
     default = "Dockerfile"
 }
-variable "registry_path" {
-    type = string
-}
 variable "esignsante_version" {
 	type = string
 }
