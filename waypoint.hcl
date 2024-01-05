@@ -4,7 +4,6 @@ labels = { "domaine" = "esignsante" }
 
 runner {
   enabled = true
-  profile = "common-odr"
   data_source "git" {
     url = "https://github.com/ansforge/esignsante-ws.git"
     ref = "gitref"
@@ -20,7 +19,7 @@ app "cybersante-esignsante" {
   # Build specifies how an application should be deployed.
   build {
 	use "docker-pull" {
-		image = "${var.registry_path}/ans/esignsante"
+		image = "ans/esignsante"
 		tag   = "${var.esignsante_version}"
 		disable_entrypoint = true
 	}
