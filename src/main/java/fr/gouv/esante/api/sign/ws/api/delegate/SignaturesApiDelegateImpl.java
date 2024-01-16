@@ -64,7 +64,7 @@ public class SignaturesApiDelegateImpl extends ApiDelegate implements Signatures
 	private static final int MAJOR = 2;
 
 	/** Default ESignSante version. */
-	private static final Version DEFAULT_VERSION = new Version(MAJOR, 7, 10);
+	private static final Version DEFAULT_VERSION = new Version(MAJOR, 7, 11);
 
 	/**
 	 * The log.
