@@ -20,7 +20,7 @@ app "cybersante-esignsante" {
   build {
 	use "docker-pull" {
 		image = "ans/esignsante"
-		tag   = "${var.esignsante_version}"
+		tag   = "2.7.11"
 		disable_entrypoint = true
 	}
   }
@@ -30,7 +30,7 @@ app "cybersante-esignsante" {
     use "nomad-jobspec" {
       jobspec = templatefile("${path.app}/esignsante.nomad.tpl", {
         datacenter = var.datacenter
-		esignsante_version = var.esignsante_version
+		esignsante_version = "2.7.11"
         user_java_opts = var.user_java_opts
         spring_http_multipart_max_file_size = var.spring_http_multipart_max_file_size
         spring_http_multipart_max_request_size = var.spring_http_multipart_max_request_size
@@ -80,9 +80,6 @@ variable "password" {
 variable dockerfile_path {
     type = string
     default = "Dockerfile"
-}
-variable "esignsante_version" {
-	type = string
 }
 variable "user_java_opts" {
   type = string
