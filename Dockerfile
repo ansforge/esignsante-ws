@@ -1,4 +1,4 @@
-FROM maven:3-jdk-11 AS build
+FROM registry.repo.proxy.prod.forge.esante.gouv.fr/maven:3-jdk-11 AS build
 COPY settings-docker.xml /usr/share/maven/ref/
 COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app
