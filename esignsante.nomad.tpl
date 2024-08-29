@@ -180,7 +180,7 @@ EOH
                                 env = true
                         }
                         config {
-                                image = "ans/nomad-filebeat:8.2.3-2.1"
+                                image = "ans/nomad-filebeat:8.2.3-2.0"
                         }
                         resources {
                                 cpu    = 100
